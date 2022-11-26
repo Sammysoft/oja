@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import image from "../../assets/profile.png";
+import { useNavigate } from "react-router";
 
 const Chat = () => {
+    const navigate = useNavigate()
   return (
     <>
       <ChatWrapper>
@@ -11,7 +13,11 @@ const Chat = () => {
           <ImageWrapper>
             <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
           </ImageWrapper>
-          <ChatContent>
+          <ChatContent
+            onClick={() => {
+              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
+            }}
+          >
             <ChatHead>Adewumi Sunkanmi</ChatHead>
             <ChatBody>
               We’re sorry to inform you that your item has been taken . . .
@@ -23,7 +29,11 @@ const Chat = () => {
           <ImageWrapper>
             <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
           </ImageWrapper>
-          <ChatContent>
+          <ChatContent
+            onClick={() => {
+              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
+            }}
+          >
             <ChatHead>Adewumi Sunkanmi</ChatHead>
             <ChatBody>
               We’re sorry to inform you that your item has been taken . . .
@@ -35,7 +45,11 @@ const Chat = () => {
           <ImageWrapper>
             <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
           </ImageWrapper>
-          <ChatContent>
+          <ChatContent
+            onClick={() => {
+              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
+            }}
+          >
             <ChatHead>Adewumi Sunkanmi</ChatHead>
             <ChatBody>
               We’re sorry to inform you that your item has been taken . . .
@@ -47,7 +61,11 @@ const Chat = () => {
           <ImageWrapper>
             <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
           </ImageWrapper>
-          <ChatContent>
+          <ChatContent
+            onClick={() => {
+              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
+            }}
+          >
             <ChatHead>Adewumi Sunkanmi</ChatHead>
             <ChatBody>
               We’re sorry to inform you that your item has been taken . . .
@@ -59,7 +77,11 @@ const Chat = () => {
           <ImageWrapper>
             <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
           </ImageWrapper>
-          <ChatContent>
+          <ChatContent
+            onClick={() => {
+              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
+            }}
+          >
             <ChatHead>Adewumi Sunkanmi</ChatHead>
             <ChatBody>
               We’re sorry to inform you that your item has been taken . . .
@@ -71,7 +93,11 @@ const Chat = () => {
           <ImageWrapper>
             <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
           </ImageWrapper>
-          <ChatContent>
+          <ChatContent
+            onClick={() => {
+              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
+            }}
+          >
             <ChatHead>Adewumi Sunkanmi</ChatHead>
             <ChatBody>
               We’re sorry to inform you that your item has been taken . . .
@@ -83,7 +109,11 @@ const Chat = () => {
           <ImageWrapper>
             <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
           </ImageWrapper>
-          <ChatContent>
+          <ChatContent
+            onClick={() => {
+              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
+            }}
+          >
             <ChatHead>Adewumi Sunkanmi</ChatHead>
             <ChatBody>
               We’re sorry to inform you that your item has been taken . . .
@@ -124,7 +154,7 @@ const ChatContent = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   height: stretch;
-  padding: 0px 5px 0px 10px
+  padding: 0px 5px 0px 10px;
 `;
 const ChatHead = styled.div`
   font-family: Montserrat;
