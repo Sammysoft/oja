@@ -1,0 +1,14 @@
+export const Colors = {
+    PRIMARY: "#00002F",
+    WHITE :"#FFFFFF",
+    DEEP:"#000000",
+    PRIMARY_DEEP:"#08003C",
+    DIRTY_GREEN:"#00313C",
+    GREY: "#D7D8CC",
+    CHOCOLATE:"#3C0300",
+    DEEP_GREEN: "#003C11",
+    DIRTY_WHITE: "#F7F7F7",
+    RED: "#DD1919",
+    LIGHT_GREEN: "#003C0D33",
+    SENDER_CHAT: "#4A5D62"
+}
