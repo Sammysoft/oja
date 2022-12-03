@@ -14,7 +14,7 @@ const DashboardPage = () => {
       <PageWrapper>
         <NavBar />
       </PageWrapper>
-      <Dashboard/>
+      <Dashboard />
       <Advert
         background={Colors.DIRTY_GREEN}
         text={"Find the style that fits YOU!"}
@@ -27,7 +27,6 @@ const DashboardPage = () => {
   );
 };
 export default DashboardPage;
-
 
 const PageWrapper = styled.div`
 width: 100%;

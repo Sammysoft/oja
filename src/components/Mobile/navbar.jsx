@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import logo from "../../assets/logo.png";
 import menu from "../../assets/menu.png";
-import profile from "../../assets/profile2.png";
 import sell from "../../assets/sell.png";
 import chat from "../../assets/chat.png";
 import pro from "../../assets/pro.png";
@@ -16,6 +15,7 @@ import fashion from "../../assets/svg/fashion.svg";
 import decor from "../../assets/svg/decor.svg";
 import bag from "../../assets/svg/bag.svg";
 import service from "../../assets/svg/service.svg";
+import { LoginContext } from "../../loginContext";
 
 const data = [
   {
@@ -53,6 +53,8 @@ const data = [
 ];
 
 const NavBar = () => {
+  const { user } = useContext(LoginContext);
+  console.log(user)
   const navigate = useNavigate();
   const [toggleMenu, setToggleMenu] = React.useState(false);
   return (
@@ -85,29 +87,44 @@ const NavBar = () => {
           }}
         />
       </NavWrapper>
-      {toggleMenu && <ToggleBar />}
+      {toggleMenu && (
+        <ToggleBar
+          username={user.fullname}
+          profile_picture={user.profile_picture}
+        />
+      )}
     </>
   );
 };
 
-const ToggleBar = () => {
+const ToggleBar = ({ profile_picture, username }) => {
+  const navigate = useNavigate()
   return (
     <>
       <ToggleBarWrapper>
         <MenuWrapper>
-          <ProfileBanner>
-            <ProfileName>Adebisi Olushola</ProfileName>
-            <Link
-              to="/dashboard"
-              style={{
-                textDecoration: "none",
-                textDecorationLine: "none",
-                color: `${Colors.PRIMARY}`,
-              }}
-            >
-              <ProfilePicture src={profile} />
-            </Link>
-          </ProfileBanner>
+          {username === "" ? (
+            <>
+              <LoginButton onClick={()=>{navigate("/sign-in")}}>Login</LoginButton>
+            </>
+          ) : (
+            <>
+              <ProfileBanner>
+                <ProfileName>{username}</ProfileName>
+                <Link
+                  to="/dashboard"
+                  style={{
+                    textDecoration: "none",
+                    textDecorationLine: "none",
+                    color: `${Colors.PRIMARY}`,
+                  }}
+                >
+                  <ProfilePicture src={profile_picture} />
+                </Link>
+              </ProfileBanner>
+            </>
+          )}
+
           <br />
           <br />
           <br />
@@ -286,6 +303,15 @@ const SearchBar = styled.input`
   border-radius: 10px;
   border: 2px solid ${Colors.PRIMARY_DEEP};
   background-color: transparent;
+`;
+
+const LoginButton = styled.div`
+  background: ${Colors.PRIMARY};
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  font-family: Montserrat;
 `;
 
 const Menu = styled.img``;

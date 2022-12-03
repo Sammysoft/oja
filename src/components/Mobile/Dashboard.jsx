@@ -1,13 +1,26 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Colors } from "../../assets/styles";
 import plus from "../../assets/svg/plus_circle.svg";
 import chat from "../../assets/svg/chat_dot_white.svg";
 import profile from "../../assets/svg/person.svg";
 import logout from "../../assets/svg/logout.svg";
+import Swal from "sweetalert2"
 
 const Dashboard = () => {
+  const navigate = useNavigate()
+
+
+  const _logout = () =>{
+    localStorage.removeItem("oja-token");
+    navigate("/sign-in");
+    Swal.fire({
+        icon: "success",
+        title: "Logged Out.",
+        text: "Bye for now, thanks for using OJA"
+    })
+  }
   return (
     <>
       <AdvertUpperText>
@@ -55,7 +68,7 @@ const Dashboard = () => {
               <LittleText>Manage Profile</LittleText>
             </DashMenu>
           </Link>
-          <DashMenu background={"#003C11"}>
+          <DashMenu background={"#003C11"} onClick={()=>{_logout()}}>
             <img src={logout} alt="logout" />
             <LittleText>Logout</LittleText>
           </DashMenu>

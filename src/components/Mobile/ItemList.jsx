@@ -263,7 +263,7 @@ const AddItemModal = () => {
   );
 };
 
-const Card = ({ color, background, element, toggle, setToggle }) => {
+const Card = ({ color, background, element }) => {
   return (
     <>
       <CardWrapper color={color} background={background}>

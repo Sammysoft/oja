@@ -1,0 +1,29 @@
+.swiper {
+    width: 100%;
+    height: 100%;
+  }
+  .swal2-confirm {
+    background-color: #00002F !important;
+    border: "none" !important;
+    color: #dbb921 !important;
+    font-family: "Montserrat" !important;
+  }
+  .swal2-shown {
+    font-family: "Montserrat" !important;
+
+  }
+  .swal2-title {
+    font-family: "Montserrat" !important;
+
+  }
+  .swal2-popup {
+    font-family: "Montserrat" !important;
+    color: #00002F !important;
+  }
+
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+  }

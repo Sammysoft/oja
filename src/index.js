@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import DesktopView from "./Desktop";
 import Mobile from "./Mobile";
 import { BrowserView, MobileView } from "react-device-detect";
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

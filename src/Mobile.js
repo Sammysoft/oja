@@ -10,19 +10,92 @@ import ChatPage from "./pages/Mobile/ChatPage";
 import ProfilePage from "./pages/Mobile/ProfilePage";
 import ErrorPage from "./pages/Mobile/ErrorPage";
 import ChatItem from "./pages/Mobile/ChatItem";
+import { LoginProvider } from "./loginContext";
 
 const Mobile = () => {
   return (
     <Routes>
-      <Route path="/chat" exact element={<ChatItem />} />
-      <Route path="/" exact element={<HomePage />} />
-      <Route path="/onboard" exact element={<OnboardPage />} />
-      <Route path="/sign-in" exact element={<LoginPage />} />
-      <Route path="/dashboard" exact element={<DashboardPage />} />
-      <Route path="/items" exact element={<ItemListPage />} />
-      <Route path="/product" exact element={<ItemDescriptionPage />} />
-      <Route path="/chats" exact element={<ChatPage />} />
-      <Route path="/profile" exact element={<ProfilePage />} />
+      <Route
+        path="/"
+        exact
+        element={
+          <LoginProvider>
+            <HomePage />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/onboard"
+        exact
+        element={
+          <LoginProvider>
+            <OnboardPage />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/sign-in"
+        exact
+        element={
+          <LoginProvider>
+            <LoginPage />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/items"
+        exact
+        element={
+          <LoginProvider>
+            <ItemListPage />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/product"
+        exact
+        element={
+          <LoginProvider>
+            <ItemDescriptionPage />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/dashboard"
+        exact
+        element={
+          <LoginProvider>
+            <DashboardPage />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/profile"
+        exact
+        element={
+          <LoginProvider>
+            <ProfilePage />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/chat"
+        exact
+        element={
+          <LoginProvider>
+            <ChatItem />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/chats"
+        exact
+        element={
+          <LoginProvider>
+            <ChatPage />
+          </LoginProvider>
+        }
+      />
       <Route path="/*" exact element={<ErrorPage />} />
     </Routes>
   );
