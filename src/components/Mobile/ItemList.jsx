@@ -324,6 +324,7 @@ const AddItemModal = () => {
         });
       })
       .catch((error) => {
+        setLoading(false)
         Swal.fire({
           title: "Oops",
           text: error.response.data.data,

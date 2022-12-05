@@ -26,7 +26,7 @@ const Dashboard = () => {
       <AdvertUpperText>
         <DeepText>
           Welcome to Oja.
-          <br /> The Online Marketplace.
+          <br /> Your Online Marketplace.
         </DeepText>
         <DashMenuWrapper>
           <Link
