@@ -37,6 +37,8 @@ const Header = styled.div`
   font-weight: 900;
   font-family: Montserrat;
   padding: 15px 5px;
+  text-align: center;
+  width: 100%;
 `;
 const LinkOptions = styled.div`
   padding: 10px 0px;
@@ -49,7 +51,13 @@ const Footer = () => {
       <FooterWrapper>
         <Wrapper1>
           <img src={logo} alt="profile" width="50px" height="50px" />
-          <span style={{ fontFamily: "Montserrat", fontWeight: "900", fontSize: "2.5rem" }}>
+          <span
+            style={{
+              fontFamily: "Montserrat",
+              fontWeight: "900",
+              fontSize: "2.5rem",
+            }}
+          >
             OJA
           </span>
           <div style={{ fontFamily: "Montserrat", lineHeight: "1.5rem" }}>
@@ -59,14 +67,16 @@ const Footer = () => {
           </div>
         </Wrapper1>
         <Wrapper2>
-          <div style={{ width: "45%", height: "stretch" }}>
+          <div style={{ width: "100%", height: "stretch" }}>
             <Header>Quick Links</Header>
-            <LinkOptions>Home</LinkOptions>
-            <LinkOptions>Product Listing</LinkOptions>
-            <LinkOptions>Sell my item</LinkOptions>
-            <LinkOptions>Terms of service</LinkOptions>
+            <div style={{ display: "grid", gridTemplateColumns: "auto auto" }}>
+              <LinkOptions>Home</LinkOptions>
+              <LinkOptions>Product Listing</LinkOptions>
+              <LinkOptions>Sell my item</LinkOptions>
+              <LinkOptions>Terms of service</LinkOptions>
+            </div>
           </div>
-          <div
+          {/* <div
             style={{
               width: "50%",
               height: "stretch",
@@ -74,12 +84,12 @@ const Footer = () => {
               lineHeight: "1.5rem",
             }}
           >
-            {/* <Header>Contact Us</Header>
+            <Header>Contact Us</Header>
             <div style={{ padding: "15px", fontFamily: "Montserrat" }}>
               No 34, adesida ayomide street off ojota bus stop, lagos. +234
               (904) 499 9323
-            </div> */}
-          </div>
+            </div>
+          </div> */}
         </Wrapper2>
       </FooterWrapper>
       <CopyWriteSection>COPYRIGHT (C) 2022. OJAONLINE.NG</CopyWriteSection>
