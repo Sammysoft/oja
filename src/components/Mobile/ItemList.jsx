@@ -1,13 +1,26 @@
 /* eslint-disable */
 
-import React from "react";
+import React, { useState, useRef, useContext } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { Colors } from "../../assets/styles";
 import left_arrow from "../../assets/svg/left_arrow.svg";
 import plus from "../../assets/svg/plus_circle.svg";
 import { category } from "../../assets/data";
-import { useState } from "react";
+import { Loader } from "semantic-ui-react";
+import { storage } from "../../firebase";
+import { LoginContext } from "../../loginContext";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  getStorage,
+} from "firebase/storage";
+
+import { v4 } from "uuid";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { api } from "../../strings";
 
 const ListWrapper = styled.div`
   width: 100%;
@@ -197,6 +210,8 @@ const ImageIndicator = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 50px;
+  height: 50px;
 `;
 
 const SubmitButton = styled.div`
@@ -212,6 +227,109 @@ font-weight: 900;
 `;
 
 const AddItemModal = () => {
+  const { user } = useContext(LoginContext);
+  const [item_name, setItemName] = useState("");
+  const [item_category, setItemCategory] = useState("");
+  const [item_subcategory, setItemSubCategory] = useState("");
+  const [item_price, setItemPrice] = useState("");
+  const [item_description, setItemDescription] = useState("");
+  const [item_pictures, setItemPictures] = useState([]);
+
+  // Status indeicator states
+  const [status, setUploadStatus] = useState("Upload photos (Max.4)");
+  const [picture, setPicture] = useState([]);
+  const [pickFile, setPickFile] = useState(null);
+  const [loading, setLoading] = useState(Boolean);
+  const [imageLoad, setImageLoad] = useState("");
+
+  const pick = useRef("");
+
+  const uploadFile = (pickFile) => {
+    setImageLoad(true);
+    if (pickFile == null) {
+      return null;
+    } else {
+      const imageRef = ref(getStorage(), `images/${pickFile.name + v4()}`);
+      const uploadTask = uploadBytesResumable(imageRef, pickFile);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(Math.round(progress) + "% ");
+          setUploadStatus(`${Math.round(progress)}%`);
+          switch (snapshot.state) {
+            case "paused":
+              setUploadStatus("Paused");
+              break;
+            case "running":
+              break;
+          }
+        },
+        (error) => {
+          alert("Sorry, upload denied at the moment, Please try again later!");
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            Swal.fire({
+              text: "One image of the product has been added to your store!",
+              title: "Image uploaded 👍",
+            });
+            // setPicture(downloadURL);
+            setItemPictures([...item_pictures, downloadURL]);
+            setImageLoad(false);
+          });
+        }
+      );
+    }
+  };
+
+  const handlePictureChange = (e) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        if (picture.length <= 3) {
+          setPicture([...picture, reader.result]);
+        } else {
+          Swal.fire({
+            title: "Oops 😟",
+            text: "You cannot post more than 4 images!",
+          });
+        }
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  const _submitForm = () => {
+    setLoading(true);
+    const payload = {
+      item_price,
+      item_category,
+      item_description,
+      item_name,
+      item_pictures,
+      item_subcategory,
+      user_id: user._id,
+    };
+
+    axios
+      .post(`${api}/upload`, payload)
+      .then((res) => {
+        setLoading(false);
+        Swal.fire({
+          title: "Uploaded Item",
+          text: `${res.data.data.item_name} has been uploaded to ${res.data.data.item_category} category`,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Oops",
+          text: error.response.data.data,
+        });
+      });
+  };
 
   return (
     <>
@@ -220,7 +338,11 @@ const AddItemModal = () => {
           <ItemModal>
             <Head>Upload your item</Head>
             <ImageSectionWrapper>
-              <ImageSelector>
+              <ImageSelector
+                onClick={() => {
+                  pick.current.click();
+                }}
+              >
                 <img src={plus} alt="plus" />
                 <div
                   style={{
@@ -231,30 +353,104 @@ const AddItemModal = () => {
                     padding: "5px",
                   }}
                 >
-                  Upload photos (max.5)
+                  {status}
                 </div>
+                {imageLoad && <Loader active inline="centered" />}
               </ImageSelector>
               <ImageIndicatorWrapper>
-                <ImageIndicator>1</ImageIndicator>
-                <ImageIndicator>2</ImageIndicator>
-                <ImageIndicator>3</ImageIndicator>
-                <ImageIndicator>4</ImageIndicator>
+                {picture.length !== 0 ? (
+                  <>
+                    {picture.map((item, id) => {
+                      return (
+                        <ImageIndicator key={id}>
+                          <img
+                            src={item}
+                            width={"100%"}
+                            height={"100%"}
+                            style={{
+                              position: "relative",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        </ImageIndicator>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <>
+                    <ImageIndicator>1</ImageIndicator>
+                    <ImageIndicator>2</ImageIndicator>
+                    <ImageIndicator>3</ImageIndicator>
+                    <ImageIndicator>4</ImageIndicator>
+                  </>
+                )}
               </ImageIndicatorWrapper>
             </ImageSectionWrapper>
-            <InputField type="text" placeholder="Item name" />
-            <InputField type="text" placeholder="Select Item category" />
-            <InputField type="text" placeholder="Select Item sub-category" />
+            <InputField
+              type="text"
+              placeholder="Item name"
+              value={item_name}
+              onChange={(e) => {
+                setItemName(e.target.value);
+              }}
+            />
+            <InputField
+              type="text"
+              placeholder="Select Item category"
+              value={item_category}
+              onChange={(e) => {
+                setItemCategory(e.target.value);
+              }}
+            />
+            <InputField
+              onChange={(e) => {
+                handlePictureChange(e);
+                setPickFile(e.target.files[0]);
+                if (picture.length <= 3) {
+                  uploadFile(e.target.files[0]);
+                }
+              }}
+              ref={pick}
+              style={{ display: "none" }}
+              type="file"
+              accept="image/*"
+            />
+            <InputField
+              type="text"
+              placeholder="Select Item sub-category"
+              value={item_subcategory}
+              onChange={(e) => {
+                setItemSubCategory(e.target.value);
+              }}
+            />
             <InputTextArea
               type="text"
               placeholder="Item Description"
+              value={item_description}
+              onChange={(e) => {
+                setItemDescription(e.target.value);
+              }}
             ></InputTextArea>
-            <InputField type="text" placeholder="Asking Price" />
+            <InputField
+              type="text"
+              placeholder="Asking Price"
+              value={item_price}
+              onChange={(e) => {
+                setItemPrice(e.target.value);
+              }}
+            />
             <SubmitButton
               onClick={() => {
-               window.location.reload()
+                _submitForm();
               }}
             >
-              Submit Item for Approval
+              {loading === true ? (
+                <>
+                  <Loader active inline="centered" />
+                </>
+              ) : (
+                <>Submit Item for Approval</>
+              )}
             </SubmitButton>
           </ItemModal>
         </ItemModalWrapper>
@@ -274,7 +470,6 @@ const Card = ({ color, background, element }) => {
 };
 
 const AddItem = ({ setToggleAdd }) => {
-
   var keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
 
   function preventDefaultForScrollKeys(e) {
