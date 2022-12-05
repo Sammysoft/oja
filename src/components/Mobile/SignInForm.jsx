@@ -90,7 +90,6 @@ const SignInForm = () => {
         .post(`${api}/auth`, payload)
         .then((res) => {
           setLoading(false)
-          console.log(res.data)
           localStorage.setItem("oja-token", res.data.token);
           navigate('/dashboard');
         })

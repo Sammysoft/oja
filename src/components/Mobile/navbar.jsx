@@ -16,6 +16,7 @@ import decor from "../../assets/svg/decor.svg";
 import bag from "../../assets/svg/bag.svg";
 import service from "../../assets/svg/service.svg";
 import { LoginContext } from "../../loginContext";
+import Swal from "sweetalert2";
 
 const data = [
   {
@@ -54,7 +55,6 @@ const data = [
 
 const NavBar = () => {
   const { user } = useContext(LoginContext);
-  console.log(user)
   const navigate = useNavigate();
   const [toggleMenu, setToggleMenu] = React.useState(false);
   return (
@@ -65,12 +65,12 @@ const NavBar = () => {
             navigate("/");
           }}
         >
-          <img src={logo} alt="oja" width="20" height="20" />
+          <img src={logo} alt="oja" width="30" height="30" />
           <span
             style={{
               fontFamily: "Montserrat",
               fontWeight: 900,
-              fontSize: "1rem",
+              fontSize: "1.8rem",
             }}
           >
             OJA
@@ -98,14 +98,28 @@ const NavBar = () => {
 };
 
 const ToggleBar = ({ profile_picture, username }) => {
-  const navigate = useNavigate()
+  const _logout = () => {
+    localStorage.removeItem("oja-token");
+    Swal.fire({
+      title: "Logged Out",
+      text: "You have logged out successfully",
+    });
+    window.location.reload()
+  };
+  const navigate = useNavigate();
   return (
     <>
       <ToggleBarWrapper>
         <MenuWrapper>
           {username === "" ? (
             <>
-              <LoginButton onClick={()=>{navigate("/sign-in")}}>Login</LoginButton>
+              <LoginButton
+                onClick={() => {
+                  navigate("/sign-in");
+                }}
+              >
+                Login
+              </LoginButton>
             </>
           ) : (
             <>
@@ -178,12 +192,30 @@ const ToggleBar = ({ profile_picture, username }) => {
               </CategoryMenu>
             </>
           ))}
+          {username !== "" && (
+            <Logout
+              onClick={() => {
+                _logout();
+              }}
+            >
+              Logout
+            </Logout>
+          )}
         </MenuWrapper>
       </ToggleBarWrapper>
     </>
   );
 };
-
+const Logout = styled.div`
+  font-family: Montserrat;
+  color: ${Colors.PRIMARY};
+  padding: 10px;
+  margin: 15px 0px;
+  font-size: 1rem;
+  width: 100%;
+  text-align: center;
+  font-weight: 800;
+`;
 const CategoryMenu = styled.div`
   display: flex;
   flex-direction: row;
@@ -288,7 +320,6 @@ const NavWrapper = styled.div`
 `;
 
 const Logo = styled.div`
-padding: 5px;
 display: flex:
 flex-direction: row;
 width: 25%;

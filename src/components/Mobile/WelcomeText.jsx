@@ -15,30 +15,31 @@ const AdvertUpperText = styled.div`
 const DeepText = styled.div`
   font-weight: 900;
   font-family: Montserrat;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   color: ${Colors.PRIMARY_DEEP};
   width: 90%;
+  line-height: 2.5rem;
 `;
 
-const LightText = styled.div`
-  font-size: 1rem;
-  font-family: Montserrat;
-  width: 95%;
-  margin-top: 3vh;
-`;
+// const LightText = styled.div`
+//   font-size: 1rem;
+//   font-family: Montserrat;
+//   width: 95%;
+//   margin-top: 3vh;
+// `;
 export const Welcome = () => {
   return (
     <>
       <AdvertUpperText>
         <DeepText>
           Welcome to Oja.
-          <br /> The Online Marketplace.
+          <br /> Your Online Marketplace.
         </DeepText>
-        <LightText>
+        {/* <LightText>
          OJA an online market platform for sellers and buyers, brands and corporate
           entities, seeking a channel to reach mass consumer markets, or sell
           that one item for a quick cash.
-        </LightText>
+        </LightText> */}
       </AdvertUpperText>
     </>
   );

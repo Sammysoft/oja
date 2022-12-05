@@ -32,6 +32,7 @@ const Profile = () => {
     user.local_government
   );
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [imageLoad, setImageLoad] = useState(Boolean);
   const [profilepicture, setProfilePicture] = useState("");
 
@@ -71,7 +72,7 @@ const Profile = () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log("File available at", downloadURL);
             Swal.fire({
-              text: "Successfully uploaded image to the cloud!",
+              text: "Successfully uploaded profile picture. Press Update to complete profile update!",
               title: "Image uploaded 👍",
             });
             setPicture(downloadURL);
@@ -96,12 +97,19 @@ const Profile = () => {
   const _submitForm = () => {
     setLoading(true);
     if (password === "") {
-      setLoading(false)
-        Swal.fire({
-          icon: "warning",
-          title:"Enter Password",
-          text:"Please enter your password!"
-        })
+      setLoading(false);
+      Swal.fire({
+        icon: "warning",
+        title: "Enter Password",
+        text: "Please enter your password!",
+      });
+    } else if (password !== confirmPassword) {
+      setLoading(false);
+      Swal.fire({
+        icon: "warning",
+        title: "Password Mismatch",
+        text: "Please ensure passwords are matching!!",
+      });
     } else {
       const payload = {
         email,
@@ -142,31 +150,41 @@ const Profile = () => {
         <PictureBlock>
           {picture === "" ? (
             <>
-             {
-              profilepicture === "" || null || !profilepicture ? <>
-               <PictureHolder background={profilepicture}>
-                <img
-                  src={camera}
-                  alt="capture"
-                  style={{ left: "50px", top: "55px", position: "absolute" }}
-                  onClick={() => {
-                    pick.current.click();
-                  }}
-                />
-              </PictureHolder>
-              </>:<>
-              <NewPictureHolder background={profilepicture}>
-                <img
-                  src={camera}
-                  alt="capture"
-                  style={{ left: "50px", top: "55px", position: "absolute" }}
-                  onClick={() => {
-                    pick.current.click();
-                  }}
-                />
-              </NewPictureHolder>
-              </>
-             }
+              {profilepicture === "" || null || !profilepicture ? (
+                <>
+                  <PictureHolder background={profilepicture}>
+                    <img
+                      src={camera}
+                      alt="capture"
+                      style={{
+                        left: "50px",
+                        top: "55px",
+                        position: "absolute",
+                      }}
+                      onClick={() => {
+                        pick.current.click();
+                      }}
+                    />
+                  </PictureHolder>
+                </>
+              ) : (
+                <>
+                  <NewPictureHolder background={profilepicture}>
+                    <img
+                      src={camera}
+                      alt="capture"
+                      style={{
+                        left: "50px",
+                        top: "55px",
+                        position: "absolute",
+                      }}
+                      onClick={() => {
+                        pick.current.click();
+                      }}
+                    />
+                  </NewPictureHolder>
+                </>
+              )}
             </>
           ) : (
             <>
@@ -232,6 +250,14 @@ const Profile = () => {
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
+          }}
+        />
+        <Input
+          placeholder="Confirm Password:"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
           }}
         />
         <Input
@@ -317,20 +343,20 @@ const PictureHolder = styled.div`
   border-radius: 50%;
   width: 130px;
   height: 130px;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   position: relative;
 `;
 
 const NewPictureHolder = styled.div`
-border-radius: 50%;
-width: 130px;
-height: 130px;
-background: url(${(props)=> props.background});
-position: relative;
-background-position: center;
-background-size: cover;
-background-repeat: no-repeat;
-`
+  border-radius: 50%;
+  width: 130px;
+  height: 130px;
+  background: url(${(props) => props.background});
+  position: relative;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+`;
 
 const PictureTag = styled.div`
   font-family: Montserrat;

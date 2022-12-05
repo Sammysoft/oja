@@ -16,7 +16,6 @@ export const LoginProvider = ({ children }) => {
   useEffect(() => {
     if (token === null) {
       setUserRole({fullname:"", profile_picture:""})
-      console.log(user)
     } else {
       axios
         .get(`${api}/dashboard`, {
@@ -26,7 +25,6 @@ export const LoginProvider = ({ children }) => {
         })
         .then((res) => {
           setUserRole(res.data.data);
-          console.log(res.data.data);
           if (res.data.data === null) {
             alert("Empty data");
           }

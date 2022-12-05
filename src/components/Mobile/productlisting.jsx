@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import { category } from "../../assets/data";
@@ -13,6 +13,7 @@ import fashion from "../../assets/svg/fashion.svg";
 import decor from "../../assets/svg/decor.svg";
 import bag from "../../assets/svg/bag.svg";
 import service from "../../assets/svg/service.svg";
+import axios from "axios";
 
 const data = [
   {
@@ -58,6 +59,22 @@ const ProductListing = () => {
 };
 
 const ProductFilter = () => {
+  const [states, setStates] = useState([]);
+  const [pickedState, setPickedState] = useState("");
+  const [regions, setRegions] = useState([]);
+
+  const _getRegions = (state) => {
+    axios.get(`https://locus.fkkas.com/api/regions/${state}`).then((res) => {
+      console.log(res.data.data);
+      setRegions(res.data.data);
+    });
+  };
+  useEffect(() => {
+    axios.get(`https://locus.fkkas.com/api/states`).then((res) => {
+      setStates(res.data.data);
+    });
+  }, []);
+
   return (
     <>
       <ProductFilterWrapper>
@@ -67,11 +84,25 @@ const ProductFilter = () => {
             <ProductOption key={id}>{item.category}</ProductOption>
           ))}
         </ProductChoiceSelect>
-        <ProductChoiceSelect>
-          <ProductOption>Lagos</ProductOption>
+        <ProductChoiceSelect
+          value={pickedState}
+          onChange={(e) => {
+            setPickedState(e.target.value);
+            _getRegions(e.target.value);
+          }}
+        >
+          {states.map((state, id) => {
+            return (
+              <ProductOption key={id} value={state.alias}>
+                {state.name}
+              </ProductOption>
+            );
+          })}
         </ProductChoiceSelect>
         <ProductChoiceSelect>
-          <ProductOption>Surulere</ProductOption>
+          {regions ? <> {regions.map((local, id) => {
+            return <ProductOption key={id}>{local.name}</ProductOption>;
+          })}</>:<> <ProductOption>Abuja (FCT)</ProductOption></>}
         </ProductChoiceSelect>
       </ProductFilterWrapper>
       <ProductListWrapper cat={"phones"} />
@@ -151,7 +182,7 @@ const ProductChoiceSelect = styled.select`
 const ProductOption = styled.option`
   font-family: Montserrat;
   color: ${Colors.PRIMARY_DEEP};
-  font-size: .5rem;
+  font-size: 0.5rem;
 `;
 
 const Button = styled.div`

@@ -59,17 +59,6 @@ const ItemDescription = () => {
         <ProductOwner>
           Uploaded By: Idowu shopping {"  "} 🌟 3.5/5.0
         </ProductOwner>
-        <ProductFilterWrapper>
-          <ProductChoiceSelect>
-            <ProductOption>All Categories</ProductOption>
-          </ProductChoiceSelect>
-          <ProductChoiceSelect>
-            <ProductOption>Lagos</ProductOption>
-          </ProductChoiceSelect>
-          <ProductChoiceSelect>
-            <ProductOption>Surulere</ProductOption>
-          </ProductChoiceSelect>
-        </ProductFilterWrapper>
       </ItemDescriptionWrapper>
       <ProductGalleryWrapper>
         <ProductGallery>
@@ -398,25 +387,5 @@ const ItemName = styled.div`
   line-height: 2rem;
 `;
 
-const ProductFilterWrapper = styled.div`
-  width: 100%;
-  padding: 5px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
 
-const ProductChoiceSelect = styled.select`
-  background-color: ${Colors.DIRTY_WHITE};
-  width: fit-content;
-  font-family: Montserrat;
-  padding: 15px;
-  border-radius: 4px;
-  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.17);
-`;
-const ProductOption = styled.option`
-  font-family: Montserrat;
-  color: ${Colors.PRIMARY_DEEP};
-`;
 export default ItemDescription;

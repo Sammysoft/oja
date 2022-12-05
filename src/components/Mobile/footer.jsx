@@ -74,11 +74,11 @@ const Footer = () => {
               lineHeight: "1.5rem",
             }}
           >
-            <Header>Contact Us</Header>
+            {/* <Header>Contact Us</Header>
             <div style={{ padding: "15px", fontFamily: "Montserrat" }}>
               No 34, adesida ayomide street off ojota bus stop, lagos. +234
               (904) 499 9323
-            </div>
+            </div> */}
           </div>
         </Wrapper2>
       </FooterWrapper>
