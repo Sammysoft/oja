@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
-import { category } from "../../assets/data";
+// import { category } from "../../assets/data";
 import man_hair from "../../assets/man_hair2.png";
 import { Loader } from "semantic-ui-react";
 // import man from "../../assets/man_blue.png";
@@ -244,8 +244,8 @@ width: 80%;
 const ProductListWrapper = ({ cat, products }) => {
   return (
     <>
-      {cat === "cars" ? (
-        <>
+      {/* {cat === "cars" ? (
+        <> */}
           <ProductListingWrapper>
             {products.map((ads, index) => (
               <ProductItem key={index}>
@@ -260,7 +260,7 @@ const ProductListWrapper = ({ cat, products }) => {
               </ProductItem>
             ))}
           </ProductListingWrapper>
-        </>
+        {/* </>
       ) : cat === "phones" ? (
         <>
           <ProductListingWrapper>
@@ -297,7 +297,7 @@ const ProductListWrapper = ({ cat, products }) => {
         </>
       ) : (
         <></>
-      )}
+      )} */}
     </>
   );
 };
