@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { Colors } from "../../assets/styles";
 import plus from "../../assets/svg/bag_plus.svg";
-import chat from "../../assets/svg/bag.svg";
+import chat from "../../assets/svg/chat_dot_white.svg";
 import profile from "../../assets/svg/person.svg";
 import logout from "../../assets/svg/logout.svg";
 import bag2 from  "../../assets/svg/bag2.svg";

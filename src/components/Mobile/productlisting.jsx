@@ -16,6 +16,7 @@ import bag from "../../assets/svg/bag.svg";
 import service from "../../assets/svg/service.svg";
 import axios from "axios";
 import { api } from "../../strings";
+import NaijaStates from "naija-state-local-government";
 
 const data = [
   {
@@ -71,19 +72,20 @@ const ProductFilter = () => {
   const [loading, setLoading] = useState(Boolean);
 
   const _getRegions = (state) => {
-    axios.get(`https://locus.fkkas.com/api/regions/${state}`).then((res) => {
-      console.log(res.data.data);
-      setRegions(res.data.data);
-    });
+    // axios.get(`https://locus.fkkas.com/api/regions/${state}`).then((res) => {
+    //   console.log(res.data.data);
+    //   setRegions(res.data.data);
+    // });
+    setRegions(NaijaStates.lgas(state).lgas);
   };
   useEffect(() => {
     setLoading(true);
-    axios.get(`https://locus.fkkas.com/api/states`).then((res) => {
-      setStates(res.data.data);
-    });
+    // axios.get(`https://locus.fkkas.com/api/states`).then((res) => {
+    //   setStates(res.data.data);
+    // });
+    setStates(NaijaStates.states());
 
-    axios.get(`${api}/products/approved`).then((res) => {
-      console.log(res.data);
+    axios.get(`${api}/products`).then((res) => {
       setProducts(res.data.data);
       setLoading(false);
     });
@@ -108,8 +110,8 @@ const ProductFilter = () => {
           <ProductOption>States</ProductOption>
           {states.map((state, id) => {
             return (
-              <ProductOption key={id} value={state.alias}>
-                {state.name}
+              <ProductOption key={id} value={state}>
+                {state}
               </ProductOption>
             );
           })}
@@ -118,14 +120,12 @@ const ProductFilter = () => {
           <ProductOption>LGA</ProductOption>
           {regions ? (
             <>
-              {" "}
               {regions.map((local, id) => {
-                return <ProductOption key={id}>{local.name}</ProductOption>;
+                return <ProductOption key={id}>{local}</ProductOption>;
               })}
             </>
           ) : (
             <>
-              {" "}
               <ProductOption>LGA</ProductOption>
             </>
           )}
@@ -246,21 +246,27 @@ const ProductListWrapper = ({ cat, products }) => {
     <>
       {/* {cat === "cars" ? (
         <> */}
-          <ProductListingWrapper>
-            {products.map((ads, index) => (
-              <ProductItem key={index}>
-                <img
-                  src={ads.item_pictures[0]}
-                  alt="product"
-                  style={{ height: 150, width: 180, padding: "5px" }}
-                />
-                <ProductItemName>{ads.item_name}</ProductItemName>
-                <ProductPrice>{ads.item_price}</ProductPrice>
-                <Button>View</Button>
-              </ProductItem>
-            ))}
-          </ProductListingWrapper>
-        {/* </>
+      <ProductListingWrapper>
+        {products.map((ads, index) => (
+          <ProductItem key={index}>
+            <img
+              src={ads.item_pictures[0]}
+              alt="product"
+              style={{
+                height: 150,
+                width: 180,
+                padding: "5px",
+                borderTopLeftRadius: "8px",
+                borderTopRightRadius: "8px",
+              }}
+            />
+            <ProductItemName>{ads.item_name}</ProductItemName>
+            <ProductPrice>NGN {ads.item_price}</ProductPrice>
+            <Button>View</Button>
+          </ProductItem>
+        ))}
+      </ProductListingWrapper>
+      {/* </>
       ) : cat === "phones" ? (
         <>
           <ProductListingWrapper>
@@ -308,6 +314,8 @@ const ProductListingWrapper = styled.div`
   gap: 5%;
   margin-top: 5vh;
   padding: 5%;
+  height: 120vh;
+  overflow-y: scroll;
 `;
 const ProductItem = styled.div`
   background: ${Colors.WHITE};
