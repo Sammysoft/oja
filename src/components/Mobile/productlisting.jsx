@@ -148,7 +148,7 @@ const ProductFilter = () => {
         </>
       ) : (
         <>
-          <ProductListWrapper cat={"phones"} products={products} />
+          <ProductListWrapper cat={"cars"} products={products} />
           <br />
           <br />
           <div
