@@ -1,11 +1,28 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import image from "../../assets/profile.png";
 import { useNavigate } from "react-router";
+import { LoginContext } from "../../loginContext";
+import Swal from "sweetalert2";
 
 const Chat = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { user } = useContext(LoginContext)
+    useEffect(()=>{
+        if(user.fullname === ""){
+          navigate("/sign-in");
+          Swal.fire({
+            icon:"info",
+            title:"Oops 😟",
+            text:"You have to sign up or login to your account to view chats on OJA"
+          })
+        }
+    },[user]);
+
+
   return (
     <>
       <ChatWrapper>

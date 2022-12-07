@@ -1,15 +1,15 @@
 /* eslint-disable */
 
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { Colors } from "../../assets/styles";
 import left_arrow from "../../assets/svg/left_arrow.svg";
 import plus from "../../assets/svg/plus_circle.svg";
-import { category } from "../../assets/data";
 import { Loader } from "semantic-ui-react";
 import { storage } from "../../firebase";
 import { LoginContext } from "../../loginContext";
+
 import {
   ref,
   uploadBytesResumable,
@@ -22,12 +22,58 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { api } from "../../strings";
 
+import car from "../../assets/svg/truck.svg";
+import house from "../../assets/svg/house.svg";
+import phone from "../../assets/svg/phone.svg";
+import television from "../../assets/svg/television.svg";
+import fashion from "../../assets/svg/fashion.svg";
+import decor from "../../assets/svg/decor.svg";
+import bag from "../../assets/svg/bag.svg";
+import service from "../../assets/svg/service.svg";
+
+const data = [
+  {
+    category: "Automobile",
+    icon: car,
+  },
+  {
+    category: "Landed properties",
+    icon: house,
+  },
+  {
+    category: "Phones, computers and accessories",
+    icon: phone,
+  },
+  {
+    category: "Electronics and electronic accessory",
+    icon: television,
+  },
+  {
+    category: "Fashion",
+    icon: fashion,
+  },
+  {
+    category: "Home decor",
+    icon: decor,
+  },
+  {
+    category: "Groceries",
+    icon: bag,
+  },
+  {
+    category: "Services",
+    icon: service,
+  },
+];
+
 const ListWrapper = styled.div`
   width: 100%;
   padding: 5px;
   display: grid;
   grid-template-columns: 48% 48%;
   gap: 4%;
+  height: 90vh;
+  overflow-y: scroll;
 `;
 
 const Header = styled.div`
@@ -40,8 +86,23 @@ const Header = styled.div`
 `;
 
 const ItemList = () => {
+  const  { user } = useContext(LoginContext)
   const [toggleAdd, setToggleAdd] = useState(Boolean);
   const navigate = useNavigate();
+
+
+  useEffect(()=>{
+    if(user.fullname === ""){
+      navigate("/sign-in");
+      Swal.fire({
+        icon:"info",
+        title:"Oops 😟",
+        text:"You need to create an account or login to post items on OJA",
+        position:"top"
+      })
+    }
+  },[user])
+
   return (
     <>
       <Header>
@@ -89,16 +150,11 @@ const ItemList = () => {
         </span>
       </Header>
       <ListWrapper>
-        <Card
-          color={"white"}
-          background={"#3C0300"}
-          element={<AddItem setToggleAdd={setToggleAdd} />}
-        />
-        <Items />
+        <Items setToggleAdd={setToggleAdd} />
       </ListWrapper>
       {toggleAdd === true ? (
         <>
-          <AddItemModal />
+          <AddItemModal setToggleAdd={setToggleAdd} />
         </>
       ) : (
         <></>
@@ -145,7 +201,7 @@ const InputField = styled.input`
   width: 80%;
   border: 2px solid ${Colors.PRIMARY};
   border-radius: 8px;
-  padding: 2vh 0px 2vh 20%;
+  padding: 2vh 0px 2vh 20px;
   font-family: Montserrat;
   background-color: transparent;
   margin: 1vh 0px;
@@ -155,7 +211,7 @@ const InputTextArea = styled.textarea`
   width: 80%;
   border: 2px solid ${Colors.PRIMARY};
   border-radius: 8px;
-  padding: 2vh 0px 2vh 20%;
+  padding: 2vh 0px 2vh 20px;
   font-family: Montserrat;
   background-color: transparent;
   margin: 1vh 0px;
@@ -226,7 +282,7 @@ margin: 5px; 0px;
 font-weight: 900;
 `;
 
-const AddItemModal = () => {
+const AddItemModal = ({ setToggleAdd }) => {
   const { user } = useContext(LoginContext);
   const [item_name, setItemName] = useState("");
   const [item_category, setItemCategory] = useState("");
@@ -242,8 +298,14 @@ const AddItemModal = () => {
   const [loading, setLoading] = useState(Boolean);
   const [imageLoad, setImageLoad] = useState("");
 
-  const pick = useRef("");
+  const navigate = useNavigate()
 
+  const pick = useRef("");
+if(user.fullname === ""){
+navigate("/")
+}else{
+return null
+}
   const uploadFile = (pickFile) => {
     setImageLoad(true);
     if (pickFile == null) {
@@ -318,13 +380,16 @@ const AddItemModal = () => {
       .post(`${api}/upload`, payload)
       .then((res) => {
         setLoading(false);
+        setToggleAdd(false);
         Swal.fire({
-          title: "Uploaded Item",
+          title: `Uploaded ${res.data.data.item_name}`,
           text: `${res.data.data.item_name} has been uploaded to ${res.data.data.item_category} category`,
+          position: "top",
+          timer: 1500,
         });
       })
       .catch((error) => {
-        setLoading(false)
+        setLoading(false);
         Swal.fire({
           title: "Oops",
           text: error.response.data.data,
@@ -395,14 +460,19 @@ const AddItemModal = () => {
                 setItemName(e.target.value);
               }}
             />
-            <InputField
-              type="text"
-              placeholder="Select Item category"
+            <Select
               value={item_category}
               onChange={(e) => {
                 setItemCategory(e.target.value);
               }}
-            />
+            >
+              <Option>Select Category</Option>
+              {data.map((item, id) => (
+                <Option key={id} value={item.category}>
+                  {item.category}
+                </Option>
+              ))}
+            </Select>
             <InputField
               onChange={(e) => {
                 handlePictureChange(e);
@@ -415,6 +485,7 @@ const AddItemModal = () => {
               style={{ display: "none" }}
               type="file"
               accept="image/*"
+              multiple
             />
             <InputField
               type="text"
@@ -533,23 +604,75 @@ const AddItem = ({ setToggleAdd }) => {
   );
 };
 
-const Items = () => {
+const Items = ({ setToggleAdd }) => {
+  const [loading, setLoading] = useState(Boolean);
+  const [items, setItems] = useState([]);
+  const { user } = useContext(LoginContext);
+    useEffect(() => {
+      setLoading(true);
+      axios.get(`${api}/item/${user._id}`).then((res) => {
+        setItems(res.data.data);
+        setLoading(false);
+      });
+    }, [user._id]);
+
+
   return (
     <>
-      {category.phones.map((item, id) => (
-        <ItemWrapper key={id}>
-          <ItemImage src={item.img_src} alt="items" />
-          <ItemDesc>{item.item_name}</ItemDesc>
-          <ItemPrice>{item.item_price}</ItemPrice>
-          <ActionButtonWrapper>
-            <Button background={"green"}>Edit</Button>
-            <Button background={"red"}>Delete</Button>
-          </ActionButtonWrapper>
-        </ItemWrapper>
-      ))}
+      {loading === true ? (
+        <>
+          <div
+            style={{
+              width: "100vw",
+              height: "90vh",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Loader active inline="centered" />
+            <div style={{ fontFamily: "Montserrat", opacity: ".5" }}>
+              Fetching Products...
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <Card
+            color={"white"}
+            background={"#3C0300"}
+            element={<AddItem setToggleAdd={setToggleAdd} />}
+          />
+          {items.map((item, id) => (
+            <ItemWrapper key={id}>
+              <ItemImage src={item.item_pictures[0]} alt="items" />
+              <ItemDesc>{item.item_name}</ItemDesc>
+              <ItemPrice>NGN {item.item_price}</ItemPrice>
+              {item.item_approval === true ? <><ActionButtonWrapper>
+                <Button background={"green"}>Edit</Button>
+                <Button background={"red"}>Delete</Button>
+              </ActionButtonWrapper></>:<>
+              <Awaiting >Awaiting approval</Awaiting>
+              </>}
+            </ItemWrapper>
+          ))}
+        </>
+      )}
     </>
   );
 };
+
+
+const Awaiting  = styled.div`
+background: ${Colors.PRIMARY};
+color: white;
+text-align: center;
+font-family: Montserrat;
+padding: 10px;
+width: 100%;
+border-radius: 8px;
+`
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -564,7 +687,7 @@ const ItemImage = styled.img`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   width: 100%;
-  height: 50%;
+  height: 150px;
 `;
 
 const ItemDesc = styled.div`
@@ -624,4 +747,19 @@ const CardWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const Select = styled.select`
+  background-color: ${Colors.DIRTY_WHITE};
+  width: 80%;
+  font-family: Montserrat;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.17);
+`;
+
+const Option = styled.option`
+  font-family: Montserrat;
+  color: ${Colors.PRIMARY_DEEP};
+  font-size: 0.5rem;
 `;

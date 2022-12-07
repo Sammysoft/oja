@@ -62,6 +62,7 @@ const LinkAway = styled.div`
   color: ${Colors.PRIMARY};
   font-size: 0.9rem;
   padding: 10px 0px;
+  text-align: center;
 `;
 
 const SignUpForm = () => {

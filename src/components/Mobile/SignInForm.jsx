@@ -63,6 +63,7 @@ const LinkAway = styled.div`
   color: ${Colors.PRIMARY};
   font-size: 0.9rem;
   padding: 10px 0px;
+  text-align: center;
 `;
 const SignInForm = () => {
   const navigate = useNavigate();
@@ -138,7 +139,7 @@ const SignInForm = () => {
             )}
           </Button>
           <LinkAway>
-            Already have an account?{" "}
+            Don't have an account?{" "}
             <Link
               to="/onboard"
               style={{ textDecoration: "none", color: `${Colors.PRIMARY}` }}

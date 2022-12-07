@@ -18,10 +18,12 @@ import axios from "axios";
 import { api } from "../../strings";
 import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { user } = useContext(LoginContext);
   const pick = useRef("");
+  const navigate = useNavigate();
 
   // const [userID ,setUserID] = useState(user._id)
   const [email, setEmail] = useState(user.email);
@@ -134,6 +136,15 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    if (user.fullname === "") {
+      navigate("/sign-in");
+      Swal.fire({
+        icon: "info",
+        title: "Oops 😟",
+        text: "You have to sign up or login to update your profile on OJA",
+        position:"top"
+      });
+    }
     axios.get(`${api}/user/${user._id}`).then((res) => {
       setEmail(res.data.data.email);
       setFullName(res.data.data.fullname);

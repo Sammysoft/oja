@@ -47,7 +47,7 @@ const AdvertWrapper = styled.div`
   justify-content: space-around;
   height: 30vh;
   background-color: ${(props) => props.background};
-  margin: 8vh 5px 8vh 5px;
+  margin: 2vh 5px 2vh 5px;
   border-radius: 8px;
 
 `;

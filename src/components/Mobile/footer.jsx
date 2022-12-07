@@ -15,7 +15,7 @@ align-items: center;
 justify-content: space-between;
 height: fit-content;
 width: 100%;
-margin: 10vh 0px;
+margin: 5vh 0px 10px 0px;
 `;
 
 const Wrapper1 = styled.div`
@@ -67,29 +67,15 @@ const Footer = () => {
           </div>
         </Wrapper1>
         <Wrapper2>
-          <div style={{ width: "100%", height: "stretch" }}>
+          <div style={{ width: "100vw", height: "stretch" }}>
             <Header>Quick Links</Header>
-            <div style={{ display: "grid", gridTemplateColumns: "auto auto" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "auto auto", columnGap: "100px" }}>
               <LinkOptions>Home</LinkOptions>
               <LinkOptions>Product Listing</LinkOptions>
               <LinkOptions>Sell my item</LinkOptions>
               <LinkOptions>Terms of service</LinkOptions>
             </div>
           </div>
-          {/* <div
-            style={{
-              width: "50%",
-              height: "stretch",
-              fontSize: "1rem",
-              lineHeight: "1.5rem",
-            }}
-          >
-            <Header>Contact Us</Header>
-            <div style={{ padding: "15px", fontFamily: "Montserrat" }}>
-              No 34, adesida ayomide street off ojota bus stop, lagos. +234
-              (904) 499 9323
-            </div>
-          </div> */}
         </Wrapper2>
       </FooterWrapper>
       <CopyWriteSection>COPYRIGHT (C) 2022. OJAONLINE.NG</CopyWriteSection>

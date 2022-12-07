@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import { category } from "../../assets/data";
 import man_hair from "../../assets/man_hair2.png";
-import man from "../../assets/man_blue.png";
+import { Loader } from "semantic-ui-react";
+// import man from "../../assets/man_blue.png";
 import Advert from "./advert";
 import car from "../../assets/svg/truck.svg";
 import house from "../../assets/svg/house.svg";
@@ -14,6 +15,7 @@ import decor from "../../assets/svg/decor.svg";
 import bag from "../../assets/svg/bag.svg";
 import service from "../../assets/svg/service.svg";
 import axios from "axios";
+import { api } from "../../strings";
 
 const data = [
   {
@@ -63,6 +65,11 @@ const ProductFilter = () => {
   const [pickedState, setPickedState] = useState("");
   const [regions, setRegions] = useState([]);
 
+  const [products, setProducts] = useState([]);
+
+  //Loading States
+  const [loading, setLoading] = useState(Boolean);
+
   const _getRegions = (state) => {
     axios.get(`https://locus.fkkas.com/api/regions/${state}`).then((res) => {
       console.log(res.data.data);
@@ -70,8 +77,15 @@ const ProductFilter = () => {
     });
   };
   useEffect(() => {
+    setLoading(true);
     axios.get(`https://locus.fkkas.com/api/states`).then((res) => {
       setStates(res.data.data);
+    });
+
+    axios.get(`${api}/products/approved`).then((res) => {
+      console.log(res.data);
+      setProducts(res.data.data);
+      setLoading(false);
     });
   }, []);
 
@@ -91,6 +105,7 @@ const ProductFilter = () => {
             _getRegions(e.target.value);
           }}
         >
+          <ProductOption>States</ProductOption>
           {states.map((state, id) => {
             return (
               <ProductOption key={id} value={state.alias}>
@@ -100,24 +115,54 @@ const ProductFilter = () => {
           })}
         </ProductChoiceSelect>
         <ProductChoiceSelect>
-          {regions ? <> {regions.map((local, id) => {
-            return <ProductOption key={id}>{local.name}</ProductOption>;
-          })}</>:<> <ProductOption>Abuja (FCT)</ProductOption></>}
+          <ProductOption>LGA</ProductOption>
+          {regions ? (
+            <>
+              {" "}
+              {regions.map((local, id) => {
+                return <ProductOption key={id}>{local.name}</ProductOption>;
+              })}
+            </>
+          ) : (
+            <>
+              {" "}
+              <ProductOption>LGA</ProductOption>
+            </>
+          )}
         </ProductChoiceSelect>
       </ProductFilterWrapper>
-      <ProductListWrapper cat={"phones"} />
-      <br />
-      <br />
-      <div
-        style={{
-          fontFamily: "Montserrat",
-          paddingLeft: "20px",
-          color: Colors.PRIMARY_DEEP,
-          textAlign: "center",
-        }}
-      >
-        View more in Mobile Phones {">>>"}
-      </div>
+      {loading === true ? (
+        <>
+          <div
+            style={{
+              width: "100vw",
+              height: "60vh",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Loader active inline="centered" />
+          </div>
+        </>
+      ) : (
+        <>
+          <ProductListWrapper cat={"phones"} products={products} />
+          <br />
+          <br />
+          <div
+            style={{
+              fontFamily: "Montserrat",
+              paddingLeft: "20px",
+              color: Colors.PRIMARY_DEEP,
+              textAlign: "center",
+            }}
+          >
+            View more in Mobile Phones {">>>"}
+          </div>
+        </>
+      )}
       <Advert
         background={Colors.DIRTY_GREEN}
         text={"Find the style that fits YOU!"}
@@ -125,7 +170,7 @@ const ProductFilter = () => {
         button={"Go to fashion"}
         orientation={false}
       />
-      <ProductListWrapper cat={"cars"} />
+      {/* <ProductListWrapper cat={"cars"} />
       <br />
       <br />
       <div
@@ -158,7 +203,7 @@ const ProductFilter = () => {
         }}
       >
         View more in Electronics {">>>"}
-      </div>
+      </div> */}
     </>
   );
 };
@@ -196,16 +241,16 @@ margin; 20px;
 width: 80%;
 `;
 
-const ProductListWrapper = ({ cat }) => {
+const ProductListWrapper = ({ cat, products }) => {
   return (
     <>
-      {cat === "phones" ? (
+      {cat === "cars" ? (
         <>
           <ProductListingWrapper>
-            {category.phones.map((ads, index) => (
+            {products.map((ads, index) => (
               <ProductItem key={index}>
                 <img
-                  src={ads.img_src}
+                  src={ads.item_pictures[0]}
                   alt="product"
                   style={{ height: 150, width: 180, padding: "5px" }}
                 />
@@ -216,7 +261,7 @@ const ProductListWrapper = ({ cat }) => {
             ))}
           </ProductListingWrapper>
         </>
-      ) : cat === "cars" ? (
+      ) : cat === "phones" ? (
         <>
           <ProductListingWrapper>
             {category.cars.map((ads, index) => (
