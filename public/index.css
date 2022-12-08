@@ -6,22 +6,24 @@
 
 /* width */
 ::-webkit-scrollbar {
-    width: 5px;
+  display: none;
   }
 
   /* Track */
   ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px whitesmoke;
-    border-radius: 10px;
+    box-shadow: inset 0 0 1px whitesmoke;
+    border-radius: 1px;
   }
-  
+
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: #808080;
-    border-radius: 10px;
+    border-radius: 1px;
+    display: none;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: #808080;
+    display: none;
   }

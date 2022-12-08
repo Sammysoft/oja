@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { Colors } from "../../assets/styles";
@@ -14,15 +14,19 @@ import Swal from "sweetalert2";
 import { LoginContext } from "../../loginContext";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const { user } = useContext(LoginContext);
 
   switch (user.usertype) {
     case "Admin":
       return <Admin />;
       break;
-
-    default:
+    case "User":
       return <User />;
+    default:
+      useEffect(()=>{
+        navigate("/");
+      },[])
 
       break;
   }
@@ -47,7 +51,7 @@ const Admin = () => {
         <DeepText>Admin Dashboard</DeepText>
         <DashMenuWrapper>
           <Link
-            to="/admin?/items/approval"
+            to="/admin/products/approve"
             style={{
               textDecoration: "none",
               textDecorationLine: "none",
@@ -60,7 +64,7 @@ const Admin = () => {
             </DashMenu>
           </Link>
           <Link
-            to="/chats"
+            to="/admin/items"
             style={{
               textDecoration: "none",
               textDecorationLine: "none",
@@ -73,7 +77,7 @@ const Admin = () => {
             </DashMenu>
           </Link>
           <Link
-            to="/profile"
+            to="/admin/users"
             style={{
               textDecoration: "none",
               textDecorationLine: "none",

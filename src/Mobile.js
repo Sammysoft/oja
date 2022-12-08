@@ -11,6 +11,9 @@ import ProfilePage from "./pages/Mobile/ProfilePage";
 import ErrorPage from "./pages/Mobile/ErrorPage";
 import ChatItem from "./pages/Mobile/ChatItem";
 import { LoginProvider } from "./loginContext";
+import UserList from "./pages/Mobile/Admin/UserList";
+import ProductApprovals from "./pages/Mobile/Admin/ProductApprovals";
+import Product from "./pages/Mobile/Admin/Products";
 
 const Mobile = () => {
   return (
@@ -93,6 +96,33 @@ const Mobile = () => {
         element={
           <LoginProvider>
             <ChatPage />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/admin/users"
+        exact
+        element={
+          <LoginProvider>
+            <UserList />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/admin/products/approve"
+        exact
+        element={
+          <LoginProvider>
+            <ProductApprovals />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/admin/items"
+        exact
+        element={
+          <LoginProvider>
+            <Product />
           </LoginProvider>
         }
       />

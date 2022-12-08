@@ -170,40 +170,6 @@ const ProductFilter = () => {
         button={"Go to fashion"}
         orientation={false}
       />
-      {/* <ProductListWrapper cat={"cars"} />
-      <br />
-      <br />
-      <div
-        style={{
-          fontFamily: "Montserrat",
-          paddingLeft: "20px",
-          color: Colors.PRIMARY_DEEP,
-          textAlign: "center",
-        }}
-      >
-        View more in Automobile {">>>"}
-      </div>
-      <Advert
-        background={Colors.GREY}
-        headText={"Sell at your convenience!"}
-        text={"Do you know you can sell from the comfort of your home?"}
-        image={man}
-        button={"Register to begin"}
-        orientation={false}
-      />
-      <ProductListWrapper cat={"tvs"} />
-      <br />
-      <br />
-      <div
-        style={{
-          fontFamily: "Montserrat",
-          paddingLeft: "20px",
-          color: Colors.PRIMARY_DEEP,
-          textAlign: "center",
-        }}
-      >
-        View more in Electronics {">>>"}
-      </div> */}
     </>
   );
 };
@@ -253,15 +219,20 @@ const ProductListWrapper = ({ cat, products }) => {
               src={ads.item_pictures[0]}
               alt="product"
               style={{
-                height: 150,
-                width: 180,
+                height: "50%",
+                width: "100%",
                 padding: "5px",
                 borderTopLeftRadius: "8px",
                 borderTopRightRadius: "8px",
               }}
             />
             <ProductItemName>{ads.item_name}</ProductItemName>
-            <ProductPrice>NGN {ads.item_price}</ProductPrice>
+            <ProductPrice>
+              NGN{" "}
+              {Number(ads.item_price).toLocaleString("en-US", {
+                minimumFractionDigits: 0,
+              })}
+            </ProductPrice>
             <Button>View</Button>
           </ProductItem>
         ))}
@@ -342,7 +313,7 @@ const ProductItemName = styled.div`
 const ProductPrice = styled.div`
   font-family: Montserrat;
   font-weight: 900;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: ${Colors.PRIMARY_DEEP};
   padding: 10px;
   text-align: center;
