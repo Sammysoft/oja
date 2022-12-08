@@ -298,14 +298,10 @@ const AddItemModal = ({ setToggleAdd }) => {
   const [loading, setLoading] = useState(Boolean);
   const [imageLoad, setImageLoad] = useState("");
 
-  const navigate = useNavigate()
+
 
   const pick = useRef("");
-if(user.fullname === ""){
-navigate("/")
-}else{
-return null
-}
+
   const uploadFile = (pickFile) => {
     setImageLoad(true);
     if (pickFile == null) {
@@ -485,7 +481,6 @@ return null
               style={{ display: "none" }}
               type="file"
               accept="image/*"
-              multiple
             />
             <InputField
               type="text"
@@ -582,8 +577,8 @@ const AddItem = ({ setToggleAdd }) => {
     <>
       <AddItemElement
         onClick={() => {
-          disableScroll();
           setToggleAdd(true);
+          disableScroll();
         }}
       >
         <div style={{ flex: "1" }}>
