@@ -1,39 +1,37 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import left from "../../assets/svg/left_arrow.svg";
 import { Colors } from "../../assets/styles";
-import chat from "../../assets/svg/chat_dot.svg";
-import call from "../../assets/svg/call.svg";
-import { LoginContext } from "../../loginContext";
+import chat from "../../assets/svg/cancel.svg";
+import call from "../../assets/svg/check.svg";
 import axios from "axios";
 import { api } from "../../strings";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
 
-const ItemDescription = () => {
+const ViewItem = () => {
   const url = window.location.pathname;
   const item_id = url.slice(-24);
   const navigate = useNavigate();
-  const { user } = useContext(LoginContext);
   const [toggleLogin, setToggleLogin] = useState(Boolean);
   const [item, setItem] = useState({});
   const [itemPictures, setItemPictures] = useState([]);
-  const [seller, setSeller] = useState({});
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [seller, setSeller] = useState({})
 
   const [loading, setLoading] = useState(Boolean);
 
   useEffect(() => {
     setLoading(true);
     axios.get(`${api}/product/${item_id}`).then((res) => {
-      axios
-        .post(`${api}/product/seller`, { user_id: res.data.data.user_id })
+        axios
+        .post(`${api}/product/seller`,{user_id: res.data.data.user_id} )
         .then((res) => {
-          setSeller(res.data.data);
-        });
+                setSeller(res.data.data)
+        })
       setItem(res.data.data);
       setItemPictures(res.data.data.item_pictures[0]);
       setLoading(false);
@@ -67,9 +65,26 @@ const ItemDescription = () => {
         });
       });
   };
+
+  const _approveProduct = (user_id) => {
+    axios
+      .get(`${api}/product/approve/${user_id}`)
+      .then((res) => {
+        Swal.fire({
+          title: `Approved Product 👍`,
+          text: `Successfully approved ${res.data.data}'s product on OJA`,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Oops",
+          text: error.response.data.data,
+        });
+      });
+  };
   return (
     <>
-      <ItemDescriptionWrapper>
+      <ViewItemWrapper>
         <HeaderWrapper>
           <img
             src={left}
@@ -110,7 +125,7 @@ const ItemDescription = () => {
           )}
           {"  "} 🌟 3.5/5.0
         </ProductOwner>
-      </ItemDescriptionWrapper>
+      </ViewItemWrapper>
       <ProductGalleryWrapper>
         <ProductGallery>
           {loading === true ? (
@@ -145,67 +160,25 @@ const ItemDescription = () => {
       </ProductGalleryWrapper>
       <ProductPrice>
         Asking Price: NGN{" "}
-        {loading === true ? (
-          <>
-            <Loader active inline="centered" />
-          </>
-        ) : (
-          <>
-            {Number(item.item_price).toLocaleString("en-US", {
-              minimumFractionDigits: 0,
-            })}
-          </>
-        )}
+        {Number(item.item_price).toLocaleString("en-US", {
+          minimumFractionDigits: 0,
+        })}
       </ProductPrice>
       <ProductDescription>{item.item_description}</ProductDescription>
       <ContactButtonWrapper>
-        {user.fullname === "" ? (
-          <>
-            <ContactButton
-              onClick={() => {
-                setToggleLogin(true);
-              }}
-            >
-              <img
-                src={call}
-                alt="call seller"
-                height={"25px"}
-                width={"25px"}
-              />
-              View Phone number
-            </ContactButton>
-            <ContactButton>
-              <img
-                src={chat}
-                alt="chat seller"
-                height={"25px"}
-                width={"25px"}
-              />
-              start chat with seller
-            </ContactButton>
-          </>
-        ) : (
-          <>
-            <ContactButton>
-              <img
-                src={call}
-                alt="call seller"
-                height={"25px"}
-                width={"25px"}
-              />
-              {seller.phone}
-            </ContactButton>
-            <ContactButton>
-              <img
-                src={chat}
-                alt="chat seller"
-                height={"25px"}
-                width={"25px"}
-              />
-              start chat with seller
-            </ContactButton>
-          </>
-        )}
+        <ActionButton
+          background={"green"}
+          onClick={() => {
+            _approveProduct(item._id);
+          }}
+        >
+          <img src={call} alt="call seller" height={"25px"} width={"25px"} />
+          Approve
+        </ActionButton>
+        <ActionButton background={"red"}>
+          <img src={chat} alt="chat seller" height={"25px"} width={"25px"} />
+          Decline
+        </ActionButton>
       </ContactButtonWrapper>
       {toggleLogin && (
         <LoginModalWrapper>
@@ -258,15 +231,6 @@ const ItemDescription = () => {
     </>
   );
 };
-
-const ItemCategory = styled.div`
-  font-family: Montserrat;
-  font-weight: 900;
-  font-size: 1.5rem;
-  text-align: center;
-  width: 90%;
-  line-height: 1rem;
-`;
 
 const LoginModalWrapper = styled.div`
   width: 100vw;
@@ -366,21 +330,21 @@ const ContactButtonWrapper = styled.div`
   width: 100%;
 `;
 
-const ContactButton = styled.div`
-  background: #ffffff;
-  border: 2px solid #08003c;
-  box-shadow: 0px 4px 36px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
-  font-family: Montserrat;
-  color: ${Colors.PRIMARY};
-  padding: 5px;
-  margin: 10px 0px;
-  font-size: 15px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-`;
+// const ContactButton = styled.div`
+//   background: #ffffff;
+//   border: 2px solid #08003c;
+//   box-shadow: 0px 4px 36px rgba(0, 0, 0, 0.25);
+//   border-radius: 8px;
+//   font-family: Montserrat;
+//   color: ${Colors.PRIMARY};
+//   padding: 5px;
+//   margin: 10px 0px;
+//   font-size: 15px;
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   justify-content: space-between;
+// `;
 
 const ProductGalleryWrapper = styled.div`
   display: flex;
@@ -415,7 +379,7 @@ const LittleGallery = styled.div`
   border-radius: 15px;
 `;
 
-const ItemDescriptionWrapper = styled.div`
+const ViewItemWrapper = styled.div`
   margin: 10vh 0px 10px 0px;
 `;
 
@@ -429,11 +393,34 @@ const HeaderWrapper = styled.div`
 `;
 const ItemName = styled.div`
   font-family: Montserrat;
-  font-weight: 900;
-  font-size: 1.5rem;
+  font-weight: 500;
+  font-size: 1rem;
   text-align: center;
   width: 100%;
   line-height: 2rem;
 `;
 
-export default ItemDescription;
+const ItemCategory = styled.div`
+  font-family: Montserrat;
+  font-weight: 900;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 90%;
+  line-height: 2rem;
+`;
+
+const ActionButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  background: ${(props) => props.background};
+  border-radius: 8px;
+  padding: 15px 10px;
+  font-family: Montserrat;
+  color: white;
+  width: 48%;
+  font-weight: 900;
+`;
+
+export default ViewItem;

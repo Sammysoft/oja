@@ -25,6 +25,23 @@ const ProductApprovals = () => {
       });
   }, []);
 
+  const _approveProduct = (user_id) => {
+    axios
+      .get(`${api}/product/approve/${user_id}`)
+      .then((res) => {
+        Swal.fire({
+          title: `Approved Product 👍`,
+          text: `Successfully approved ${res.data.data}'s product on OJA`,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Oops",
+          text: error.response.data.data,
+        });
+      });
+  };
+
   return (
     <>
       <Header>
@@ -62,8 +79,22 @@ const ProductApprovals = () => {
                   })}
                 </ProductPrice>
                 <ButtonWrapper>
-                  <Button background={"#08003C"}>View</Button>
-                  <Button background={"#1AB432"}>Approve</Button>
+                  <Button
+                    background={"#08003C"}
+                    onClick={() => {
+                      navigate(`/product/view/${item._id}`);
+                    }}
+                  >
+                    View
+                  </Button>
+                  <Button
+                    background={"#1AB432"}
+                    onClick={() => {
+                      _approveProduct(item._id);
+                    }}
+                  >
+                    Approve
+                  </Button>
                 </ButtonWrapper>
               </ProductCard>
             </>
@@ -94,7 +125,7 @@ const ProductWrapper = styled.div`
   margin: 10px 5% 10px 5%;
   padding: 10px;
   border-radius: 8px;
-  background-color: ${Colors.GREY};
+  background-color: ${Colors.WHITE};
   height: 90vh;
   overflow-y: scroll;
   display: grid;

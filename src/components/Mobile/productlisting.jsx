@@ -17,6 +17,7 @@ import service from "../../assets/svg/service.svg";
 import axios from "axios";
 import { api } from "../../strings";
 import NaijaStates from "naija-state-local-government";
+import { useNavigate } from "react-router";
 
 const data = [
   {
@@ -72,17 +73,10 @@ const ProductFilter = () => {
   const [loading, setLoading] = useState(Boolean);
 
   const _getRegions = (state) => {
-    // axios.get(`https://locus.fkkas.com/api/regions/${state}`).then((res) => {
-    //   console.log(res.data.data);
-    //   setRegions(res.data.data);
-    // });
     setRegions(NaijaStates.lgas(state).lgas);
   };
   useEffect(() => {
     setLoading(true);
-    // axios.get(`https://locus.fkkas.com/api/states`).then((res) => {
-    //   setStates(res.data.data);
-    // });
     setStates(NaijaStates.states());
 
     axios.get(`${api}/products`).then((res) => {
@@ -208,13 +202,16 @@ width: 80%;
 `;
 
 const ProductListWrapper = ({ cat, products }) => {
+  const navigate = useNavigate()
   return (
     <>
       {/* {cat === "cars" ? (
         <> */}
       <ProductListingWrapper>
         {products.map((ads, index) => (
+
           <ProductItem key={index}>
+            {console.log(ads.item_pictures[0])}
             <img
               src={ads.item_pictures[0]}
               alt="product"
@@ -233,7 +230,7 @@ const ProductListWrapper = ({ cat, products }) => {
                 minimumFractionDigits: 0,
               })}
             </ProductPrice>
-            <Button>View</Button>
+            <Button onClick={()=>{navigate(`/item/description/${ads._id}`)}}>View</Button>
           </ProductItem>
         ))}
       </ProductListingWrapper>

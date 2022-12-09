@@ -14,6 +14,7 @@ import { LoginProvider } from "./loginContext";
 import UserList from "./pages/Mobile/Admin/UserList";
 import ProductApprovals from "./pages/Mobile/Admin/ProductApprovals";
 import Product from "./pages/Mobile/Admin/Products";
+import ViewItemPage from "./pages/Mobile/Admin/ViewItemPage";
 
 const Mobile = () => {
   return (
@@ -55,7 +56,7 @@ const Mobile = () => {
         }
       />
       <Route
-        path="/product"
+        path="/item/description/*"
         exact
         element={
           <LoginProvider>
@@ -123,6 +124,15 @@ const Mobile = () => {
         element={
           <LoginProvider>
             <Product />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/product/view/*"
+        exact
+        element={
+          <LoginProvider>
+            <ViewItemPage />
           </LoginProvider>
         }
       />

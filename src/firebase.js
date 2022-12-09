@@ -1,18 +1,21 @@
 /* eslint-disable */
 
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBfK3atIEYqwiZpGHUlyoBgV5YJvhDmKzc",
-  authDomain: "oja-online-885b5.firebaseapp.com",
-  projectId: "oja-online-885b5",
-  storageBucket: "oja-online-885b5.appspot.com",
-  messagingSenderId: "147590734015",
-  appId: "1:147590734015:web:92272fd608a9b4cb68a60a",
-  measurementId: "G-J3040K6T9W"
+  apiKey: "AIzaSyD8Kzp0TjyjYYjvSLnFTCVOw-HmWNv7akQ",
+  authDomain: "crave-uploads.firebaseapp.com",
+  projectId: "crave-uploads",
+  storageBucket: "crave-uploads.appspot.com",
+  messagingSenderId: "501111922513",
+  appId: "1:501111922513:web:698b192a8d2c463fd37d70",
+  measurementId: "G-1P3F5EFQQC",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+
+export const storage = getStorage(app)

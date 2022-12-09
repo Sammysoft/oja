@@ -77,7 +77,7 @@ const AllProducts = () => {
                   })}
                 </ProductPrice>
                 <ButtonWrapper>
-                  <Button background={"#08003C"}>View</Button>
+                  <Button background={"#08003C"} onClick={()=>{navigate(`/product/view/${item._id}`)}}>View</Button>
                   <Button
                     background={"#DD1919"}
                     onClick={() => {
