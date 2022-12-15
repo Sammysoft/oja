@@ -32,19 +32,19 @@ const Wrapper2 = styled.div`
   justify-content: space-between;
 `;
 
-const Header = styled.div`
-  color: white;
-  font-weight: 900;
-  font-family: Montserrat;
-  padding: 15px 5px;
-  text-align: center;
-  width: 100%;
-`;
-const LinkOptions = styled.div`
-  padding: 10px 0px;
-  font-family: Montserrat;
-  color: white;
-`;
+// const Header = styled.div`
+//   color: white;
+//   font-weight: 900;
+//   font-family: Montserrat;
+//   padding: 15px 5px;
+//   text-align: center;
+//   width: 100%;
+// `;
+// const LinkOptions = styled.div`
+//   padding: 10px 0px;
+//   font-family: Montserrat;
+//   color: white;
+// `;
 const Footer = () => {
   return (
     <>
@@ -67,7 +67,7 @@ const Footer = () => {
           </div>
         </Wrapper1>
         <Wrapper2>
-          <div style={{ width: "100vw", height: "stretch" }}>
+          {/* <div style={{ width: "100vw", height: "stretch" }}>
             <Header>Quick Links</Header>
             <div style={{ display: "grid", gridTemplateColumns: "auto auto", columnGap: "100px" }}>
               <LinkOptions>Home</LinkOptions>
@@ -75,8 +75,13 @@ const Footer = () => {
               <LinkOptions>Sell my item</LinkOptions>
               <LinkOptions>Terms of service</LinkOptions>
             </div>
-          </div>
+          </div> */}
+
         </Wrapper2>
+        <ButtonWrapper>
+            <SelectorButton>Sell Items</SelectorButton>
+            <SelectorButton>Categories</SelectorButton>
+          </ButtonWrapper>
       </FooterWrapper>
       <CopyWriteSection>COPYRIGHT (C) 2022. OJAONLINE.NG</CopyWriteSection>
     </>
@@ -92,3 +97,23 @@ const CopyWriteSection = styled.div`
   text-align: center;
   font-family: Montserrat;
 `;
+
+const ButtonWrapper = styled.div`
+width: 100%;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-between;
+padding: 0px 60px 0px 60px;
+`
+
+const SelectorButton = styled.div`
+color: ${Colors.PRIMARY};
+background: white;
+border-radius: 8px;
+padding: 6px 30px;
+text-align: center;
+font-weight: 800;
+font-family: Montserrat;
+width: 100%:
+`
