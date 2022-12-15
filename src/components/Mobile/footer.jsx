@@ -104,7 +104,7 @@ display: flex;
 flex-direction: row;
 align-items: center;
 justify-content: space-between;
-padding: 0px 60px 0px 60px;
+padding: 0px 50px 0px 50px;
 `
 
 const SelectorButton = styled.div`
