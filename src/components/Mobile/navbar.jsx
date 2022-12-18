@@ -15,6 +15,7 @@ import fashion from "../../assets/svg/fashion.svg";
 import decor from "../../assets/svg/decor.svg";
 import bag from "../../assets/svg/bag.svg";
 import service from "../../assets/svg/service.svg";
+import dashboard from "../../assets/svg/dashboard.svg";
 import { LoginContext } from "../../loginContext";
 import Swal from "sweetalert2";
 
@@ -91,27 +92,28 @@ const NavBar = () => {
         <ToggleBar
           username={user.fullname}
           profile_picture={user.profile_picture}
+          setToggleMenu={setToggleMenu}
         />
       )}
     </>
   );
 };
 
-const ToggleBar = ({ profile_picture, username }) => {
+const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
   const _logout = () => {
     localStorage.removeItem("oja-token");
     Swal.fire({
       title: "Logged Out",
       text: "You have logged out successfully",
     });
-    window.location.reload()
+    window.location.reload();
   };
   const navigate = useNavigate();
   return (
     <>
       <ToggleBarWrapper>
         <MenuWrapper>
-          {username === "" ? (
+          {!username ? (
             <>
               <LoginButton
                 onClick={() => {
@@ -142,6 +144,19 @@ const ToggleBar = ({ profile_picture, username }) => {
           <br />
           <br />
           <br />
+          <Link
+            to="/dashboard"
+            style={{
+              textDecoration: "none",
+              textDecorationLine: "none",
+              color: `${Colors.PRIMARY}`,
+            }}
+          >
+            <MenuOptions>
+              <MenuIcon src={dashboard} />
+              <MenuName>Dashboard</MenuName>
+            </MenuOptions>
+          </Link>
           <Link
             to="/items"
             style={{
@@ -188,7 +203,21 @@ const ToggleBar = ({ profile_picture, username }) => {
             <>
               <CategoryMenu key={id}>
                 <CategoryIcon src={item.icon} />
-                <CategoryItem>{item.category}</CategoryItem>
+                <CategoryItem>
+                  <Link
+                    to={`/search/?category=${item.category}`}
+                    onClick={() => {
+                      setToggleMenu(false);
+                    }}
+                    style={{
+                      textDecoration: "none",
+                      textDecorationLine: "none",
+                      color: "black",
+                    }}
+                  >
+                    {item.category}
+                  </Link>
+                </CategoryItem>
               </CategoryMenu>
             </>
           ))}

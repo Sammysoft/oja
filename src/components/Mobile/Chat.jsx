@@ -12,7 +12,7 @@ const Chat = () => {
     const navigate = useNavigate();
     const { user } = useContext(LoginContext)
     useEffect(()=>{
-        if(user.fullname === ""){
+        if(!user.fullname){
           navigate("/sign-in");
           Swal.fire({
             icon:"info",

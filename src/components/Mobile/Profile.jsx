@@ -136,15 +136,15 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    if (user.fullname === "") {
-      navigate("/sign-in");
-      Swal.fire({
-        icon: "info",
-        title: "Oops 😟",
-        text: "You have to sign up or login to update your profile on OJA",
-        position:"top"
-      });
-    }
+    // if (!user.fullname) {
+    //   navigate("/sign-in");
+    //   Swal.fire({
+    //     icon: "info",
+    //     title: "Oops 😟",
+    //     text: "You have to sign up or login to update your profile on OJA",
+    //     position:"top"
+    //   });
+    // }
     axios.get(`${api}/user/${user._id}`).then((res) => {
       setEmail(res.data.data.email);
       setFullName(res.data.data.fullname);
@@ -153,7 +153,7 @@ const Profile = () => {
       setState(res.data.data.state);
       setProfilePicture(res.data.data.profile_picture);
     });
-  }, [user]);
+  }, [user.fullname]);
 
   return (
     <>

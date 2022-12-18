@@ -1,7 +1,6 @@
 /* eslint-disable */
 
-
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { Colors } from "../../assets/styles";
@@ -9,9 +8,10 @@ import plus from "../../assets/svg/bag_plus.svg";
 import chat from "../../assets/svg/chat_dot_white.svg";
 import profile from "../../assets/svg/person.svg";
 import logout from "../../assets/svg/logout.svg";
-import bag2 from  "../../assets/svg/bag2.svg";
+import bag2 from "../../assets/svg/bag2.svg";
 import Swal from "sweetalert2";
 import { LoginContext } from "../../loginContext";
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -24,9 +24,9 @@ const Dashboard = () => {
     case "User":
       return <User />;
     default:
-      useEffect(()=>{
+      useEffect(() => {
         navigate("/");
-      },[])
+      }, []);
 
       break;
   }
@@ -45,6 +45,7 @@ const Admin = () => {
       text: "Bye for now, thanks for using OJA",
     });
   };
+
   return (
     <>
       <AdvertUpperText>
@@ -115,6 +116,7 @@ const User = () => {
       text: "Bye for now, thanks for using OJA",
     });
   };
+
   return (
     <>
       <AdvertUpperText>

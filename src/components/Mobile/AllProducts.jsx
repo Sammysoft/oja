@@ -1,4 +1,4 @@
-import React, {  useState, useEffect } from "react";
+import React, {  useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import left from "../../assets/svg/left_arrow.svg";
@@ -6,8 +6,10 @@ import axios from "axios";
 import { api } from "../../strings";
 import { Colors } from "../../assets/styles";
 import styled from "styled-components";
+import { LoginContext } from "../../loginContext";
 
 const AllProducts = () => {
+  const { user } = useContext(LoginContext)
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [deleteProduct, setDeleteProduct] = useState(false);
@@ -19,6 +21,12 @@ const AllProducts = () => {
       setProducts(res.data.data);
     });
   }, [deleteProduct]);
+
+// useEffect(()=>{
+//   if(user.fullname === null){
+//     navigate("/")
+//   }
+// },[user])
 
   const _deleteProduct = (id) => {
     axios

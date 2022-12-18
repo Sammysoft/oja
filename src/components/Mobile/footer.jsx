@@ -32,19 +32,6 @@ const Wrapper2 = styled.div`
   justify-content: space-between;
 `;
 
-// const Header = styled.div`
-//   color: white;
-//   font-weight: 900;
-//   font-family: Montserrat;
-//   padding: 15px 5px;
-//   text-align: center;
-//   width: 100%;
-// `;
-// const LinkOptions = styled.div`
-//   padding: 10px 0px;
-//   font-family: Montserrat;
-//   color: white;
-// `;
 const Footer = () => {
   return (
     <>
@@ -67,15 +54,6 @@ const Footer = () => {
           </div>
         </Wrapper1>
         <Wrapper2>
-          {/* <div style={{ width: "100vw", height: "stretch" }}>
-            <Header>Quick Links</Header>
-            <div style={{ display: "grid", gridTemplateColumns: "auto auto", columnGap: "100px" }}>
-              <LinkOptions>Home</LinkOptions>
-              <LinkOptions>Product Listing</LinkOptions>
-              <LinkOptions>Sell my item</LinkOptions>
-              <LinkOptions>Terms of service</LinkOptions>
-            </div>
-          </div> */}
 
         </Wrapper2>
         <ButtonWrapper>
@@ -104,7 +82,7 @@ display: flex;
 flex-direction: row;
 align-items: center;
 justify-content: space-between;
-padding: 0px 50px 0px 50px;
+padding: 0px 30px 0px 30px;
 `
 
 const SelectorButton = styled.div`

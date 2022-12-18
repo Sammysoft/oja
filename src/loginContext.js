@@ -11,11 +11,11 @@ export const LoginContext = createContext();
 export const LoginProvider = ({ children }) => {
   const navigate = useNavigate();
   let token = localStorage.getItem("oja-token");
-  const [user, setUserRole] = useState({fullname: "", profile_picture:""});
+  const [user, setUserRole] = useState({});
 
   useEffect(() => {
-    if (token === null) {
-      setUserRole({fullname:"", profile_picture:""})
+    if (!token) {
+      setUserRole({})
     } else {
       axios
         .get(`${api}/dashboard`, {
@@ -25,6 +25,7 @@ export const LoginProvider = ({ children }) => {
         })
         .then((res) => {
           setUserRole(res.data.data);
+          console.log(user)
           if (res.data.data === null) {
             alert("Empty data");
           }
@@ -40,11 +41,11 @@ export const LoginProvider = ({ children }) => {
         .catch((error) => {
           if (error.response.data === "Unauthorized") {
             localStorage.removeItem("oja-token");
-            navigate("/sign-in")
-            Swal.fire({
-              title: "Session Timeout ⌛",
-              text: "Please Login Again"
-            })
+            navigate("/")
+            // Swal.fire({
+            //   title: "Session Timeout ⌛",
+            //   text: "Please Login Again"
+            // })
           }
         });
     }

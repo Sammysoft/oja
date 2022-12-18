@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useContext, useEffect }  from "react";
+import React  from "react";
 import styled from "styled-components";
 import NavBar from "../../../components/Mobile/navbar";
 import Advert from "../../../components/Mobile/advert";
@@ -8,7 +8,7 @@ import { Colors } from "../../../assets/styles";
 import man_hair from "../../../assets/man_hair.png";
 import Footer from "../../../components/Mobile/footer";
 import AllProducts from "../../../components/Mobile/AllProducts";
-import { LoginContext } from "../../../loginContext";
+// import { LoginContext } from "../../../loginContext";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 // import { LoginContext } from "../../../loginContext";
@@ -17,16 +17,16 @@ import Swal from "sweetalert2";
 
 const Product = () => {
     const navigate = useNavigate()
-    const { user } = useContext(LoginContext);
-    useEffect(()=>{
-        if (user.fullname === "" || user.usertype !== "Admin") {
-            navigate("/");
-            Swal.fire({
-              title: "Oops ",
-              text: "You are unauthorized, please login again!",
-            });
-          }
-    }, [user])
+    // const { user } = useContext(LoginContext);
+    // useEffect(()=>{
+    //     if (user.fullname === "" || user.usertype !== "Admin") {
+    //         navigate("/");
+    //         Swal.fire({
+    //           title: "Oops ",
+    //           text: "You are unauthorized, please login again!",
+    //         });
+    //       }
+    // }, [user])
   return (
     <>
       <PageWrapper>

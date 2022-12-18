@@ -86,22 +86,22 @@ const Header = styled.div`
 `;
 
 const ItemList = () => {
-  const  { user } = useContext(LoginContext)
+  const { user } = useContext(LoginContext);
   const [toggleAdd, setToggleAdd] = useState(Boolean);
   const navigate = useNavigate();
+  const token = localStorage.getItem("oja-token");
 
-
-  useEffect(()=>{
-    if(user.fullname === ""){
+  useEffect(() => {
+    if (!token) {
       navigate("/sign-in");
       Swal.fire({
-        icon:"info",
-        title:"Oops 😟",
-        text:"You need to create an account or login to post items on OJA",
-        position:"top"
-      })
+        icon: "info",
+        title: "Oops 😟",
+        text: "You need to create an account or login to post items on OJA",
+        position: "top",
+      });
     }
-  },[user])
+  }, [token]);
 
   return (
     <>
@@ -167,7 +167,7 @@ export default ItemList;
 
 const AddItemWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.7);
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 100vh;
   z-index: 1;
@@ -298,8 +298,6 @@ const AddItemModal = ({ setToggleAdd }) => {
   const [loading, setLoading] = useState(Boolean);
   const [imageLoad, setImageLoad] = useState("");
 
-
-
   const pick = useRef("");
 
   const uploadFile = (pickFile) => {
@@ -331,8 +329,10 @@ const AddItemModal = ({ setToggleAdd }) => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log("File available at", downloadURL);
             Swal.fire({
+              position: "bottom",
               text: "One image of the product has been added to your store!",
               title: "Image uploaded 👍",
+              timer: 1500,
             });
             // setPicture(downloadURL);
             setItemPictures([...item_pictures, downloadURL]);
@@ -537,48 +537,11 @@ const Card = ({ color, background, element }) => {
 };
 
 const AddItem = ({ setToggleAdd }) => {
-  var keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
-
-  function preventDefaultForScrollKeys(e) {
-    if (keys[e.keyCode]) {
-      preventDefault(e);
-      return false;
-    }
-  }
-
-  var supportsPassive = false;
-  try {
-    window.addEventListener(
-      "test",
-      null,
-      Object.defineProperty({}, "passive", {
-        get: function () {
-          supportsPassive = true;
-        },
-      })
-    );
-  } catch (e) {}
-
-  var wheelOpt = supportsPassive ? { passive: false } : false;
-  var wheelEvent =
-    "onwheel" in document.createElement("div") ? "wheel" : "mousewheel";
-  function preventDefault(e) {
-    e.preventDefault();
-  }
-
-  function disableScroll() {
-    window.addEventListener("DOMMouseScroll", preventDefault, false);
-    window.addEventListener(wheelEvent, preventDefault, wheelOpt);
-    window.addEventListener("touchmove", preventDefault, wheelOpt);
-    window.addEventListener("keydown", preventDefaultForScrollKeys, false);
-  }
-
   return (
     <>
       <AddItemElement
         onClick={() => {
           setToggleAdd(true);
-          disableScroll();
         }}
       >
         <div style={{ flex: "1" }}>
@@ -603,14 +566,13 @@ const Items = ({ setToggleAdd }) => {
   const [loading, setLoading] = useState(Boolean);
   const [items, setItems] = useState([]);
   const { user } = useContext(LoginContext);
-    useEffect(() => {
-      setLoading(true);
-      axios.get(`${api}/item/${user._id}`).then((res) => {
-        setItems(res.data.data);
-        setLoading(false);
-      });
-    }, [user._id]);
-
+  useEffect(() => {
+    setLoading(true);
+    axios.get(`${api}/item/${user._id}`).then((res) => {
+      setItems(res.data.data);
+      setLoading(false);
+    });
+  }, [user._id]);
 
   return (
     <>
@@ -643,13 +605,24 @@ const Items = ({ setToggleAdd }) => {
             <ItemWrapper key={id}>
               <ItemImage src={item.item_pictures[0]} alt="items" />
               <ItemDesc>{item.item_name}</ItemDesc>
-              <ItemPrice>NGN {item.item_price}</ItemPrice>
-              {item.item_approval === true ? <><ActionButtonWrapper>
-                <Button background={"green"}>Edit</Button>
-                <Button background={"red"}>Delete</Button>
-              </ActionButtonWrapper></>:<>
-              <Awaiting >Awaiting approval</Awaiting>
-              </>}
+              <ItemPrice>
+                NGN{" "}
+                {Number(item.item_price).toLocaleString("en-US", {
+                  minimumFractionDigits: 0,
+                })}
+              </ItemPrice>
+              {item.item_approval === true ? (
+                <>
+                  <ActionButtonWrapper>
+                    <Button background={"green"}>Edit</Button>
+                    <Button background={"red"}>Delete</Button>
+                  </ActionButtonWrapper>
+                </>
+              ) : (
+                <>
+                  <Awaiting>Awaiting approval</Awaiting>
+                </>
+              )}
             </ItemWrapper>
           ))}
         </>
@@ -658,16 +631,15 @@ const Items = ({ setToggleAdd }) => {
   );
 };
 
-
-const Awaiting  = styled.div`
-background: ${Colors.PRIMARY};
-color: white;
-text-align: center;
-font-family: Montserrat;
-padding: 10px;
-width: 100%;
-border-radius: 8px;
-`
+const Awaiting = styled.div`
+  background: ${Colors.PRIMARY};
+  color: white;
+  text-align: center;
+  font-family: Montserrat;
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+`;
 
 const ItemWrapper = styled.div`
   display: flex;

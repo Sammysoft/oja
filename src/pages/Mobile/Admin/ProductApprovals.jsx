@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import NavBar from "../../../components/Mobile/navbar";
 import Advert from "../../../components/Mobile/advert";
@@ -10,38 +10,65 @@ import Footer from "../../../components/Mobile/footer";
 import ProductApproval from "../../../components/Mobile/productApprovals";
 import { LoginContext } from "../../../loginContext";
 import { useNavigate } from "react-router";
+import { Loader } from "semantic-ui-react";
 import Swal from "sweetalert2";
 
-
 const ProductApprovals = () => {
-    const navigate = useNavigate()
-    const { user }  = useContext(LoginContext);
-    useEffect(()=>{
-        if(user.fullname === "" || user.usertype !== "Admin"){
-                navigate("/");
-                Swal.fire({
-                    title:"Please Login",
-                    text: "Please login before you can approve products!"
-                })
-        }
-    },[user])
+  const navigate = useNavigate();
+  const { user } = useContext(LoginContext);
+  const [loading, setLoading] = useState(false);
+
+  const _detectUser = () => {
+    const token = localStorage.getItem("oja-token")
+    if (!token) {
+      navigate("/");
+      Swal.fire({
+        title: "Please Login",
+        text: "Please login before you can approve products!",
+      });
+    }
+  };
+  useEffect(() => {
+    _detectUser();
+  }, []);
 
   return (
     <>
-      <PageWrapper>
-        <NavBar />
-      </PageWrapper>
-      <ProductApprovalPageWrapper>
-        <ProductApproval />
-      </ProductApprovalPageWrapper>
-      <Advert
-        background={Colors.DIRTY_GREEN}
-        text={"Find the style that fits YOU!"}
-        image={man_hair}
-        button={"Go to fashion"}
-        orientation={false}
-      />
-      <Footer />
+      {loading === true ? (
+        <>
+          <div
+            style={{
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Loader active inline="centered" />
+          </div>
+        </>
+      ) : (
+        <>
+          <>
+            <PageWrapper>
+              <NavBar />
+            </PageWrapper>
+            <ProductApprovalPageWrapper>
+              <ProductApproval />
+            </ProductApprovalPageWrapper>
+            <Advert
+              background={Colors.DIRTY_GREEN}
+              text={"Find the style that fits YOU!"}
+              image={man_hair}
+              button={"Go to fashion"}
+              orientation={false}
+            />
+            <Footer />
+          </>
+        </>
+      )}
     </>
   );
 };

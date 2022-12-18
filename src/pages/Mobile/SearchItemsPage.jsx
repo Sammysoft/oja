@@ -5,17 +5,15 @@ import { Colors } from "../../assets/styles";
 import man_hair from "../../assets/man_hair.png";
 import Footer from "../../components/Mobile/footer";
 import Advert from "../../components/Mobile/advert";
-import Dashboard from "../../components/Mobile/Dashboard";
+import SearchItems from "../../components/Mobile/SearchItems";
 
-
-const DashboardPage = () => {
-  
+const SearchItemPage = () => {
   return (
     <>
       <PageWrapper>
         <NavBar />
       </PageWrapper>
-      <Dashboard />
+      <SearchItems />
       <Advert
         background={Colors.DIRTY_GREEN}
         text={"Find the style that fits YOU!"}
@@ -27,7 +25,9 @@ const DashboardPage = () => {
     </>
   );
 };
-export default DashboardPage;
+
+export default SearchItemPage;
+
 
 const PageWrapper = styled.div`
 width: 100%;

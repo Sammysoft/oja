@@ -15,6 +15,7 @@ import UserList from "./pages/Mobile/Admin/UserList";
 import ProductApprovals from "./pages/Mobile/Admin/ProductApprovals";
 import Product from "./pages/Mobile/Admin/Products";
 import ViewItemPage from "./pages/Mobile/Admin/ViewItemPage";
+import SearchItemPage from "./pages/Mobile/SearchItemsPage";
 
 const Mobile = () => {
   return (
@@ -25,6 +26,15 @@ const Mobile = () => {
         element={
           <LoginProvider>
             <HomePage />
+          </LoginProvider>
+        }
+      />
+      <Route
+        path="/search/*"
+        exact
+        element={
+          <LoginProvider>
+            <SearchItemPage />
           </LoginProvider>
         }
       />

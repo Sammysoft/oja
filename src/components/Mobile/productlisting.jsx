@@ -79,7 +79,7 @@ const ProductFilter = () => {
     setLoading(true);
     setStates(NaijaStates.states());
 
-    axios.get(`${api}/products`).then((res) => {
+    axios.get(`${api}/products/approved`).then((res) => {
       setProducts(res.data.data);
       setLoading(false);
     });
@@ -211,7 +211,6 @@ const ProductListWrapper = ({ cat, products }) => {
         {products.map((ads, index) => (
 
           <ProductItem key={index}>
-            {console.log(ads.item_pictures[0])}
             <img
               src={ads.item_pictures[0]}
               alt="product"
