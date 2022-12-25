@@ -1,59 +1,157 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
-import profile from "../../assets/profile.png";
 import sender from "../../assets/sender.png";
 import reciever from "../../assets/reciever.png";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { api } from "../../strings";
+import { LoginContext } from "../../loginContext";
 
 const ActiveChats = () => {
+  const { user } = useContext(LoginContext);
+  const location = useLocation();
+  const [searchparams] = useSearchParams();
+  const token = searchparams.get("token");
+  const middle =
+    location.pathname.split("_").pop().split("_")[0] +
+    "?alt=media&token=" +
+    token;
+
+  const [message, setMessage] = useState("");
+  const [chats, setChats] = useState([]);
+  const localtoken = localStorage.getItem("oja-token");
+  const navigate = useNavigate()
+
+  const _sendMessage = () => {
+    if (message === "" || message === null) {
+      Swal.fire({
+        text: "Please enter something",
+        title: "Send a message",
+      });
+    } else {
+      const payload = {
+        id: user._id,
+        profile: middle,
+        fullname: searchparams.get("name"),
+        sender: user.fullname,
+        reciever: searchparams.get("name"),
+        subject: searchparams.get("item"),
+        message: message,
+      };
+      axios
+        .post(`${api}/chat/send`, payload)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "Error",
+            text: error.response.data.data,
+          });
+        });
+    }
+  };
+
+  const _formatDate = (val) => {
+    let date = new Date(val);
+    let month = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+    return `${month[date.getDay()]} ${date.getDate()} ${date.getFullYear()}`;
+  };
+
+  useEffect(() => {
+    if(!localtoken){
+      navigate("/")
+    }
+    const payload = {
+      sender: user.fullname,
+      reciever: searchparams.get("name"),
+      subject: searchparams.get("item"),
+      message: message,
+    };
+    axios.post(`${api}/chat/get`, payload).then((res) => {
+      setChats(res.data.data[0].chat);
+    });
+  }, [chats, localtoken]);
+
   return (
     <>
       <ActiveChatWrapper>
         <ChatHead>
           <HeadLeftContent>
-            <img
-              src={profile}
-              alt="profile-chat"
-              width={"50px"}
-              height={"50px"}
-            />
-            <ChatName>Adewunmi Sunkanmi</ChatName>
+            <ProfilePicture src={middle} alt="chat" />
+            <ChatName>{searchparams.get("name")}</ChatName>
           </HeadLeftContent>
-          <HeadRightContent>-Toyota Corolla 1996</HeadRightContent>
+          <HeadRightContent>-{searchparams.get("item")}</HeadRightContent>
         </ChatHead>
         <Divider />
         <ChatMessageWrapper>
-          <SenderChatWrapper>
-            Hello, Please is this car still available?
-            <SenderChatAngle src={sender} alt="sender" />
-          </SenderChatWrapper>
-          <SenderTimeStamp>Mon, 9:00pm</SenderTimeStamp>
-          <SenderChatWrapper>
-            Hello, Please is this car still available?
-            <SenderChatAngle src={sender} alt="sender" />
-          </SenderChatWrapper>
-          <SenderTimeStamp>Mon, 9:01pm</SenderTimeStamp>
-          <RecieverChatWrapper>
-            Yes, It's still very much available.
-            <RecieverChatAngle src={reciever} alt="reciever" />
-          </RecieverChatWrapper>
-          <RecieverTimeStamp>Tue, 12:00am</RecieverTimeStamp>
+          {chats.map((chat, id) => {
+            return (
+              <>
+                {chats.reciever === user.fullname ? (
+                  <>
+                    <SenderChatWrapper key={id}>
+                      {chat.message}
+                      <SenderChatAngle src={sender} alt="Sender" />
+                    </SenderChatWrapper>
+                    <SenderTimeStamp>
+                      {_formatDate(chat.timestamp)}
+                    </SenderTimeStamp>
+                  </>
+                ) : (
+                  <>
+                    <RecieverChatWrapper key={id}>
+                      {chat.message}
+                      <RecieverChatAngle src={reciever} alt="Reciever" />
+                    </RecieverChatWrapper>
+                    <RecieverTimeStamp>
+                      {_formatDate(chat.timestamp)}
+                    </RecieverTimeStamp>
+                  </>
+                )}
+              </>
+            );
+          })}
+         {/* {chats.map((val)=> console.log(val))} */}
         </ChatMessageWrapper>
         <Divider />
         <SendBox>
-          <SendInput placeholder="Type Message Here..."></SendInput>
-          <SendButton>Send</SendButton>
+          <SendInput
+            placeholder="Type Message Here..."
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+          ></SendInput>
+          <SendButton
+            onClick={() => {
+              _sendMessage();
+              setMessage("");
+            }}
+          >
+            Send
+          </SendButton>
         </SendBox>
       </ActiveChatWrapper>
     </>
   );
 };
 
+const ProfilePicture = styled.img`
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+`;
+
 const ActiveChatWrapper = styled.div`
   border-radius: 8px;
   background: ${Colors.GREY};
   width: 90%;
-  margin: 5%;
+  margin: 2% 5% 2% 5%;
   height: fit-content;
   padding: 10px 0px;
 `;
@@ -98,12 +196,12 @@ const HeadRightContent = styled.div`
   font-family: Montserrat;
   color: white;
   width: 45%;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
 `;
 
 const ChatName = styled.div`
   font-family: Montserrat;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   font-weight: 900;
 `;
 
@@ -129,7 +227,7 @@ const SenderChatAngle = styled.img`
 `;
 
 const SenderTimeStamp = styled.div`
-  width: 40%;
+  width: 100%;
   float: left;
   font-family: Montserrat;
   font-weight: 900;
@@ -161,7 +259,7 @@ const RecieverChatAngle = styled.img`
   position: absolute;
 `;
 const RecieverTimeStamp = styled.div`
-  width: 40%;
+  width: 100%;
   float: right;
   font-family: Montserrat;
   font-weight: 900;

@@ -9,6 +9,21 @@ import plus from "../../assets/svg/plus_circle.svg";
 import { Loader } from "semantic-ui-react";
 import { storage } from "../../firebase";
 import { LoginContext } from "../../loginContext";
+import cancel from "../../assets/svg/cancel_black.svg";
+import { Categories } from "../../data";
+import { AUTOMOBILE } from "../../data";
+import { LANDED_PROPERTIES } from "../../data";
+import { PHONES } from "../../data";
+import { ELECTRONICS } from "../../data";
+import { MEDICALS_COSMETICS_BEAUTIES } from "../../data";
+import { HOME_DECORS } from "../../data";
+import { FASHION } from "../../data";
+import { SPORTS } from "../../data";
+import { KIDDIES_BABIES } from "../../data";
+import { ANIMALS_LIVESTOCK_AGRICULTURE } from "../../data";
+import { GROCERIES_BREWERIES } from "../../data";
+import { SERVICES } from "../../data";
+import { FACTORY_INDUSTRIAL_CONSTRUCTIONS } from "../../data";
 
 import {
   ref,
@@ -72,8 +87,9 @@ const ListWrapper = styled.div`
   display: grid;
   grid-template-columns: 48% 48%;
   gap: 4%;
-  height: 90vh;
+  height: fit-content;
   overflow-y: scroll;
+  max-height: 90vh;
 `;
 
 const Header = styled.div`
@@ -87,7 +103,7 @@ const Header = styled.div`
 
 const ItemList = () => {
   const { user } = useContext(LoginContext);
-  const [toggleAdd, setToggleAdd] = useState(Boolean);
+  const [toggleAdd, setToggleAdd] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem("oja-token");
 
@@ -181,7 +197,7 @@ const AddItemWrapper = styled.div`
 
 const ItemModalWrapper = styled.div`
   background: white;
-  width: 90%;
+  width: 95%;
   height: 95vh;
   position: relative;
   overflow-y: scroll;
@@ -198,7 +214,7 @@ const ItemModal = styled.div`
 `;
 
 const InputField = styled.input`
-  width: 80%;
+  width: 90%;
   border: 2px solid ${Colors.PRIMARY};
   border-radius: 8px;
   padding: 2vh 0px 2vh 20px;
@@ -208,7 +224,7 @@ const InputField = styled.input`
 `;
 
 const InputTextArea = styled.textarea`
-  width: 80%;
+  width: 90%;
   border: 2px solid ${Colors.PRIMARY};
   border-radius: 8px;
   padding: 2vh 0px 2vh 20px;
@@ -229,7 +245,7 @@ const Head = styled.div`
 `;
 
 const ImageSectionWrapper = styled.div`
-  width: 80%;
+  width: 90%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -242,7 +258,7 @@ const ImageSelector = styled.div`
   color: white;
   border-radius: 8px;
   width: 48%;
-  height: 20vh;
+  height: 25vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -251,9 +267,10 @@ const ImageSelector = styled.div`
 const ImageIndicatorWrapper = styled.div`
   display: grid;
   grid-template-columns: auto auto;
-  gap: 12%;
-  height: 20vh;
-  width: 48%;
+  gap: 3%;
+  height: 25vh;
+  width: 50%;
+  overflow-y: scroll;
 `;
 const ImageIndicator = styled.div`
   font-family: Montserrat;
@@ -266,14 +283,14 @@ const ImageIndicator = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 50px;
-  height: 50px;
+  width: 85px;
+  height: 90px;
 `;
 
 const SubmitButton = styled.div`
 background: ${Colors.PRIMARY};
 color: white;
-width: 80%;
+width: 90%;
 padding: 2vh 0px;
 text-align: center;
 font-family: Montserrat;
@@ -290,6 +307,7 @@ const AddItemModal = ({ setToggleAdd }) => {
   const [item_price, setItemPrice] = useState("");
   const [item_description, setItemDescription] = useState("");
   const [item_pictures, setItemPictures] = useState([]);
+  const [item_status, setItemStatus] = useState("");
 
   // Status indeicator states
   const [status, setUploadStatus] = useState("Upload photos (Max.4)");
@@ -370,6 +388,7 @@ const AddItemModal = ({ setToggleAdd }) => {
       item_pictures,
       item_subcategory,
       user_id: user._id,
+      item_status,
     };
 
     axios
@@ -397,6 +416,13 @@ const AddItemModal = ({ setToggleAdd }) => {
     <>
       <AddItemWrapper>
         <ItemModalWrapper>
+          <Cancel
+            src={cancel}
+            alt="remove"
+            onClick={() => {
+              setToggleAdd(false);
+            }}
+          />
           <ItemModal>
             <Head>Upload your item</Head>
             <ImageSectionWrapper>
@@ -412,7 +438,7 @@ const AddItemModal = ({ setToggleAdd }) => {
                     fontFamily: "Montserrat",
                     fontWeight: "700",
                     textAlign: "center",
-                    padding: "5px",
+                    padding: "10px",
                   }}
                 >
                   {status}
@@ -463,11 +489,222 @@ const AddItemModal = ({ setToggleAdd }) => {
               }}
             >
               <Option>Select Category</Option>
-              {data.map((item, id) => (
-                <Option key={id} value={item.category}>
-                  {item.category}
+              {Categories.map((item, id) => (
+                <Option key={id} value={item}>
+                  {item}
                 </Option>
               ))}
+            </Select>
+            {item_category === "AUTOMOBILE" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {AUTOMOBILE.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "LANDED PROPERTIES" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {LANDED_PROPERTIES.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "PHONES/COMPUTERS AND ACCESSORIES" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {PHONES.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "ELECTRONICS/ACCESSORIES" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {ELECTRONICS.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "MEDICALS/COSMETICS/BEAUTIES" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {MEDICALS_COSMETICS_BEAUTIES.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "HOME DECORS" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {HOME_DECORS.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "FASHION" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {FASHION.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "SPORTS" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {SPORTS.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "KIDDIES/BABIES" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {KIDDIES_BABIES.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "GROCERIES/BREWERIES" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {GROCERIES_BREWERIES.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "SERVICES" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {SERVICES.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "FACTORY/INDUSTRIAL/CONSTRUCTIONS" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {FACTORY_INDUSTRIAL_CONSTRUCTIONS.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : (
+              <>
+                <Select>
+                  <Option>Select Sub-Category</Option>
+                </Select>
+              </>
+            )}
+            <Select
+              placeholder="Item Status"
+              value={item_status}
+              onChange={(e) => {
+                setItemStatus(e.target.value);
+              }}
+            >
+              <Option value={""}>Item Status</Option>
+              <Option value={"New"}>New</Option>
+              <Option value={"Nigerian Used"}>Nigerian Used</Option>
+              <Option value={"Foreign Used"}>Foreign Used</Option>
             </Select>
             <InputField
               onChange={(e) => {
@@ -481,14 +718,6 @@ const AddItemModal = ({ setToggleAdd }) => {
               style={{ display: "none" }}
               type="file"
               accept="image/*"
-            />
-            <InputField
-              type="text"
-              placeholder="Select Item sub-category"
-              value={item_subcategory}
-              onChange={(e) => {
-                setItemSubCategory(e.target.value);
-              }}
             />
             <InputTextArea
               type="text"
@@ -631,6 +860,14 @@ const Items = ({ setToggleAdd }) => {
   );
 };
 
+const Cancel = styled.img`
+  position: absolute;
+  top: 10;
+  right: 0;
+  width: 35px;
+  height: 35px;
+`;
+
 const Awaiting = styled.div`
   background: ${Colors.PRIMARY};
   color: white;
@@ -706,23 +943,23 @@ const AddItemElement = styled.div`
 const CardWrapper = styled.div`
   box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.2);
   background: ${(props) => props.background};
-  min-height: 30vh;
   height: stretch;
   color: ${(props) => props.color};
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 `;
 
 const Select = styled.select`
   background-color: ${Colors.DIRTY_WHITE};
-  width: 80%;
+  width: 90%;
   font-family: Montserrat;
   padding: 15px;
   border-radius: 4px;
   box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.17);
+  margin-top: 10px;
 `;
 
 const Option = styled.option`

@@ -14,43 +14,68 @@ import television from "../../assets/svg/television.svg";
 import fashion from "../../assets/svg/fashion.svg";
 import decor from "../../assets/svg/decor.svg";
 import bag from "../../assets/svg/bag.svg";
+import medic from "../../assets/svg/medic.svg";
 import service from "../../assets/svg/service.svg";
+import sport from "../../assets/svg/sport.svg";
+import agro from "../../assets/svg/agro.svg";
+import kids from "../../assets/svg/kid.svg";
+import work from "../../assets/svg/work.svg";
 import dashboard from "../../assets/svg/dashboard.svg";
 import { LoginContext } from "../../loginContext";
 import Swal from "sweetalert2";
 
 const data = [
   {
-    category: "Automobile",
+    category: "AUTOMOBILE",
     icon: car,
   },
   {
-    category: "Landed properties",
+    category: "LANDED PROPERTIES",
     icon: house,
   },
   {
-    category: "Phones, computers and accessories",
+    category: "PHONES, COMPUTERS AND ACCESSORIES",
     icon: phone,
   },
   {
-    category: "Electronics and electronic accessory",
+    category: "ELECTRONICS AND ACCESSORIES",
     icon: television,
   },
   {
-    category: "Fashion",
+    category: "MEDICALS / COSMETICS / BEAUTIES",
+    icon: medic,
+  },
+  {
+    category: "SPORTS",
+    icon: sport,
+  },
+  {
+    category: "FASHION",
     icon: fashion,
   },
   {
-    category: "Home decor",
+    category: "KIDDIES / BABIES",
+    icon: kids,
+  },
+  {
+    category: "HOME DECORS",
     icon: decor,
   },
   {
-    category: "Groceries",
+    category: "ANIMALS / LIVESTOCK / AGRICULTURE",
+    icon: agro,
+  },
+  {
+    category: "GROCERIES / BREWERIES",
     icon: bag,
   },
   {
-    category: "Services",
+    category: "SERVICES",
     icon: service,
+  },
+  {
+    category: "FACTORY / INDUSTRIAL / CONSTRUCTIONS",
+    icon: work,
   },
 ];
 
@@ -142,8 +167,6 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
           )}
 
           <br />
-          <br />
-          <br />
           <Link
             to="/dashboard"
             style={{
@@ -154,7 +177,7 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
           >
             <MenuOptions>
               <MenuIcon src={dashboard} />
-              <MenuName>Dashboard</MenuName>
+              <MenuName>My Dashboard</MenuName>
             </MenuOptions>
           </Link>
           <Link
@@ -258,6 +281,8 @@ const CategoryItem = styled.div`
   font-family: Montserrat;
   font-weight: 700;
   padding: 0px 25px;
+  font-size: 0.8rem;
+  font-weight: 900;
 `;
 
 const CategoryIcon = styled.img`

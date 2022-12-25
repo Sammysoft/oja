@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { Colors } from "../../assets/styles";
 import styled from "styled-components";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "../../strings";
 import Swal from "sweetalert2";
 
+
 const SearchItems = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -93,7 +95,7 @@ const SearchItemWrapper = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  padding: 10px;
+  padding: 10px 30px 10px 10px;
   font-family: Montserrat;
   color: ${Colors.PRIMARY};
   font-weight: 800;

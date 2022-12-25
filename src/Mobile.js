@@ -93,7 +93,7 @@ const Mobile = () => {
         }
       />
       <Route
-        path="/chat"
+        path="/chat/*"
         exact
         element={
           <LoginProvider>
@@ -102,7 +102,7 @@ const Mobile = () => {
         }
       />
       <Route
-        path="/chats"
+        path="/chats/*"
         exact
         element={
           <LoginProvider>

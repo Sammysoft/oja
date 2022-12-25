@@ -159,7 +159,7 @@ const ItemDescription = () => {
       </ProductPrice>
       <ProductDescription>{item.item_description}</ProductDescription>
       <ContactButtonWrapper>
-        {user.fullname === "" ? (
+        {!user.fullname ? (
           <>
             <ContactButton
               onClick={() => {
@@ -174,14 +174,18 @@ const ItemDescription = () => {
               />
               View Phone number
             </ContactButton>
-            <ContactButton>
+            <ContactButton
+              onClick={() => {
+                setToggleLogin(true);
+              }}
+            >
               <img
                 src={chat}
                 alt="chat seller"
                 height={"25px"}
                 width={"25px"}
               />
-              start chat with seller
+              Chat Seller
             </ContactButton>
           </>
         ) : (
@@ -195,14 +199,20 @@ const ItemDescription = () => {
               />
               {seller.phone}
             </ContactButton>
-            <ContactButton>
+            <ContactButton
+              onClick={() => {
+                navigate(
+                  `/chat/${seller._id}/picture_${seller.profile_picture}_/?&name=${seller.fullname}&item=${item.item_name}`
+                );
+              }}
+            >
               <img
                 src={chat}
                 alt="chat seller"
                 height={"25px"}
                 width={"25px"}
               />
-              start chat with seller
+              Chat Seller
             </ContactButton>
           </>
         )}
@@ -367,19 +377,20 @@ const ContactButtonWrapper = styled.div`
 `;
 
 const ContactButton = styled.div`
-  background: #ffffff;
+  background: ${Colors.PRIMARY};
   border: 2px solid #08003c;
   box-shadow: 0px 4px 36px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   font-family: Montserrat;
-  color: ${Colors.PRIMARY};
-  padding: 5px;
+  color: white;
+  padding: 15px;
   margin: 10px 0px;
-  font-size: 15px;
+  font-size: 12px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  width: 45%;
 `;
 
 const ProductGalleryWrapper = styled.div`

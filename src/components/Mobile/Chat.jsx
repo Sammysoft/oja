@@ -1,143 +1,64 @@
 /* eslint-disable */
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
-import image from "../../assets/profile.png";
 import { useNavigate } from "react-router";
 import { LoginContext } from "../../loginContext";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { api } from "../../strings";
 
 const Chat = () => {
-    const navigate = useNavigate();
-    const { user } = useContext(LoginContext)
-    useEffect(()=>{
-        if(!user.fullname){
-          navigate("/sign-in");
-          Swal.fire({
-            icon:"info",
-            title:"Oops 😟",
-            text:"You have to sign up or login to your account to view chats on OJA"
-          })
-        }
-    },[user]);
+  const navigate = useNavigate();
+  const { user } = useContext(LoginContext);
+  const token = localStorage.getItem("oja-token");
+  const [chats, setChats] = useState([]);
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  }, [token]);
+
+  useEffect(() => {
+    axios.post(`${api}/chat/view`, { sender: user.fullname }).then((res) => {
+      console.log(res.data.data);
+      setChats(res.data.data);
+    });
+  }, []);
 
 
   return (
     <>
       <ChatWrapper>
-        <ChatItems>
-          <ImageWrapper>
-            <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
-          </ImageWrapper>
-          <ChatContent
-            onClick={() => {
-              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
-            }}
-          >
-            <ChatHead>Adewumi Sunkanmi</ChatHead>
-            <ChatBody>
-              We’re sorry to inform you that your item has been taken . . .
-            </ChatBody>
-          </ChatContent>
-        </ChatItems>
-        <LineBreak />
-        <ChatItems>
-          <ImageWrapper>
-            <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
-          </ImageWrapper>
-          <ChatContent
-            onClick={() => {
-              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
-            }}
-          >
-            <ChatHead>Adewumi Sunkanmi</ChatHead>
-            <ChatBody>
-              We’re sorry to inform you that your item has been taken . . .
-            </ChatBody>
-          </ChatContent>
-        </ChatItems>
-        <LineBreak />
-        <ChatItems>
-          <ImageWrapper>
-            <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
-          </ImageWrapper>
-          <ChatContent
-            onClick={() => {
-              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
-            }}
-          >
-            <ChatHead>Adewumi Sunkanmi</ChatHead>
-            <ChatBody>
-              We’re sorry to inform you that your item has been taken . . .
-            </ChatBody>
-          </ChatContent>
-        </ChatItems>
-        <LineBreak />
-        <ChatItems>
-          <ImageWrapper>
-            <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
-          </ImageWrapper>
-          <ChatContent
-            onClick={() => {
-              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
-            }}
-          >
-            <ChatHead>Adewumi Sunkanmi</ChatHead>
-            <ChatBody>
-              We’re sorry to inform you that your item has been taken . . .
-            </ChatBody>
-          </ChatContent>
-        </ChatItems>
-        <LineBreak />
-        <ChatItems>
-          <ImageWrapper>
-            <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
-          </ImageWrapper>
-          <ChatContent
-            onClick={() => {
-              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
-            }}
-          >
-            <ChatHead>Adewumi Sunkanmi</ChatHead>
-            <ChatBody>
-              We’re sorry to inform you that your item has been taken . . .
-            </ChatBody>
-          </ChatContent>
-        </ChatItems>
-        <LineBreak />
-        <ChatItems>
-          <ImageWrapper>
-            <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
-          </ImageWrapper>
-          <ChatContent
-            onClick={() => {
-              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
-            }}
-          >
-            <ChatHead>Adewumi Sunkanmi</ChatHead>
-            <ChatBody>
-              We’re sorry to inform you that your item has been taken . . .
-            </ChatBody>
-          </ChatContent>
-        </ChatItems>
-        <LineBreak />
-        <ChatItems>
-          <ImageWrapper>
-            <img src={image} alt="chat-head" width={"100%"} height={"100%"} />
-          </ImageWrapper>
-          <ChatContent
-            onClick={() => {
-              navigate("/chat?name=Sunkanmi Adewumi/jashdjasjidjiasd");
-            }}
-          >
-            <ChatHead>Adewumi Sunkanmi</ChatHead>
-            <ChatBody>
-              We’re sorry to inform you that your item has been taken . . .
-            </ChatBody>
-          </ChatContent>
-        </ChatItems>
-        <LineBreak />
+        {chats.map((chat, id) => {
+          return (
+            <>
+              <ChatItems key={id}>
+                <ImageWrapper>
+                  <img
+                    src={chat.chat[chat.chat.length - 1].sender.profile}
+                    alt="chat-head"
+                    width={"50px"}
+                    height={"50px"}
+                    style={{borderRadius: "50%"}}
+                  />
+                </ImageWrapper>
+                <ChatContent
+                  onClick={() => {
+                    navigate(
+                      `/chat/picture_${chat.chat[chat.chat.length - 1].sender.profile}_/?&name=${chat.chat[chat.chat.length - 1].sender.fullname}&item=${chat.subject}`
+                    );
+                  }}
+                >
+                  <ChatHead>{chat.reciever}</ChatHead>
+                  <ChatBody>{chat.chat[chat.chat.length - 1].message}</ChatBody>
+                </ChatContent>
+              </ChatItems>
+              <LineBreak />
+            </>
+          );
+        })}
       </ChatWrapper>
     </>
   );
@@ -156,6 +77,7 @@ const ChatItems = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-around;
 `;
 
 const ImageWrapper = styled.div`
@@ -171,7 +93,8 @@ const ChatContent = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   height: stretch;
-  padding: 0px 5px 0px 10px;
+  padding: 0px 5px 0px 5px;
+  width: 80%;
 `;
 const ChatHead = styled.div`
   font-family: Montserrat;
