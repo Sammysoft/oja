@@ -365,13 +365,18 @@ const AddItemModal = ({ setToggleAdd }) => {
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        if (picture.length <= 3) {
-          setPicture([...picture, reader.result]);
-        } else {
+        if (picture.length < 4) {
           Swal.fire({
             title: "Oops 😟",
-            text: "You cannot post more than 4 images!",
+            text: "You cannot post less than 5 images!",
           });
+        } else if(picture.length > 5) {
+          Swal.fire({
+            title: "Oops 😟",
+            text: "You cannot post more than 6 images!",
+          });
+        }else{
+          setPicture([...picture, reader.result]);
         }
       }
     };
@@ -718,6 +723,7 @@ const AddItemModal = ({ setToggleAdd }) => {
               style={{ display: "none" }}
               type="file"
               accept="image/*"
+              multiple
             />
             <InputTextArea
               type="text"
