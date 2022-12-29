@@ -37,50 +37,6 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { api } from "../../strings";
 
-import car from "../../assets/svg/truck.svg";
-import house from "../../assets/svg/house.svg";
-import phone from "../../assets/svg/phone.svg";
-import television from "../../assets/svg/television.svg";
-import fashion from "../../assets/svg/fashion.svg";
-import decor from "../../assets/svg/decor.svg";
-import bag from "../../assets/svg/bag.svg";
-import service from "../../assets/svg/service.svg";
-
-const data = [
-  {
-    category: "Automobile",
-    icon: car,
-  },
-  {
-    category: "Landed properties",
-    icon: house,
-  },
-  {
-    category: "Phones, computers and accessories",
-    icon: phone,
-  },
-  {
-    category: "Electronics and electronic accessory",
-    icon: television,
-  },
-  {
-    category: "Fashion",
-    icon: fashion,
-  },
-  {
-    category: "Home decor",
-    icon: decor,
-  },
-  {
-    category: "Groceries",
-    icon: bag,
-  },
-  {
-    category: "Services",
-    icon: service,
-  },
-];
-
 const ListWrapper = styled.div`
   width: 100%;
   padding: 5px;
@@ -248,7 +204,7 @@ const ImageSectionWrapper = styled.div`
   width: 90%;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 `;
 
@@ -257,8 +213,8 @@ const ImageSelector = styled.div`
   font-family: Montserrat;
   color: white;
   border-radius: 8px;
-  width: 48%;
-  height: 25vh;
+  width: 35%;
+  height: 15vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -266,11 +222,13 @@ const ImageSelector = styled.div`
 `;
 const ImageIndicatorWrapper = styled.div`
   display: grid;
-  grid-template-columns: auto auto;
-  gap: 3%;
-  height: 25vh;
-  width: 50%;
-  overflow-y: scroll;
+  // flex-direction: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  gap: 5px;
+  align-items: center;
+  height: 15vh;
+  width: 60%;
+  overflow-x: scroll;
 `;
 const ImageIndicator = styled.div`
   font-family: Montserrat;
@@ -283,8 +241,8 @@ const ImageIndicator = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 85px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
 `;
 
 const SubmitButton = styled.div`
@@ -320,67 +278,79 @@ const AddItemModal = ({ setToggleAdd }) => {
 
   const uploadFile = (pickFile) => {
     setImageLoad(true);
-    if (pickFile == null) {
-      return null;
-    } else {
-      const imageRef = ref(getStorage(), `images/${pickFile.name + v4()}`);
-      const uploadTask = uploadBytesResumable(imageRef, pickFile);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(Math.round(progress) + "% ");
-          setUploadStatus(`${Math.round(progress)}%`);
-          switch (snapshot.state) {
-            case "paused":
-              setUploadStatus("Paused");
-              break;
-            case "running":
-              break;
-          }
-        },
-        (error) => {
-          alert("Sorry, upload denied at the moment, Please try again later!");
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log("File available at", downloadURL);
-            Swal.fire({
-              position: "bottom",
-              text: "One image of the product has been added to your store!",
-              title: "Image uploaded 👍",
-              timer: 1500,
-            });
-            // setPicture(downloadURL);
-            setItemPictures([...item_pictures, downloadURL]);
-            setImageLoad(false);
-          });
-        }
-      );
-    }
+    // if (pickFile == null) {
+    //   return null;
+    // } else {
+    //   const imageRef = ref(getStorage(), `images/${pickFile.name + v4()}`);
+    //   const uploadTask = uploadBytesResumable(imageRef, pickFile);
+    //   uploadTask.on(
+    //     "state_changed",
+    //     (snapshot) => {
+    //       const progress =
+    //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //       console.log(Math.round(progress) + "% ");
+    //       setUploadStatus(`${Math.round(progress)}%`);
+    //       switch (snapshot.state) {
+    //         case "paused":
+    //           setUploadStatus("Paused");
+    //           break;
+    //         case "running":
+    //           break;
+    //       }
+    //     },
+    //     (error) => {
+    //       alert("Sorry, upload denied at the moment, Please try again later!");
+    //     },
+    //     () => {
+    //       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+    //         console.log("File available at", downloadURL);
+    //         Swal.fire({
+    //           position: "bottom",
+    //           text: "One image of the product has been added to your store!",
+    //           title: "Image uploaded 👍",
+    //           timer: 1500,
+    //         });
+    //         // setPicture(downloadURL);
+    //         setItemPictures([...item_pictures, downloadURL]);
+    //         setImageLoad(false);
+    //       });
+    //     }
+    //   );
+    // }
+
+    // console.log(pickFile)
+    pickFile.map((file) => console.log(file));
   };
 
   const handlePictureChange = (e) => {
+    const fileArray = Array.from(e.target.files).map((file) =>
+      URL.createObjectURL(file)
+    );
+    console.log(fileArray);
+    setPicture((prevImages) => prevImages.concat(fileArray));
     const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        if (picture.length < 4) {
-          Swal.fire({
-            title: "Oops 😟",
-            text: "You cannot post less than 5 images!",
-          });
-        } else if(picture.length > 5) {
-          Swal.fire({
-            title: "Oops 😟",
-            text: "You cannot post more than 6 images!",
-          });
-        }else{
-          setPicture([...picture, reader.result]);
-        }
-      }
-    };
-    reader.readAsDataURL(e.target.files[0]);
+    // reader.onload = () => {
+    //   // if (reader.readyState === 2) {
+    //   //   console.log(picture.length);
+    //   //   console.log(reader.result);
+    //   //   if (picture.length <= 3) {
+    //   //     // Swal.fire({
+    //   //     //   title: "Oops 😟",
+    //   //     //   text: "You cannot post less than 5 images!",
+    //   //     // });
+    //   //   } else if (picture.length >= 5) {
+    //   //     Swal.fire({
+    //   //       title: "Oops 😟",
+    //   //       text: "You cannot post more than 6 images!",
+    //   //     });
+    //   //   } else {
+    //   //     setPicture([...picture, reader.result]);
+    //   //   }
+    //   // }
+    // };
+    // console.log(e.target.files)
+    // reader.readAsDataURL(e.target.files[0]);
+    // console.log(picture)
   };
 
   const _submitForm = () => {
@@ -437,17 +407,6 @@ const AddItemModal = ({ setToggleAdd }) => {
                 }}
               >
                 <img src={plus} alt="plus" />
-                <div
-                  style={{
-                    width: "100%",
-                    fontFamily: "Montserrat",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    padding: "10px",
-                  }}
-                >
-                  {status}
-                </div>
                 {imageLoad && <Loader active inline="centered" />}
               </ImageSelector>
               <ImageIndicatorWrapper>
@@ -471,10 +430,10 @@ const AddItemModal = ({ setToggleAdd }) => {
                   </>
                 ) : (
                   <>
-                    <ImageIndicator>1</ImageIndicator>
+                    {/* <ImageIndicator>1</ImageIndicator>
                     <ImageIndicator>2</ImageIndicator>
                     <ImageIndicator>3</ImageIndicator>
-                    <ImageIndicator>4</ImageIndicator>
+                    <ImageIndicator>4</ImageIndicator> */}
                   </>
                 )}
               </ImageIndicatorWrapper>
@@ -714,9 +673,9 @@ const AddItemModal = ({ setToggleAdd }) => {
             <InputField
               onChange={(e) => {
                 handlePictureChange(e);
-                setPickFile(e.target.files[0]);
-                if (picture.length <= 3) {
-                  uploadFile(e.target.files[0]);
+                setPickFile(e.target.files);
+                if (picture.length === 4 || picture.length === 5) {
+                  uploadFile(e.target.files);
                 }
               }}
               ref={pick}
