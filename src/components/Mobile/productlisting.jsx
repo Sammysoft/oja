@@ -118,7 +118,7 @@ const ProductFilter = () => {
                 return <ProductOption key={id}>{local}</ProductOption>;
               })}
             </>
-          ) : (
+        ) : (
             <>
               <ProductOption>LGA</ProductOption>
             </>

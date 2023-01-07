@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable */
+import React  from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { Colors } from "../../assets/styles";
@@ -7,8 +8,9 @@ import NavBar from "../../components/Desktop/navbar";
 import SignUpForm from "../../components/Desktop/Signupform";
 import left from "../../assets/svg/left_arrow.svg";
 
+
 const OnboardPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
       <PageWrapper>
@@ -50,10 +52,11 @@ const OnboardPage = () => {
               style={{
                 color: Colors.WHITE,
                 fontWeight: 900,
-                width: "30%",
+                width: "70%",
                 fontFamily: "Montserrat",
-                fontSize: "2rem",
+                fontSize: "3rem",
                 padding: 10,
+                lineHeight:"3rem"
               }}
             >
               Find the style that fits YOU!

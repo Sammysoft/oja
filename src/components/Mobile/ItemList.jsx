@@ -326,8 +326,18 @@ const AddItemModal = ({ setToggleAdd }) => {
     const fileArray = Array.from(e.target.files).map((file) =>
       URL.createObjectURL(file)
     );
-    console.log(fileArray);
-    setPicture((prevImages) => prevImages.concat(fileArray));
+
+    if(fileArray.length === 5 || fileArray.length === 6){
+      setPicture((prevImages) => prevImages.concat(fileArray));
+    }else{
+      Swal.fire({
+        title:"Upload the right amount!",
+        text:"Please ensure the images you upload is 5 or 6 images only",
+        position:"bottom"
+      })
+    }
+
+
     const reader = new FileReader();
     // reader.onload = () => {
     //   // if (reader.readyState === 2) {

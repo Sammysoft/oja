@@ -1,19 +1,71 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
+import axios from "axios";
+import { api } from "../../strings";
+import Swal from "sweetalert2";
+import { Loader } from "semantic-ui-react";
 
 const SignInForm = () => {
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
   const handleLogin = () => {
-    navigate("/dashboard");
+    setLoading(true);
+    if (!email || !password) {
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Missing Details",
+        text: "Ensure you enter your email and password!",
+      });
+    } else {
+      const payload = {
+        email,
+        password,
+      };
+      axios
+        .post(`${api}/auth`, payload)
+        .then((res) => {
+          setLoading(false);
+          localStorage.setItem("oja-token", res.data.token);
+          navigate("/dashboard");
+        })
+        .catch((error) => {
+          setLoading(false);
+          Swal.fire({
+            icon: "error",
+            title: "Oops",
+            text: error.response.data.data,
+          });
+        });
+    }
   };
   return (
     <>
       <Header>Sign in to your account</Header>
       <FormBody>
-        <FormInput type={"text"} placeholder={"Email / Phone number"} />
-        <FormInput type={"password"} placeholder={"Password"} />
+        <FormInput
+          type={"text"}
+          placeholder={"Email / Phone number"}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
+        <FormInput
+          type={"password"}
+          placeholder={"Password"}
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
       </FormBody>
       <SubmitButtonWrapper>
         <SubmitButton
@@ -21,7 +73,13 @@ const SignInForm = () => {
             handleLogin();
           }}
         >
-          Login
+          {loading === true ? (
+            <>
+              <Loader active inline="centered" />
+            </>
+          ) : (
+            <> Login</>
+          )}
         </SubmitButton>
       </SubmitButtonWrapper>
       <BottomTextWrapper>

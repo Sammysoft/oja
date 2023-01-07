@@ -50,9 +50,10 @@ const LoginPage = ()=>{
               style={{
                 color: Colors.WHITE,
                 fontWeight: 900,
-                width: "30%",
+                width: "70%",
                 fontFamily: "Montserrat",
-                fontSize: "2rem",
+                fontSize: "3rem",
+                lineHeight: "3rem",
                 padding: 10,
               }}
             >
