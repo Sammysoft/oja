@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
-// import { category } from "../../assets/data";
 import man_hair from "../../assets/man_hair2.png";
 import { Loader } from "semantic-ui-react";
-// import man from "../../assets/man_blue.png";
 import Advert from "./advert";
 import car from "../../assets/svg/truck.svg";
 import house from "../../assets/svg/house.svg";
@@ -13,44 +11,73 @@ import television from "../../assets/svg/television.svg";
 import fashion from "../../assets/svg/fashion.svg";
 import decor from "../../assets/svg/decor.svg";
 import bag from "../../assets/svg/bag.svg";
+import medic from "../../assets/svg/medic.svg";
 import service from "../../assets/svg/service.svg";
+import sport from "../../assets/svg/sport.svg";
+import agro from "../../assets/svg/agro.svg";
+import kids from "../../assets/svg/kid.svg";
+import work from "../../assets/svg/work.svg";
 import axios from "axios";
 import { api } from "../../strings";
 import NaijaStates from "naija-state-local-government";
 import { useNavigate } from "react-router";
 
+import whatsapp from "../../assets/svg/whatsapp.svg";
+import email from "../../assets/svg/email.svg";
+import mobile from "../../assets/svg/mobile.svg";
+
 const data = [
   {
-    category: "Automobile",
+    category: "AUTOMOBILE",
     icon: car,
   },
   {
-    category: "Landed properties",
+    category: "LANDED PROPERTIES",
     icon: house,
   },
   {
-    category: "Phones, computers and accessories",
+    category: "PHONES, COMPUTERS AND ACCESSORIES",
     icon: phone,
   },
   {
-    category: "Electronics and electronic accessory",
+    category: "ELECTRONICS AND ACCESSORIES",
     icon: television,
   },
   {
-    category: "Fashion",
+    category: "MEDICALS / COSMETICS / BEAUTIES",
+    icon: medic,
+  },
+  {
+    category: "SPORTS",
+    icon: sport,
+  },
+  {
+    category: "FASHION",
     icon: fashion,
   },
   {
-    category: "Home decor",
+    category: "KIDDIES / BABIES",
+    icon: kids,
+  },
+  {
+    category: "HOME DECORS",
     icon: decor,
   },
   {
-    category: "Groceries",
+    category: "ANIMALS / LIVESTOCK / AGRICULTURE",
+    icon: agro,
+  },
+  {
+    category: "GROCERIES / BREWERIES",
     icon: bag,
   },
   {
-    category: "Services",
+    category: "SERVICES",
     icon: service,
+  },
+  {
+    category: "FACTORY / INDUSTRIAL / CONSTRUCTIONS",
+    icon: work,
   },
 ];
 
@@ -68,6 +95,7 @@ const ProductFilter = () => {
   const [regions, setRegions] = useState([]);
 
   const [products, setProducts] = useState([]);
+
 
   //Loading States
   const [loading, setLoading] = useState(Boolean);
@@ -118,7 +146,7 @@ const ProductFilter = () => {
                 return <ProductOption key={id}>{local}</ProductOption>;
               })}
             </>
-        ) : (
+          ) : (
             <>
               <ProductOption>LGA</ProductOption>
             </>
@@ -190,36 +218,44 @@ const ProductOption = styled.option`
   font-size: 0.5rem;
 `;
 
-const Button = styled.div`
-color: white;
-background-color: ${Colors.PRIMARY};
-border-radius: 5px;
-padding: 5px 15px;
-text-align: center;
-font-family: Montserrat;
-margin; 20px;
-width: 80%;
-`;
+// const Button = styled.div`
+// color: white;
+// background-color: ${Colors.PRIMARY};
+// border-radius: 5px;
+// padding: 5px 15px;
+// text-align: center;
+// font-family: Montserrat;
+// margin; 20px;
+// width: 80%;
+// `;
 
 const ProductListWrapper = ({ cat, products }) => {
-  const navigate = useNavigate()
+
+  // const [phone, setPhone]= useState([])
+  // const generateMadUrl = (id) =>{
+  //   // axios.get(`${api}/product/${id}`).then((res) => {
+  //   //   axios
+  //   //     .post(`${api}/product/seller`, { user_id: res.data.data.user_id })
+  //   //     .then((res) => {
+  //   //       setPhone([...phone, res.data.data.phone])
+  //   //     });
+  //   // });
+
+  //   console.log(phone)
+  // }
+  const navigate = useNavigate();
   return (
     <>
       {/* {cat === "cars" ? (
         <> */}
       <ProductListingWrapper>
         {products.map((ads, index) => (
-
           <ProductItem key={index}>
-            <img
+            <ProductImage
               src={ads.item_pictures[0]}
-              alt="product"
-              style={{
-                height: "50%",
-                width: "100%",
-                padding: "5px",
-                borderTopLeftRadius: "8px",
-                borderTopRightRadius: "8px",
+              alt="img_product"
+              onClick={() => {
+                navigate(`/item/description/${ads._id}`);
               }}
             />
             <ProductItemName>{ads.item_name}</ProductItemName>
@@ -229,7 +265,36 @@ const ProductListWrapper = ({ cat, products }) => {
                 minimumFractionDigits: 0,
               })}
             </ProductPrice>
-            <Button onClick={()=>{navigate(`/item/description/${ads._id}`)}}>View</Button>
+            {/* <Button
+              onClick={() => {
+                navigate(`/item/description/${ads._id}`);
+              }}
+            >
+              View
+            </Button> */}
+            <ItemContact>
+              <ItemContactIcon>
+                <a
+                  href={`http://wa.me/${ads.phone}?text=I am messaging you about ${ads.item_name} on oja-online for ${ads.price}, `}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img src={whatsapp} alt="whatsapp" />
+                </a>
+              </ItemContactIcon>
+              <ItemContactIcon>
+              <a
+                  href={`mailto:${ads.email}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                <img src={email} alt="email" />
+                </a>
+              </ItemContactIcon>
+              <ItemContactIcon>
+                <img src={mobile} alt="mobile" />
+              </ItemContactIcon>
+            </ItemContact>
           </ProductItem>
         ))}
       </ProductListingWrapper>
@@ -274,6 +339,19 @@ const ProductListWrapper = ({ cat, products }) => {
     </>
   );
 };
+
+const ItemContact = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  padding: 5px;
+`;
+const ItemContactIcon = styled.div`
+width: 100px,
+height: 100px;
+`;
 const ProductListingWrapper = styled.div`
   width: 100vw;
   display: grid;
@@ -295,6 +373,17 @@ const ProductItem = styled.div`
   width: 100%;
   padding: ${(props) => props.padding};
   height: 40vh;
+`;
+
+const ProductImage = styled.img`
+  max-width: 100%;
+  max-height: 50%;
+  // background-image: url(${(props) => props.background});
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: 100%;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
 `;
 
 const ProductItemName = styled.div`

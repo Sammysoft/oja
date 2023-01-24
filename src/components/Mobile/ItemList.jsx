@@ -24,6 +24,7 @@ import { ANIMALS_LIVESTOCK_AGRICULTURE } from "../../data";
 import { GROCERIES_BREWERIES } from "../../data";
 import { SERVICES } from "../../data";
 import { FACTORY_INDUSTRIAL_CONSTRUCTIONS } from "../../data";
+import NaijaStates from "naija-state-local-government";
 
 import {
   ref,
@@ -158,6 +159,7 @@ const ItemModalWrapper = styled.div`
   position: relative;
   overflow-y: scroll;
   border-radius: 10px;
+  padding-bottom: 10vh;
 `;
 
 const ItemModal = styled.div`
@@ -212,9 +214,9 @@ const ImageSelector = styled.div`
   background-color: ${Colors.CHOCOLATE};
   font-family: Montserrat;
   color: white;
-  border-radius: 8px;
-  width: 35%;
-  height: 15vh;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -227,8 +229,9 @@ const ImageIndicatorWrapper = styled.div`
   gap: 5px;
   align-items: center;
   height: 15vh;
-  width: 60%;
+  width: 70%;
   overflow-x: scroll;
+  opacity: ${(props) => (props.opacity == true ? 0.4 : 1)};
 `;
 const ImageIndicator = styled.div`
   font-family: Montserrat;
@@ -243,6 +246,16 @@ const ImageIndicator = styled.div`
   align-items: center;
   width: 100px;
   height: 100px;
+`;
+
+const Image = styled.div`
+  background-image: url(${(props) => props.background});
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
 `;
 
 const SubmitButton = styled.div`
@@ -267,101 +280,93 @@ const AddItemModal = ({ setToggleAdd }) => {
   const [item_pictures, setItemPictures] = useState([]);
   const [item_status, setItemStatus] = useState("");
 
-  // Status indeicator states
+  // Status indicator states
   const [status, setUploadStatus] = useState("Upload photos (Max.4)");
   const [picture, setPicture] = useState([]);
   const [pickFile, setPickFile] = useState(null);
   const [loading, setLoading] = useState(Boolean);
   const [imageLoad, setImageLoad] = useState("");
+  const [opacity, setOpacity] = useState(false);
 
   const pick = useRef("");
 
-  const uploadFile = (pickFile) => {
+  const uploadFile = (file) => {
     setImageLoad(true);
-    // if (pickFile == null) {
-    //   return null;
-    // } else {
-    //   const imageRef = ref(getStorage(), `images/${pickFile.name + v4()}`);
-    //   const uploadTask = uploadBytesResumable(imageRef, pickFile);
-    //   uploadTask.on(
-    //     "state_changed",
-    //     (snapshot) => {
-    //       const progress =
-    //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //       console.log(Math.round(progress) + "% ");
-    //       setUploadStatus(`${Math.round(progress)}%`);
-    //       switch (snapshot.state) {
-    //         case "paused":
-    //           setUploadStatus("Paused");
-    //           break;
-    //         case "running":
-    //           break;
-    //       }
-    //     },
-    //     (error) => {
-    //       alert("Sorry, upload denied at the moment, Please try again later!");
-    //     },
-    //     () => {
-    //       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-    //         console.log("File available at", downloadURL);
-    //         Swal.fire({
-    //           position: "bottom",
-    //           text: "One image of the product has been added to your store!",
-    //           title: "Image uploaded 👍",
-    //           timer: 1500,
-    //         });
-    //         // setPicture(downloadURL);
-    //         setItemPictures([...item_pictures, downloadURL]);
-    //         setImageLoad(false);
-    //       });
-    //     }
-    //   );
-    // }
-
-    // console.log(pickFile)
-    pickFile.map((file) => console.log(file));
+    if (picture == null) {
+      return null;
+    } else {
+      setOpacity(true);
+      file.map((image) => {
+        const imageRef = ref(getStorage(), `images/oja-web-app-${Math.random + v4()}`);
+        let promise = [];
+        const uploadTask = uploadBytesResumable(imageRef, image);
+        promise.push(uploadTask);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setUploadStatus(`${Math.round(progress)}%`);
+            switch (snapshot.state) {
+              case "paused":
+                setUploadStatus("Paused");
+                break;
+              case "running":
+                break;
+            }
+          },
+          (error) => {
+            alert(
+              "Sorry, upload denied at the moment, Please try again later!"
+            );
+          },
+          async () => {
+            await getDownloadURL(uploadTask.snapshot.ref).then(
+              (downloadURL) => {
+                setItemPictures((prevImages) => prevImages.concat(downloadURL));
+                setOpacity(false);
+              }
+            );
+          }
+        );
+        Promise.all(promise).then(() => {
+          Swal.fire({
+            position: "bottom",
+            text: "All images uploaded, you can now proceed",
+            title: "Image uploaded 👍",
+            timer: 1500,
+          });
+          setImageLoad(false);
+        });
+      });
+    }
   };
 
   const handlePictureChange = (e) => {
     const fileArray = Array.from(e.target.files).map((file) =>
       URL.createObjectURL(file)
     );
-
-    if(fileArray.length === 5 || fileArray.length === 6){
+    const uploadableFile = Array.from(e.target.files).map((files) => files);
+    if (fileArray.length === 5 || fileArray.length === 6) {
       setPicture((prevImages) => prevImages.concat(fileArray));
-    }else{
+      uploadFile(uploadableFile);
+    } else {
       Swal.fire({
-        title:"Upload the right amount!",
-        text:"Please ensure the images you upload is 5 or 6 images only",
-        position:"bottom"
-      })
+        title: "Upload the right amount!",
+        text: "Please ensure the images you upload is 5 or 6 images only",
+        position: "bottom",
+      });
     }
-
-
-    const reader = new FileReader();
-    // reader.onload = () => {
-    //   // if (reader.readyState === 2) {
-    //   //   console.log(picture.length);
-    //   //   console.log(reader.result);
-    //   //   if (picture.length <= 3) {
-    //   //     // Swal.fire({
-    //   //     //   title: "Oops 😟",
-    //   //     //   text: "You cannot post less than 5 images!",
-    //   //     // });
-    //   //   } else if (picture.length >= 5) {
-    //   //     Swal.fire({
-    //   //       title: "Oops 😟",
-    //   //       text: "You cannot post more than 6 images!",
-    //   //     });
-    //   //   } else {
-    //   //     setPicture([...picture, reader.result]);
-    //   //   }
-    //   // }
-    // };
-    // console.log(e.target.files)
-    // reader.readAsDataURL(e.target.files[0]);
-    // console.log(picture)
   };
+
+  const [states, setStates] = useState([]);
+  const [pickedState, setPickedState] = useState("");
+  const [pickedLocal, setPickedLocal] = useState("");
+  const [regions, setRegions] = useState([]);
+
+  useEffect(() => {
+    setStates(NaijaStates.states());
+  }, []);
 
   const _submitForm = () => {
     setLoading(true);
@@ -374,6 +379,10 @@ const AddItemModal = ({ setToggleAdd }) => {
       item_subcategory,
       user_id: user._id,
       item_status,
+      item_state: pickedState,
+      item_local: pickedLocal,
+      item_phone: user.phone,
+      item_email: user.email
     };
 
     axios
@@ -395,6 +404,10 @@ const AddItemModal = ({ setToggleAdd }) => {
           text: error.response.data.data,
         });
       });
+  };
+
+  const _getRegions = (state) => {
+    setRegions(NaijaStates.lgas(state).lgas);
   };
 
   return (
@@ -419,31 +432,20 @@ const AddItemModal = ({ setToggleAdd }) => {
                 <img src={plus} alt="plus" />
                 {imageLoad && <Loader active inline="centered" />}
               </ImageSelector>
-              <ImageIndicatorWrapper>
+              <ImageIndicatorWrapper opacity={opacity}>
                 {picture.length !== 0 ? (
                   <>
                     {picture.map((item, id) => {
                       return (
                         <ImageIndicator key={id}>
-                          <img
-                            src={item}
-                            width={"100%"}
-                            height={"100%"}
-                            style={{
-                              position: "relative",
-                              borderRadius: "8px",
-                            }}
-                          />
+                          <Image background={item}></Image>
                         </ImageIndicator>
                       );
                     })}
                   </>
                 ) : (
                   <>
-                    {/* <ImageIndicator>1</ImageIndicator>
-                    <ImageIndicator>2</ImageIndicator>
-                    <ImageIndicator>3</ImageIndicator>
-                    <ImageIndicator>4</ImageIndicator> */}
+                      <div>Can't upload more than 6 photos</div>
                   </>
                 )}
               </ImageIndicatorWrapper>
@@ -543,6 +545,22 @@ const AddItemModal = ({ setToggleAdd }) => {
                 >
                   <Option>Select Sub-Category</Option>
                   {MEDICALS_COSMETICS_BEAUTIES.map((item, id) => (
+                    <Option key={id} value={item}>
+                      {item}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            ) : item_category === "ANIMALS/LIVESTOCK/AGRICULTURE" ? (
+              <>
+                <Select
+                  value={item_subcategory}
+                  onChange={(e) => {
+                    setItemSubCategory(e.target.value);
+                  }}
+                >
+                  <Option>Select Sub-Category</Option>
+                  {ANIMALS_LIVESTOCK_AGRICULTURE.map((item, id) => (
                     <Option key={id} value={item}>
                       {item}
                     </Option>
@@ -680,13 +698,48 @@ const AddItemModal = ({ setToggleAdd }) => {
               <Option value={"Nigerian Used"}>Nigerian Used</Option>
               <Option value={"Foreign Used"}>Foreign Used</Option>
             </Select>
+            <ProductChoiceSelect
+              value={pickedState}
+              onChange={(e) => {
+                setPickedState(e.target.value);
+                _getRegions(e.target.value);
+              }}
+            >
+              <ProductOption>States</ProductOption>
+              {states.map((state, id) => {
+                return (
+                  <ProductOption key={id} value={state}>
+                    {state}
+                  </ProductOption>
+                );
+              })}
+            </ProductChoiceSelect>
+            <ProductChoiceSelect
+              value={pickedLocal}
+              onChange={(e) => {
+                setPickedLocal(e.target.value);
+              }}
+            >
+              <ProductOption>LGA</ProductOption>
+              {regions ? (
+                <>
+                  {regions.map((local, id) => {
+                    return <ProductOption key={id}>{local}</ProductOption>;
+                  })}
+                </>
+              ) : (
+                <>
+                  <ProductOption>LGA</ProductOption>
+                </>
+              )}
+            </ProductChoiceSelect>
             <InputField
               onChange={(e) => {
                 handlePictureChange(e);
                 setPickFile(e.target.files);
-                if (picture.length === 4 || picture.length === 5) {
-                  uploadFile(e.target.files);
-                }
+                // if (picture.length === 4 || picture.length === 5) {
+                //   uploadFile(e.target.files);
+                // }
               }}
               ref={pick}
               style={{ display: "none" }}
@@ -807,7 +860,7 @@ const Items = ({ setToggleAdd }) => {
           />
           {items.map((item, id) => (
             <ItemWrapper key={id}>
-              <ItemImage src={item.item_pictures[0]} alt="items" />
+              <ItemImage src={item.item_pictures[0]} alt={"image"}/>
               <ItemDesc>{item.item_name}</ItemDesc>
               <ItemPrice>
                 NGN{" "}
@@ -818,7 +871,7 @@ const Items = ({ setToggleAdd }) => {
               {item.item_approval === true ? (
                 <>
                   <ActionButtonWrapper>
-                    <Button background={"green"}>Edit</Button>
+                    <Button background={"green"} onCLick={()=>{navigate("/edit/item")}}>Edit</Button>
                     <Button background={"red"}>Delete</Button>
                   </ActionButtonWrapper>
                 </>
@@ -834,6 +887,22 @@ const Items = ({ setToggleAdd }) => {
     </>
   );
 };
+
+const ProductChoiceSelect = styled.select`
+  background-color: ${Colors.DIRTY_WHITE};
+  width: 90%;
+  font-family: Montserrat;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.17);
+  margin-top: 10px;
+`;
+
+const ProductOption = styled.option`
+  font-family: Montserrat;
+  color: ${Colors.PRIMARY_DEEP};
+  font-size: 0.5rem;
+`;
 
 const Cancel = styled.img`
   position: absolute;
@@ -865,8 +934,16 @@ const ItemWrapper = styled.div`
 const ItemImage = styled.img`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  width: 100%;
-  height: 150px;
+  // width: 100%;
+  // height: 150px;
+  // background-image: url(${(props)=> props.source}) !important;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-position: center;
+  flex-shrink:0;
+  -webkit-flex-shrink: 0;
+  max-width:100%;
+  max-height:150px;
 `;
 
 const ItemDesc = styled.div`

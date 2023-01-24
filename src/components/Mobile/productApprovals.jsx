@@ -121,16 +121,17 @@ const ItemApprove = styled.div`
   text-align: center;
 `;
 const ProductWrapper = styled.div`
-  width: 90%;
-  margin: 10px 5% 10px 5%;
+  width: 95%;
+  margin: 10px 5% 10px 2.5%;
   padding: 10px;
   border-radius: 8px;
   background-color: ${Colors.WHITE};
   height: 90vh;
   overflow-y: scroll;
   display: grid;
-  grid-template-columns: 48% 48%;
-  column-gap: 4%;
+  grid-template-columns: 49% 49%;
+  column-gap: 2%;
+  row-gap: 2%;
 `;
 
 const ProductCard = styled.div`
@@ -142,14 +143,14 @@ const ProductCard = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 5px;
-  height: 40vh;
+  height: 35vh;
 `;
 
 const ProductImage = styled.img`
-  width: 100%;
+  max-width: 100%;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  height: 45%;
+  max-height: 45%;
 `;
 
 const ProductName = styled.div`

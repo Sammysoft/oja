@@ -3,6 +3,12 @@ import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 
 const Footer = () => {
+
+
+  const showYear =()=>{
+    const date = new Date();
+    return date.getFullYear()
+  }
   return (
     <>
       <FooterWrapper>
@@ -13,8 +19,8 @@ const Footer = () => {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-between",
-                width: "25%",
+                justifyContent: "center",
+                width: "100%",
               }}
             >
               <img
@@ -22,7 +28,7 @@ const Footer = () => {
                 style={{ height: 80, width: 80 }}
                 alt="little-display"
               />
-              <span style={{ fontFamily: "Montserrat", fontSize: "2rem" }}>
+              <span style={{ fontFamily: "Montserrat", fontSize: "3rem" }}>
                 OJA
               </span>
             </div>
@@ -34,33 +40,54 @@ const Footer = () => {
           </CategoryBody>
         </FirstCategory>
         <SecondCategory>
-          <CategoryHeaderText>Quick Links</CategoryHeaderText>
+          {/* <CategoryHeaderText>Quick Links</CategoryHeaderText>
           <LinkList>Home</LinkList>
           <LinkList>Product Listings</LinkList>
           <LinkList>Sell my items</LinkList>
-          <LinkList>Terms of Service</LinkList>
+          <LinkList>Terms of Service</LinkList> */}
+
+          <ButtonWrapper>
+            <SelectorButton>Sell Items</SelectorButton>
+            <SelectorButton>Categories</SelectorButton>
+          </ButtonWrapper>
         </SecondCategory>
-        <ThirdCategory>
+        {/* <ThirdCategory>
           <CategoryHeaderText>Contact Us</CategoryHeaderText>
           <CategoryBody>
             No 34, adesida ayomide street off ojota bus stop, lagos. +234 (801)
             12 345 6789 +234 (801) 12 345 6789
           </CategoryBody>
-        </ThirdCategory>
+        </ThirdCategory> */}
+
       </FooterWrapper>
       <CopyWriteSection>
-        OJA is a subscription based system, built to scale-up a free enterprise
-        solution; an online market platform for sellers and buyers, brands and
-        corporate entities, seeking a channel to reach mass consumer markets, or
-        sell that one item for a quick cash. Ojaoneline.ng is a secured
-        user-friendly marketing tool with a turnaround time for subscription
-        happening in real-time, reinforced through custom programming interface,
-        application topographies and flexibility to end-users. With OJA the
-        result is always what you sought.COPYRIGHT (C) 2022. OJAONLINE.NG
+      COPYRIGHT (C) {showYear()}. OJAONLINE.NG
       </CopyWriteSection>
     </>
   );
 };
+
+const ButtonWrapper = styled.div`
+width: 100%;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-evenly;
+padding: 0px 30px 0px 30px;
+
+`
+
+const SelectorButton = styled.div`
+color: ${Colors.PRIMARY};
+background: white;
+border-radius: 8px;
+padding: 6px 30px;
+text-align: center;
+font-weight: 800;
+font-family: Montserrat;
+width: 50%:
+cursor: pointer;
+`
 
 const CopyWriteSection = styled.div`
   width: 100%;
@@ -71,16 +98,16 @@ const CopyWriteSection = styled.div`
 `;
 
 const FirstCategory = styled.div`
-  flex: 2;
+  // flex: 2;
 `;
 
 const SecondCategory = styled.div`
-  flex: 1;
+width: 50%;
 `;
 
-const ThirdCategory = styled.div`
-  flex: 1;
-`;
+// const ThirdCategory = styled.div`
+//   flex: 1;
+// `;
 
 const CategoryHeaderText = styled.div`
   color: ${Colors.WHITE};
@@ -90,31 +117,36 @@ const CategoryHeaderText = styled.div`
   font-family: Montserrat;
 `;
 const CategoryBody = styled.div`
-  width: 70%;
+  width: 100%;
   color: ${Colors.WHITE};
   font-family: Montserrat;
   line-height: 2.5;
+  text-align: center;
+  align-self: center;
+  font-size:1.5rem;
+  padding: 0px 20% 10% 20%;
 `;
 
-const LinkList = styled.div`
-  color: ${Colors.WHITE};
-  font-family: Montserrat;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  text-align: left;
-  width: 100%;
-  cursor: pointer;
-`;
+// const LinkList = styled.div`
+//   color: ${Colors.WHITE};
+//   font-family: Montserrat;
+//   padding-top: 10px;
+//   padding-bottom: 10px;
+//   text-align: left;
+//   width: 100%;
+//   cursor: pointer;
+// `;
 
 const FooterWrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding: 5%;
+  padding: 3%;
   background-color: ${Colors.PRIMARY_DEEP};
   height: fit-content;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
 `;
 export default Footer;

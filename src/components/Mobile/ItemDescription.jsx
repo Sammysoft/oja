@@ -122,9 +122,11 @@ const ItemDescription = () => {
               <img
                 src={itemPictures[0]}
                 alt="product"
-                width={"100%"}
-                height={"100%"}
-                style={{ borderRadius: "15px" }}
+                style={{
+                  borderRadius: "15px",
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                }}
               />
             </>
           )}
@@ -135,9 +137,11 @@ const ItemDescription = () => {
               <img
                 src={source}
                 alt="product"
-                width={"100%"}
-                height={"100%"}
-                style={{ borderRadius: "15px" }}
+                style={{
+                  borderRadius: "15px",
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                }}
               />
             </LittleGallery>
           ))}

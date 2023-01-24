@@ -20,18 +20,18 @@ const ViewItem = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [seller, setSeller] = useState({})
+  const [seller, setSeller] = useState({});
 
   const [loading, setLoading] = useState(Boolean);
 
   useEffect(() => {
     setLoading(true);
     axios.get(`${api}/product/${item_id}`).then((res) => {
-        axios
-        .post(`${api}/product/seller`,{user_id: res.data.data.user_id} )
+      axios
+        .post(`${api}/product/seller`, { user_id: res.data.data.user_id })
         .then((res) => {
-                setSeller(res.data.data)
-        })
+          setSeller(res.data.data);
+        });
       setItem(res.data.data);
       setItemPictures(res.data.data.item_pictures[0]);
       setLoading(false);
@@ -137,9 +137,11 @@ const ViewItem = () => {
               <img
                 src={itemPictures[0]}
                 alt="product"
-                width={"100%"}
-                height={"100%"}
-                style={{ borderRadius: "15px" }}
+                style={{
+                  borderRadius: "15px",
+                  maxWidth: "100%",
+                  minWidth: "100%",
+                }}
               />
             </>
           )}
@@ -369,6 +371,7 @@ const RightGallery = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 23%;
+  overflow-y: scroll;
 `;
 
 const LittleGallery = styled.div`
@@ -377,6 +380,7 @@ const LittleGallery = styled.div`
   height: 9vh;
   box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
+  margin-bottom: 10px;
 `;
 
 const ViewItemWrapper = styled.div`

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
@@ -120,6 +122,7 @@ const NavBar = () => {
           setToggleMenu={setToggleMenu}
         />
       )}
+      <BottomNav />
     </>
   );
 };
@@ -180,7 +183,7 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
               <MenuName>My Dashboard</MenuName>
             </MenuOptions>
           </Link>
-          <Link
+          {/* <Link
             to="/items"
             style={{
               textDecoration: "none",
@@ -218,7 +221,7 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
               <MenuIcon src={pro} />
               <MenuName>Profile</MenuName>
             </MenuOptions>
-          </Link>
+          </Link> */}
           <br />
           <br />
           <CategoryBanner>PRODUCT CATEGORIES</CategoryBanner>
@@ -258,6 +261,86 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
     </>
   );
 };
+
+
+const BottomNav = ()=>{
+  const navigate  = useNavigate()
+  return(
+    <>
+      <BottomNavWrapper>
+        <BottomNavItem onClick={()=>{
+            navigate("/")
+        }}>
+          <BottomNavIcon src={house} alt="home" width={30} height={30}/>
+          <BottomNavText>
+              Home
+          </BottomNavText>
+        </BottomNavItem>
+        <BottomNavItem onClick={()=>{
+            navigate("/items")
+        }}>
+          <BottomNavIcon src={sell} alt="sell" width={30} height={30}/>
+          <BottomNavText>
+              Sell
+          </BottomNavText>
+        </BottomNavItem>
+        <BottomNavItem onClick={()=>{
+          navigate("/chats")
+        }}>
+          <BottomNavIcon src={chat} alt="chat" width={30} height={30}/>
+          <BottomNavText>
+              Chats
+          </BottomNavText>
+        </BottomNavItem>
+        <BottomNavItem onClick={()=>{
+          navigate("/profile")
+        }}>
+          <BottomNavIcon src={pro} alt="chat" width={30} height={30}/>
+          <BottomNavText>
+              Profile
+          </BottomNavText>
+        </BottomNavItem>
+      </BottomNavWrapper>
+    </>
+  )
+}
+
+const BottomNavWrapper = styled.div`
+position: fixed;
+bottom: 0px;
+width: 100vw;
+z-index: 999;
+height: fit-content;
+padding: 5px;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: space-around;
+background-color: ${Colors.WHITE};
+border-top-left-radius: 8px;
+border-top-right-radius: 8px;
+box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.8);
+`
+
+const BottomNavItem = styled.div`
+display: flex;
+flex-direction: column;
+justify-contnet: center;
+align-items: center;
+`
+
+const BottomNavIcon = styled.img`
+
+`
+
+const BottomNavText = styled.div`
+font-family: Montserrat;
+text-align: center;
+color: ${Colors.PRIMARY};
+font-weight: 700;
+padding-top: 5px;
+`
+
 const Logout = styled.div`
   font-family: Montserrat;
   color: ${Colors.PRIMARY};

@@ -33,6 +33,10 @@ const Wrapper2 = styled.div`
 `;
 
 const Footer = () => {
+  const showYear =()=>{
+    const date = new Date();
+    return date.getFullYear()
+  }
   return (
     <>
       <FooterWrapper>
@@ -61,7 +65,7 @@ const Footer = () => {
             <SelectorButton>Categories</SelectorButton>
           </ButtonWrapper>
       </FooterWrapper>
-      <CopyWriteSection>COPYRIGHT (C) 2022. OJAONLINE.NG</CopyWriteSection>
+      <CopyWriteSection> COPYRIGHT (C) {showYear()}. OJAONLINE.NG</CopyWriteSection>
     </>
   );
 };
@@ -74,6 +78,7 @@ const CopyWriteSection = styled.div`
   padding: 10px;
   text-align: center;
   font-family: Montserrat;
+  padding-bottom: 10vh;
 `;
 
 const ButtonWrapper = styled.div`

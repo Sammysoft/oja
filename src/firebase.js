@@ -5,13 +5,13 @@ import { initializeApp } from "firebase/app";
 import { getStorage } from 'firebase/storage'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD8Kzp0TjyjYYjvSLnFTCVOw-HmWNv7akQ",
-  authDomain: "crave-uploads.firebaseapp.com",
-  projectId: "crave-uploads",
-  storageBucket: "crave-uploads.appspot.com",
-  messagingSenderId: "501111922513",
-  appId: "1:501111922513:web:698b192a8d2c463fd37d70",
-  measurementId: "G-1P3F5EFQQC",
+  apiKey: "AIzaSyAGhDbUX2tkyjo-nHULOzBgg48Jq7H5nTQ",
+  authDomain: "medics-media.firebaseapp.com",
+  projectId: "medics-media",
+  storageBucket: "medics-media.appspot.com",
+  messagingSenderId: "938738973743",
+  appId: "1:938738973743:web:8e3cd4351addf202859ada",
+  measurementId: "G-M3MD1EC3HK"
 };
 
 // Initialize Firebase

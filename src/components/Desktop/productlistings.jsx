@@ -13,39 +13,64 @@ import { Colors } from "../../assets/styles";
 import { category } from "../../assets/data";
 import advert from "../../assets/ads3.png";
 import advert2 from "../../assets/car.png";
+import kids from "../../assets/svg/kid.svg";
+import medic from "../../assets/svg/medic.svg";
+import work from "../../assets/svg/work.svg";
+import agro from "../../assets/svg/agro.svg";
+import sport from "../../assets/svg/sport.svg";
 
 const data = [
   {
-    category: "Automobile",
+    category: "AUTOMOBILE",
     icon: car,
   },
   {
-    category: "Landed properties",
+    category: "LANDED PROPERTIES",
     icon: house,
   },
   {
-    category: "Phones, computers and accessories",
+    category: "PHONES, COMPUTERS AND ACCESSORIES",
     icon: phone,
   },
   {
-    category: "Electronics and electronic accessory",
+    category: "ELECTRONICS AND ACCESSORIES",
     icon: television,
   },
   {
-    category: "Fashion",
+    category: "MEDICALS / COSMETICS / BEAUTIES",
+    icon: medic,
+  },
+  {
+    category: "SPORTS",
+    icon: sport,
+  },
+  {
+    category: "FASHION",
     icon: fashion,
   },
   {
-    category: "Home decor",
+    category: "KIDDIES / BABIES",
+    icon: kids,
+  },
+  {
+    category: "HOME DECORS",
     icon: decor,
   },
   {
-    category: "Groceries",
+    category: "ANIMALS / LIVESTOCK / AGRICULTURE",
+    icon: agro,
+  },
+  {
+    category: "GROCERIES / BREWERIES",
     icon: bag,
   },
   {
-    category: "Services",
+    category: "SERVICES",
     icon: service,
+  },
+  {
+    category: "FACTORY / INDUSTRIAL / CONSTRUCTIONS",
+    icon: work,
   },
 ];
 
@@ -78,7 +103,6 @@ const ProductListing = ({ right }) => {
               </>
             ) : (
               <>
-                {" "}
                 <ProductCategory>
                   {data.map((datum, id) => {
                     return (
@@ -127,10 +151,11 @@ const ProductListing = ({ right }) => {
                       style={{
                         color: Colors.WHITE,
                         fontWeight: 900,
-                        width: "30%",
+                        width: "70%",
                         fontFamily: "Montserrat",
-                        fontSize: "2rem",
+                        fontSize: "2.5rem",
                         padding: 10,
+                        lineHeight:"3rem"
                       }}
                     >
                       Find the style that fits YOU!
