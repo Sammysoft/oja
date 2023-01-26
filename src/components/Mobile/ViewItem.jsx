@@ -23,6 +23,7 @@ const ViewItem = () => {
   const [seller, setSeller] = useState({});
 
   const [loading, setLoading] = useState(Boolean);
+  const [picker, setPicker] = useState(0)
 
   useEffect(() => {
     setLoading(true);
@@ -135,7 +136,7 @@ const ViewItem = () => {
           ) : (
             <>
               <img
-                src={itemPictures[0]}
+                src={itemPictures[picker]}
                 alt="product"
                 style={{
                   borderRadius: "15px",
@@ -148,7 +149,9 @@ const ViewItem = () => {
         </ProductGallery>
         <RightGallery>
           {itemPictures.map((source, id) => (
-            <LittleGallery key={id}>
+            <LittleGallery key={id} onClick={()=>{
+              setPicker(id)
+            }}>
               <img
                 src={source}
                 alt="product"

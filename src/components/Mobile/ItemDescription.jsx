@@ -25,6 +25,7 @@ const ItemDescription = () => {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(Boolean);
+  const [picker, setPicker] = useState(0)
 
   useEffect(() => {
     setLoading(true);
@@ -120,7 +121,7 @@ const ItemDescription = () => {
           ) : (
             <>
               <img
-                src={itemPictures[0]}
+                src={itemPictures[picker]}
                 alt="product"
                 style={{
                   borderRadius: "15px",
@@ -133,7 +134,9 @@ const ItemDescription = () => {
         </ProductGallery>
         <RightGallery>
           {itemPictures.map((source, id) => (
-            <LittleGallery key={id}>
+            <LittleGallery key={id} onClick={()=>{
+              setPicker(id)
+            }}>
               <img
                 src={source}
                 alt="product"
@@ -420,6 +423,7 @@ const RightGallery = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 23%;
+  overflow-y: scroll;
 `;
 
 const LittleGallery = styled.div`
@@ -428,6 +432,7 @@ const LittleGallery = styled.div`
   height: 9vh;
   box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
+  margin-bottom: 10px;
 `;
 
 const ItemDescriptionWrapper = styled.div`
