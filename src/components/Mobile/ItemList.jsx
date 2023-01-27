@@ -860,7 +860,8 @@ const Items = ({ setToggleAdd }) => {
           />
           {items.map((item, id) => (
             <ItemWrapper key={id}>
-              <ItemImage src={item.item_pictures[0]} alt={"image"}/>
+              <ItemImage source={item.item_pictures[0]}></ItemImage>
+              <div></div>
               <ItemDesc>{item.item_name}</ItemDesc>
               <ItemPrice>
                 NGN{" "}
@@ -934,16 +935,16 @@ const ItemWrapper = styled.div`
 const ItemImage = styled.img`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  // width: 100%;
-  // height: 150px;
-  // background-image: url(${(props)=> props.source}) !important;
-  // background-repeat: no-repeat;
-  // background-size: cover;
-  // background-position: center;
-  flex-shrink:0;
-  -webkit-flex-shrink: 0;
-  max-width:100%;
-  max-height:150px;
+  width: 100%;
+  height: 150px;
+  background-image: url(${(props)=> props.source}) !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  // flex-shrink:0;
+  // -webkit-flex-shrink: 0;
+  // max-width:100%;
+  // max-height:150px;
 `;
 
 const ItemDesc = styled.div`

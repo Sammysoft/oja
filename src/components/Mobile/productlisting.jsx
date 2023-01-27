@@ -253,11 +253,11 @@ const ProductListWrapper = ({ cat, products }) => {
           <ProductItem key={index}>
             <ProductImage
               src={ads.item_pictures[0]}
-              alt="img_product"
+              // alt="img_product"
               onClick={() => {
                 navigate(`/item/description/${ads._id}`);
               }}
-            />
+            ></ProductImage>
             <ProductItemName>{ads.item_name}</ProductItemName>
             <ProductPrice>
               NGN{" "}
@@ -376,12 +376,12 @@ const ProductItem = styled.div`
 `;
 
 const ProductImage = styled.img`
-  max-width: 100%;
-  max-height: 50%;
-  // background-image: url(${(props) => props.background});
-  // background-position: center;
-  // background-repeat: no-repeat;
-  // background-size: 100%;
+  width: 100%;
+  height: 50%;
+  background-image: url(${(props) => props.background});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
 `;

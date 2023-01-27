@@ -120,7 +120,7 @@ const ItemDescription = () => {
             </>
           ) : (
             <>
-              <img
+              {/* <img
                 src={itemPictures[picker]}
                 alt="product"
                 style={{
@@ -128,7 +128,19 @@ const ItemDescription = () => {
                   maxWidth: "100%",
                   maxHeight: "100%",
                 }}
-              />
+              /> */}
+
+               <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "15px",
+                  backgroundImage: url(itemPictures[picker]),
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
             </>
           )}
         </ProductGallery>
@@ -137,7 +149,7 @@ const ItemDescription = () => {
             <LittleGallery key={id} onClick={()=>{
               setPicker(id)
             }}>
-              <img
+              {/* <img
                 src={source}
                 alt="product"
                 style={{
@@ -145,7 +157,8 @@ const ItemDescription = () => {
                   maxWidth: "100%",
                   maxHeight: "100%",
                 }}
-              />
+              /> */}
+                 <LittleImage background={source}></LittleImage>
             </LittleGallery>
           ))}
         </RightGallery>
@@ -433,6 +446,16 @@ const LittleGallery = styled.div`
   box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
   margin-bottom: 10px;
+`;
+
+const LittleImage = styled.div`
+backgrond-image: ${(props) => props.background};
+background-repeat: no-repeat;
+background-size: cover;
+background-position; center;
+border-radius: 15px;
+height: 100%;
+width: 100%;
 `;
 
 const ItemDescriptionWrapper = styled.div`

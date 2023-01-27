@@ -23,7 +23,7 @@ const ViewItem = () => {
   const [seller, setSeller] = useState({});
 
   const [loading, setLoading] = useState(Boolean);
-  const [picker, setPicker] = useState(0)
+  const [picker, setPicker] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -135,7 +135,7 @@ const ViewItem = () => {
             </>
           ) : (
             <>
-              <img
+              {/* <img
                 src={itemPictures[picker]}
                 alt="product"
                 style={{
@@ -143,22 +143,38 @@ const ViewItem = () => {
                   maxWidth: "100%",
                   minWidth: "100%",
                 }}
-              />
+              /> */}
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "15px",
+                  backgroundImage: url(itemPictures[picker]),
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
             </>
           )}
         </ProductGallery>
         <RightGallery>
           {itemPictures.map((source, id) => (
-            <LittleGallery key={id} onClick={()=>{
-              setPicker(id)
-            }}>
-              <img
+            <LittleGallery
+              key={id}
+              onClick={() => {
+                setPicker(id);
+              }}
+            >
+              {/* <img
                 src={source}
                 alt="product"
                 width={"100%"}
                 height={"100%"}
                 style={{ borderRadius: "15px" }}
-              />
+              /> */}
+              <LittleImage background={source}></LittleImage>
+              <LittleImage></LittleImage>
             </LittleGallery>
           ))}
         </RightGallery>
@@ -384,6 +400,16 @@ const LittleGallery = styled.div`
   box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
   margin-bottom: 10px;
+`;
+
+const LittleImage = styled.div`
+backgrond-image: ${(props) => props.background};
+background-repeat: no-repeat;
+background-size: cover;
+background-position; center;
+border-radius: 15px;
+height: 100%;
+width: 100%;
 `;
 
 const ViewItemWrapper = styled.div`
