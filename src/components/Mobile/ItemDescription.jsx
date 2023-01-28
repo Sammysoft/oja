@@ -25,7 +25,7 @@ const ItemDescription = () => {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(Boolean);
-  const [picker, setPicker] = useState(0)
+  const [picker, setPicker] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -130,25 +130,29 @@ const ItemDescription = () => {
                 }}
               /> */}
 
-               <div
+              {/* <div
                 style={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: "15px",
+                  // width: "100%",
+                  // height: "100%",
+                  // borderRadius: "15px",
                   backgroundImage: url(itemPictures[picker]),
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
+                  // backgroundRepeat: "no-repeat",
+                  // backgroundSize: "cover",
+                  // backgroundPosition: "center",
                 }}
-              ></div>
+              ></div> */}
+              <Dummy background={itemPictures[picker]}></Dummy>
             </>
           )}
         </ProductGallery>
         <RightGallery>
           {itemPictures.map((source, id) => (
-            <LittleGallery key={id} onClick={()=>{
-              setPicker(id)
-            }}>
+            <LittleGallery
+              key={id}
+              onClick={() => {
+                setPicker(id);
+              }}
+            >
               {/* <img
                 src={source}
                 alt="product"
@@ -158,7 +162,7 @@ const ItemDescription = () => {
                   maxHeight: "100%",
                 }}
               /> */}
-                 <LittleImage background={source}></LittleImage>
+              <LittleImage background={source}></LittleImage>
             </LittleGallery>
           ))}
         </RightGallery>
@@ -449,13 +453,23 @@ const LittleGallery = styled.div`
 `;
 
 const LittleImage = styled.div`
-backgrond-image: ${(props) => props.background};
+background-image: url(${(props) => props.background});
 background-repeat: no-repeat;
 background-size: cover;
 background-position; center;
 border-radius: 15px;
 height: 100%;
 width: 100%;
+`;
+
+const Dummy = styled.div`
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  background-image: url(${(props) => props.background});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 `;
 
 const ItemDescriptionWrapper = styled.div`

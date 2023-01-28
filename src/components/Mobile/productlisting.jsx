@@ -381,7 +381,7 @@ const ProductImage = styled.img`
   background-image: url(${(props) => props.background});
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: cover;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
 `;

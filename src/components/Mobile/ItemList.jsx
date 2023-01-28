@@ -297,7 +297,10 @@ const AddItemModal = ({ setToggleAdd }) => {
     } else {
       setOpacity(true);
       file.map((image) => {
-        const imageRef = ref(getStorage(), `images/oja-web-app-${Math.random + v4()}`);
+        const imageRef = ref(
+          getStorage(),
+          `images/oja-web-app-${Math.random + v4()}`
+        );
         let promise = [];
         const uploadTask = uploadBytesResumable(imageRef, image);
         promise.push(uploadTask);
@@ -382,7 +385,7 @@ const AddItemModal = ({ setToggleAdd }) => {
       item_state: pickedState,
       item_local: pickedLocal,
       item_phone: user.phone,
-      item_email: user.email
+      item_email: user.email,
     };
 
     axios
@@ -429,8 +432,15 @@ const AddItemModal = ({ setToggleAdd }) => {
                   pick.current.click();
                 }}
               >
-                <img src={plus} alt="plus" />
-                {imageLoad && <Loader active inline="centered" />}
+                {imageLoad === true ? (
+                  <>
+                    <Loader active inline="centered" />
+                  </>
+                ) : (
+                  <>
+                    <img src={plus} alt="plus" />
+                  </>
+                )}
               </ImageSelector>
               <ImageIndicatorWrapper opacity={opacity}>
                 {picture.length !== 0 ? (
@@ -445,7 +455,7 @@ const AddItemModal = ({ setToggleAdd }) => {
                   </>
                 ) : (
                   <>
-                      <div>Can't upload more than 6 photos</div>
+                    <div>Can't upload more than 6 photos</div>
                   </>
                 )}
               </ImageIndicatorWrapper>
@@ -872,7 +882,14 @@ const Items = ({ setToggleAdd }) => {
               {item.item_approval === true ? (
                 <>
                   <ActionButtonWrapper>
-                    <Button background={"green"} onCLick={()=>{navigate("/edit/item")}}>Edit</Button>
+                    <Button
+                      background={"green"}
+                      onCLick={() => {
+                        navigate("/edit/item");
+                      }}
+                    >
+                      Edit
+                    </Button>
                     <Button background={"red"}>Delete</Button>
                   </ActionButtonWrapper>
                 </>
@@ -937,7 +954,7 @@ const ItemImage = styled.img`
   border-top-right-radius: 8px;
   width: 100%;
   height: 150px;
-  background-image: url(${(props)=> props.source}) !important;
+  background-image: url(${(props) => props.source}) !important;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
