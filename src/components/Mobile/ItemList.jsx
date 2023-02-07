@@ -949,12 +949,12 @@ const ItemWrapper = styled.div`
   border-radius: 5px;
 `;
 
-const ItemImage = styled.img`
+const ItemImage = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   width: 100%;
   height: 150px;
-  background-image: url(${(props) => props.source}) !important;
+  background: url(${(props) => props.source}) !important;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

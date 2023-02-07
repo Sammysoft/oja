@@ -252,7 +252,7 @@ const ProductListWrapper = ({ cat, products }) => {
         {products.map((ads, index) => (
           <ProductItem key={index}>
             <ProductImage
-              src={ads.item_pictures[0]}
+              background={ads.item_pictures[0]}
               // alt="img_product"
               onClick={() => {
                 navigate(`/item/description/${ads._id}`);
@@ -375,15 +375,19 @@ const ProductItem = styled.div`
   height: 40vh;
 `;
 
-const ProductImage = styled.img`
-  width: 100%;
-  height: 50%;
+const ProductImage = styled.div`
+// flex-shrink:0;
+// -webkit-flex-shrink: 0;
+// max-width:100%;
+// max-height:150px;
   background-image: url(${(props) => props.background});
-  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position; 25% center;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
+  height: 50%;
+  width: 100%;
 `;
 
 const ProductItemName = styled.div`

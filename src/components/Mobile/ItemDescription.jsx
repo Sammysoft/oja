@@ -141,7 +141,7 @@ const ItemDescription = () => {
                   // backgroundPosition: "center",
                 }}
               ></div> */}
-              <Dummy background={itemPictures[picker]}></Dummy>
+              <Dummy background={itemPictures[picker]} alt="picks"></Dummy>
             </>
           )}
         </ProductGallery>
@@ -162,7 +162,7 @@ const ItemDescription = () => {
                   maxHeight: "100%",
                 }}
               /> */}
-              <LittleImage background={source}></LittleImage>
+              <LittleImage background={source} alt="pick"></LittleImage>
             </LittleGallery>
           ))}
         </RightGallery>
@@ -453,23 +453,31 @@ const LittleGallery = styled.div`
 `;
 
 const LittleImage = styled.div`
-background-image: url(${(props) => props.background});
+background: url(${(props) => props.background});
 background-repeat: no-repeat;
 background-size: cover;
-background-position; center;
+background-position; 25% center;
 border-radius: 15px;
 height: 100%;
 width: 100%;
+// flex-shrink:0;
+// -webkit-flex-shrink: 0;
+// max-width:100%;
+// max-height:150px;
 `;
 
 const Dummy = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 15px;
-  background-image: url(${(props) => props.background});
+  background: url(${(props) => props.background});
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position:center;
+  // flex-shrink:0;
+  // -webkit-flex-shrink: 0;
+  // max-width:100%;
+  // max-height:100%;
 `;
 
 const ItemDescriptionWrapper = styled.div`

@@ -70,7 +70,7 @@ const ProductApprovals = () => {
           return (
             <>
               <ProductCard key={id}>
-                <ProductImage src={item.item_pictures[0]} alt="product-photo" />
+                <ProductImage src={item.item_pictures[0]} ></ProductImage>
                 <ProductName>{item.item_name}</ProductName>
                 <ProductPrice>
                   NGN{" "}
@@ -146,12 +146,16 @@ const ProductCard = styled.div`
   height: 35vh;
 `;
 
-const ProductImage = styled.img`
-  max-width: 100%;
+const ProductImage = styled.div`
+background-image: url(${(props) => props.src});
+background-repeat: no-repeat;
+background-size: cover;
+background-position; 25% center;
+width: 100%;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  max-height: 45%;
-`;
+  height: 50%;
+  `;
 
 const ProductName = styled.div`
   width: 100%;

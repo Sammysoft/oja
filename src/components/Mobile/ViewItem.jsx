@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import left from "../../assets/svg/left_arrow.svg";
@@ -149,7 +151,7 @@ const ViewItem = () => {
                   width: "100%",
                   height: "100%",
                   borderRadius: "15px",
-                  backgroundImage: url(itemPictures[picker]),
+                  backgroundImage: `url(${itemPictures[picker]})`,
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
@@ -174,7 +176,7 @@ const ViewItem = () => {
                 style={{ borderRadius: "15px" }}
               /> */}
               <LittleImage background={source}></LittleImage>
-              <LittleImage></LittleImage>
+              {/* <LittleImage></LittleImage> */}
             </LittleGallery>
           ))}
         </RightGallery>
@@ -403,7 +405,7 @@ const LittleGallery = styled.div`
 `;
 
 const LittleImage = styled.div`
-backgrond-image: ${(props) => props.background};
+background-image: url(${(props) => props.background});
 background-repeat: no-repeat;
 background-size: cover;
 background-position; center;
