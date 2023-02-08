@@ -4,14 +4,14 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import { useNavigate } from "react-router";
-import { LoginContext } from "../../loginContext";
+import { AuthContext } from "../../loginContext";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { api } from "../../strings";
 
 const Chat = () => {
   const navigate = useNavigate();
-  const { user } = useContext(LoginContext);
+  const { getUser } = useContext(AuthContext);
   const token = localStorage.getItem("oja-token");
   const [chats, setChats] = useState([]);
   useEffect(() => {
@@ -21,7 +21,7 @@ const Chat = () => {
   }, [token]);
 
   useEffect(() => {
-    axios.post(`${api}/chat/view`, { sender: user.fullname }).then((res) => {
+    axios.post(`${api}/chat/view`, { sender: getUser.fullname }).then((res) => {
       console.log(res.data.data);
       setChats(res.data.data);
     });

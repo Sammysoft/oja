@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useContext } from "react";
 import styled from "styled-components";
-import { LoginContext } from "../../loginContext";
+import { AuthContext } from "../../loginContext";
 import { Colors } from "../../assets/styles";
 import camera from "../../assets/svg/camera.svg";
 import { storage } from "../../firebase";
@@ -21,17 +21,17 @@ import { Loader } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const { user } = useContext(LoginContext);
+  const { getUser } = useContext(AuthContext);
   const pick = useRef("");
   const navigate = useNavigate();
 
-  // const [userID ,setUserID] = useState(user._id)
-  const [email, setEmail] = useState(user.email);
-  const [fullname, setFullName] = useState(user.fullname);
-  const [phone, setPhone] = useState(user.phone);
-  const [state, setState] = useState(user.state);
+  // const [getUserID ,setgetUserID] = useState(getUser._id)
+  const [email, setEmail] = useState(getUser.email);
+  const [fullname, setFullName] = useState(getUser.fullname);
+  const [phone, setPhone] = useState(getUser.phone);
+  const [state, setState] = useState(getUser.state);
   const [local_government, setLocalGovernment] = useState(
-    user.local_government
+    getUser.local_government
   );
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -124,7 +124,7 @@ const Profile = () => {
         password,
       };
 
-      axios.post(`${api}/profile/update/${user._id}`, payload).then((res) => {
+      axios.post(`${api}/profile/update/${getUser._id}`, payload).then((res) => {
         setLoading(false);
         Swal.fire({
           icon: "success",
@@ -145,7 +145,7 @@ const Profile = () => {
     //     position:"top"
     //   });
     // }
-    axios.get(`${api}/user/${user._id}`).then((res) => {
+    axios.get(`${api}/user/${getUser._id}`).then((res) => {
       setEmail(res.data.data.email);
       setFullName(res.data.data.fullname);
       setLocalGovernment(res.data.data.local_government);
@@ -153,7 +153,7 @@ const Profile = () => {
       setState(res.data.data.state);
       setProfilePicture(res.data.data.profile_picture);
     });
-  }, [user.fullname]);
+  }, [getUser.fullname]);
 
   return (
     <>

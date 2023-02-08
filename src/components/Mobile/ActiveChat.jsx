@@ -9,10 +9,10 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { api } from "../../strings";
-import { LoginContext } from "../../loginContext";
+import { AuthContext } from "../../loginContext";
 
 const ActiveChats = () => {
-  const { user } = useContext(LoginContext);
+  const { getUser } = useContext(AuthContext);
   const location = useLocation();
   const [searchparams] = useSearchParams();
   const token = searchparams.get("token");
@@ -34,10 +34,10 @@ const ActiveChats = () => {
       });
     } else {
       const payload = {
-        id: user._id,
+        id: getUser._id,
         profile: middle,
         fullname: searchparams.get("name"),
-        sender: user.fullname,
+        sender: getUser.fullname,
         reciever: searchparams.get("name"),
         subject: searchparams.get("item"),
         message: message,
@@ -67,7 +67,7 @@ const ActiveChats = () => {
       navigate("/")
     }
     const payload = {
-      sender: user.fullname,
+      sender: getUser.fullname,
       reciever: searchparams.get("name"),
       subject: searchparams.get("item"),
       message: message,
@@ -92,7 +92,7 @@ const ActiveChats = () => {
           {chats.map((chat, id) => {
             return (
               <>
-                {chats.reciever === user.fullname ? (
+                {chats.reciever === getUser.fullname ? (
                   <>
                     <SenderChatWrapper key={id}>
                       {chat.message}

@@ -8,10 +8,10 @@ import axios from "axios";
 import { api } from "../../strings";
 import { Colors } from "../../assets/styles";
 import styled from "styled-components";
-import { LoginContext } from "../../loginContext";
+import { AuthContext } from "../../loginContext";
 
 const AllProducts = () => {
-  const { user } = useContext(LoginContext)
+  const { getUser } = useContext(AuthContext)
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [deleteProduct, setDeleteProduct] = useState(false);
@@ -25,10 +25,10 @@ const AllProducts = () => {
   }, [deleteProduct]);
 
 // useEffect(()=>{
-//   if(user.fullname === null){
+//   if(getUser.fullname === null){
 //     navigate("/")
 //   }
-// },[user])
+// },[getUser])
 
   const _deleteProduct = (id) => {
     axios

@@ -1,17 +1,23 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { Colors } from "../../assets/styles";
 import { api } from "../../strings";
 import left from "../../assets/svg/left_arrow.svg";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../loginContext";
 
 const ProductApprovals = () => {
   const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
+  const {getUser} = useContext(AuthContext)
 
   useEffect(() => {
+    if(getUser.userType !== "Admin"){
+      navigate("/")
+    }
     axios
       .get(`${api}/products/pending`)
       .then((res) => {
@@ -23,7 +29,7 @@ const ProductApprovals = () => {
           title: "Oops",
         });
       });
-  }, []);
+  });
 
   const _approveProduct = (user_id) => {
     axios

@@ -8,14 +8,14 @@ import { Colors } from "../../../assets/styles";
 import man_hair from "../../../assets/man_hair.png";
 import Footer from "../../../components/Mobile/footer";
 import ProductApproval from "../../../components/Mobile/productApprovals";
-import { LoginContext } from "../../../loginContext";
+import { AuthContext } from "../../../loginContext";
 import { useNavigate } from "react-router";
 import { Loader } from "semantic-ui-react";
 import Swal from "sweetalert2";
 
 const ProductApprovals = () => {
   const navigate = useNavigate();
-  const { user } = useContext(LoginContext);
+  const { getUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   const _detectUser = () => {

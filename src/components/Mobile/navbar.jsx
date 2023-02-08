@@ -23,7 +23,7 @@ import agro from "../../assets/svg/agro.svg";
 import kids from "../../assets/svg/kid.svg";
 import work from "../../assets/svg/work.svg";
 import dashboard from "../../assets/svg/dashboard.svg";
-import { LoginContext } from "../../loginContext";
+import { AuthContext } from "../../loginContext";
 import Swal from "sweetalert2";
 
 const data = [
@@ -82,7 +82,8 @@ const data = [
 ];
 
 const NavBar = () => {
-  const { user } = useContext(LoginContext);
+  const { getUser } = useContext(AuthContext);
+  // console.log(getUser)
   const navigate = useNavigate();
   const [toggleMenu, setToggleMenu] = React.useState(false);
   return (
@@ -117,8 +118,8 @@ const NavBar = () => {
       </NavWrapper>
       {toggleMenu && (
         <ToggleBar
-          username={user.fullname}
-          profile_picture={user.profile_picture}
+          username={getUser.fullname}
+          profile_picture={getUser.profile_picture}
           setToggleMenu={setToggleMenu}
         />
       )}
@@ -168,7 +169,6 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
               </ProfileBanner>
             </>
           )}
-
           <br />
           <Link
             to="/dashboard"
@@ -183,45 +183,6 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
               <MenuName>My Dashboard</MenuName>
             </MenuOptions>
           </Link>
-          {/* <Link
-            to="/items"
-            style={{
-              textDecoration: "none",
-              textDecorationLine: "none",
-              color: `${Colors.PRIMARY}`,
-            }}
-          >
-            <MenuOptions>
-              <MenuIcon src={sell} />
-              <MenuName>Sell Items</MenuName>
-            </MenuOptions>
-          </Link>
-          <Link
-            to="/chats"
-            style={{
-              textDecoration: "none",
-              textDecorationLine: "none",
-              color: `${Colors.PRIMARY}`,
-            }}
-          >
-            <MenuOptions>
-              <MenuIcon src={chat} />
-              <MenuName>Chats</MenuName>
-            </MenuOptions>
-          </Link>
-          <Link
-            to="/profile"
-            style={{
-              textDecoration: "none",
-              textDecorationLine: "none",
-              color: `${Colors.PRIMARY}`,
-            }}
-          >
-            <MenuOptions>
-              <MenuIcon src={pro} />
-              <MenuName>Profile</MenuName>
-            </MenuOptions>
-          </Link> */}
           <br />
           <br />
           <CategoryBanner>PRODUCT CATEGORIES</CategoryBanner>
@@ -246,7 +207,14 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
                 </CategoryItem>
               </CategoryMenu>
             </>
-          ))}
+          ))}{" "}
+          <Logout
+            onClick={() => {
+              navigate("/about");
+            }}
+          >
+            About OJA
+          </Logout>
           {username !== "" && (
             <Logout
               onClick={() => {
@@ -262,84 +230,81 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
   );
 };
 
-
-const BottomNav = ()=>{
-  const navigate  = useNavigate()
-  return(
+const BottomNav = () => {
+  const navigate = useNavigate();
+  return (
     <>
       <BottomNavWrapper>
-        <BottomNavItem onClick={()=>{
-            navigate("/")
-        }}>
-          <BottomNavIcon src={house} alt="home" width={30} height={30}/>
-          <BottomNavText>
-              Home
-          </BottomNavText>
+        <BottomNavItem
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          <BottomNavIcon src={house} alt="home" width={30} height={30} />
+          <BottomNavText>Home</BottomNavText>
         </BottomNavItem>
-        <BottomNavItem onClick={()=>{
-            navigate("/items")
-        }}>
-          <BottomNavIcon src={sell} alt="sell" width={30} height={30}/>
-          <BottomNavText>
-              Sell
-          </BottomNavText>
+        <BottomNavItem
+          onClick={() => {
+            navigate("/items");
+          }}
+        >
+          <BottomNavIcon src={sell} alt="sell" width={30} height={30} />
+          <BottomNavText>Sell</BottomNavText>
         </BottomNavItem>
-        <BottomNavItem onClick={()=>{
-          navigate("/chats")
-        }}>
-          <BottomNavIcon src={chat} alt="chat" width={30} height={30}/>
-          <BottomNavText>
-              Chats
-          </BottomNavText>
+        <BottomNavItem
+          onClick={() => {
+            navigate("/chats");
+          }}
+        >
+          <BottomNavIcon src={chat} alt="chat" width={30} height={30} />
+          <BottomNavText>Chats</BottomNavText>
         </BottomNavItem>
-        <BottomNavItem onClick={()=>{
-          navigate("/profile")
-        }}>
-          <BottomNavIcon src={pro} alt="chat" width={30} height={30}/>
-          <BottomNavText>
-              Profile
-          </BottomNavText>
+        <BottomNavItem
+          onClick={() => {
+            navigate("/profile");
+          }}
+        >
+          <BottomNavIcon src={pro} alt="chat" width={30} height={30} />
+          <BottomNavText>Profile</BottomNavText>
         </BottomNavItem>
       </BottomNavWrapper>
     </>
-  )
-}
+  );
+};
 
 const BottomNavWrapper = styled.div`
-position: fixed;
-bottom: 0px;
-width: 100vw;
-z-index: 999;
-height: fit-content;
-padding: 5px;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-around;
-background-color: ${Colors.WHITE};
-border-top-left-radius: 8px;
-border-top-right-radius: 8px;
-box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.8);
-`
+  position: fixed;
+  bottom: 0px;
+  width: 100vw;
+  z-index: 999;
+  height: fit-content;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background-color: ${Colors.WHITE};
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.8);
+`;
 
 const BottomNavItem = styled.div`
-display: flex;
-flex-direction: column;
-justify-contnet: center;
-align-items: center;
-`
+  display: flex;
+  flex-direction: column;
+  justify-contnet: center;
+  align-items: center;
+`;
 
-const BottomNavIcon = styled.img`
-
-`
+const BottomNavIcon = styled.img``;
 
 const BottomNavText = styled.div`
-font-family: Montserrat;
-text-align: center;
-color: ${Colors.PRIMARY};
-font-weight: 700;
-padding-top: 5px;
-`
+  font-family: Montserrat;
+  text-align: center;
+  color: ${Colors.PRIMARY};
+  font-weight: 700;
+  padding-top: 5px;
+`;
 
 const Logout = styled.div`
   font-family: Montserrat;

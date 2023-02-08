@@ -4,7 +4,7 @@ import left from "../../assets/svg/left_arrow.svg";
 import { Colors } from "../../assets/styles";
 import chat from "../../assets/svg/chat_dot.svg";
 import call from "../../assets/svg/call.svg";
-import { LoginContext } from "../../loginContext";
+import { AuthContext } from "../../loginContext";
 import axios from "axios";
 import { api } from "../../strings";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ const ItemDescription = () => {
   const url = window.location.pathname;
   const item_id = url.slice(-24);
   const navigate = useNavigate();
-  const { user } = useContext(LoginContext);
+  const { getUser } = useContext(AuthContext);
   const [toggleLogin, setToggleLogin] = useState(Boolean);
   const [item, setItem] = useState({});
   const [itemPictures, setItemPictures] = useState([]);
@@ -183,7 +183,7 @@ const ItemDescription = () => {
       </ProductPrice>
       <ProductDescription>{item.item_description}</ProductDescription>
       <ContactButtonWrapper>
-        {!user.fullname ? (
+        {!getUser.fullname ? (
           <>
             <ContactButton
               onClick={() => {

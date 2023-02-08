@@ -8,7 +8,7 @@ import left_arrow from "../../assets/svg/left_arrow.svg";
 import plus from "../../assets/svg/plus_circle.svg";
 import { Loader } from "semantic-ui-react";
 import { storage } from "../../firebase";
-import { LoginContext } from "../../loginContext";
+import { AuthContext } from "../../loginContext";
 import cancel from "../../assets/svg/cancel_black.svg";
 import { Categories } from "../../data";
 import { AUTOMOBILE } from "../../data";
@@ -59,7 +59,7 @@ const Header = styled.div`
 `;
 
 const ItemList = () => {
-  const { user } = useContext(LoginContext);
+  const { user } = useContext(AuthContext);
   const [toggleAdd, setToggleAdd] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem("oja-token");
@@ -271,7 +271,7 @@ font-weight: 900;
 `;
 
 const AddItemModal = ({ setToggleAdd }) => {
-  const { user } = useContext(LoginContext);
+  const { user } = useContext(AuthContext);
   const [item_name, setItemName] = useState("");
   const [item_category, setItemCategory] = useState("");
   const [item_subcategory, setItemSubCategory] = useState("");
@@ -832,14 +832,14 @@ const AddItem = ({ setToggleAdd }) => {
 const Items = ({ setToggleAdd }) => {
   const [loading, setLoading] = useState(Boolean);
   const [items, setItems] = useState([]);
-  const { user } = useContext(LoginContext);
+  const { getUser } = useContext(AuthContext);
   useEffect(() => {
     setLoading(true);
-    axios.get(`${api}/item/${user._id}`).then((res) => {
+    axios.get(`${api}/item/${getUser._id}`).then((res) => {
       setItems(res.data.data);
       setLoading(false);
     });
-  }, [user._id]);
+  }, [getUser._id]);
 
   return (
     <>

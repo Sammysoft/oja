@@ -10,14 +10,14 @@ import profile from "../../assets/svg/person.svg";
 import logout from "../../assets/svg/logout.svg";
 import bag2 from "../../assets/svg/bag2.svg";
 import Swal from "sweetalert2";
-import { LoginContext } from "../../loginContext";
+import { AuthContext } from "../../loginContext";
 
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { user } = useContext(LoginContext);
+  const { getUser } = useContext(AuthContext);
 
-  switch (user.usertype) {
+  switch (getUser.usertype) {
     case "Admin":
       return <Admin />;
       break;

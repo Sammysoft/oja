@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
@@ -6,6 +6,7 @@ import axios from "axios";
 import { api } from "../../strings";
 import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
+import { AuthContext } from "../../loginContext";
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -69,6 +70,7 @@ const SignInForm = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {setToken} = useContext(AuthContext)
 
   //State indicators
   const [loading, setLoading] = useState(Boolean);
@@ -92,6 +94,7 @@ const SignInForm = () => {
         .then((res) => {
           setLoading(false)
           localStorage.setItem("oja-token", res.data.token);
+          setToken(res.data.token)
           navigate('/dashboard');
         })
         .catch((error) => {
