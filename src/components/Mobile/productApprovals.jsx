@@ -15,7 +15,8 @@ const ProductApprovals = () => {
   const {getUser} = useContext(AuthContext)
 
   useEffect(() => {
-    if(getUser.userType !== "Admin"){
+    console.log(getUser)
+    if(getUser.usertype !== "Admin"){
       navigate("/")
     }
     axios
@@ -29,7 +30,7 @@ const ProductApprovals = () => {
           title: "Oops",
         });
       });
-  });
+  },[getUser, navigate]);
 
   const _approveProduct = (user_id) => {
     axios
