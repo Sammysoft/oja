@@ -225,7 +225,7 @@ const FormInput = styled.input`
 const FormFieldDivider = styled.div`
   display: grid;
   grid-template-columns: auto auto;
-  column-gap: 10%;
+  column-gap: 5%;
 `;
 
 const FormFieldOption = styled.option`

@@ -120,49 +120,39 @@ const ItemDescription = () => {
             </>
           ) : (
             <>
-              {/* <img
-                src={itemPictures[picker]}
-                alt="product"
+              <div
                 style={{
+                  background: `url('${itemPictures[picker]}')`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
                   borderRadius: "15px",
-                  maxWidth: "100%",
-                  maxHeight: "100%",
+                  height: "100%",
+                  width: "100%",
                 }}
-              /> */}
-
-              {/* <div
-                style={{
-                  // width: "100%",
-                  // height: "100%",
-                  // borderRadius: "15px",
-                  backgroundImage: url(itemPictures[picker]),
-                  // backgroundRepeat: "no-repeat",
-                  // backgroundSize: "cover",
-                  // backgroundPosition: "center",
-                }}
-              ></div> */}
-              <Dummy background={itemPictures[picker]} alt="picks"></Dummy>
+                alt="picks"
+              ></div>
             </>
           )}
         </ProductGallery>
         <RightGallery>
           {itemPictures.map((source, id) => (
-            <LittleGallery
-              key={id}
-              onClick={() => {
-                setPicker(id);
-              }}
-            >
-              {/* <img
-                src={source}
-                alt="product"
-                style={{
-                  borderRadius: "15px",
-                  maxWidth: "100%",
-                  maxHeight: "100%",
+            <LittleGallery key={id}>
+              <div
+                onClick={() => {
+                  setPicker(id);
                 }}
-              /> */}
-              <LittleImage background={source} alt="pick"></LittleImage>
+                style={{
+                  background: `url('${source}')`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  borderRadius: "15px",
+                  height: "70px",
+                  width: "100%",
+                }}
+                alt="pick"
+              ></div>
             </LittleGallery>
           ))}
         </RightGallery>
@@ -446,38 +436,10 @@ const RightGallery = styled.div`
 const LittleGallery = styled.div`
   width: 100%;
   border-radius: 8px;
-  height: 9vh;
+  height: 10vh;
   box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
   margin-bottom: 10px;
-`;
-
-const LittleImage = styled.div`
-background: url(${(props) => props.background});
-background-repeat: no-repeat;
-background-size: cover;
-background-position; 25% center;
-border-radius: 15px;
-height: 100%;
-width: 100%;
-// flex-shrink:0;
-// -webkit-flex-shrink: 0;
-// max-width:100%;
-// max-height:150px;
-`;
-
-const Dummy = styled.div`
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-  background: url(${(props) => props.background});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position:center;
-  // flex-shrink:0;
-  // -webkit-flex-shrink: 0;
-  // max-width:100%;
-  // max-height:100%;
 `;
 
 const ItemDescriptionWrapper = styled.div`

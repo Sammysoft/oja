@@ -1,6 +1,8 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import car from "../../assets/svg/truck.svg";
 import house from "../../assets/svg/house.svg";
 import phone from "../../assets/svg/phone.svg";
@@ -10,7 +12,6 @@ import decor from "../../assets/svg/decor.svg";
 import bag from "../../assets/svg/bag.svg";
 import service from "../../assets/svg/service.svg";
 import { Colors } from "../../assets/styles";
-import { category } from "../../assets/data";
 import advert from "../../assets/ads3.png";
 import advert2 from "../../assets/car.png";
 import kids from "../../assets/svg/kid.svg";
@@ -18,6 +19,12 @@ import medic from "../../assets/svg/medic.svg";
 import work from "../../assets/svg/work.svg";
 import agro from "../../assets/svg/agro.svg";
 import sport from "../../assets/svg/sport.svg";
+
+import axios from "axios";
+import { api } from "../../strings";
+import NaijaStates from "naija-state-local-government";
+
+import ProductsCategory from "./ProductCategory";
 
 const data = [
   {
@@ -74,7 +81,43 @@ const data = [
   },
 ];
 
+const Select = styled.select`
+  background: #f7f7f7;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.17);
+  border-radius: 10px;
+  font-family: Montserrat;
+  padding: 15px;
+  font-weight: 800;
+  border: 0px solid white;
+  margin-right: 20px;
+  width: 200px;
+`;
+const Option = styled.option`
+  font-family: Montserrat;
+  color: ${Colors.PRIMARY_DEEP};
+  font-size: 1rem;
+`;
+
 const ProductListing = ({ right }) => {
+  const [states, setStates] = useState([]);
+  const [pickedState, setPickedState] = useState("");
+  const [regions, setRegions] = useState([]);
+  const [loading, setLoading] = useState(Boolean);
+  const [products, setProducts] = useState([]);
+
+  const _getRegions = (state) => {
+    setRegions(NaijaStates.lgas(state).lgas);
+  };
+  useEffect(() => {
+    setLoading(true);
+    setStates(NaijaStates.states());
+
+    axios.get(`${api}/products/approved`).then((res) => {
+      setProducts(res.data.data);
+      // console.log(res.data.data)
+      setLoading(false);
+    });
+  }, []);
   return (
     <>
       <ProductSectionWrapper right={right}>
@@ -124,7 +167,7 @@ const ProductListing = ({ right }) => {
                                   color: `${Colors.PRIMARY_DEEP}`,
                                 }}
                               >
-                              {datum.category}
+                                {datum.category}
                               </Link>
                             </span>
                           </div>
@@ -155,7 +198,7 @@ const ProductListing = ({ right }) => {
                         fontFamily: "Montserrat",
                         fontSize: "2.5rem",
                         padding: 10,
-                        lineHeight:"3rem"
+                        lineHeight: "3rem",
                       }}
                     >
                       Find the style that fits YOU!
@@ -167,10 +210,10 @@ const ProductListing = ({ right }) => {
             )}
           </FlexWrapper>
           <FlexWrapper right={right}>
-            <ProductListingWrapper>
-              <ProductCapsules category={category.phones} />
-            </ProductListingWrapper>
-            <div
+            {/* <ProductListingWrapper>
+              <ProductCapsules category={products} />
+            </ProductListingWrapper> */}
+            {/* <div
               style={{
                 width: "50%",
                 color: Colors.PRIMARY_DEEP,
@@ -181,37 +224,13 @@ const ProductListing = ({ right }) => {
               }}
             >
               View More in Mobile Phones {">>>"}
-            </div>
-            <ProductListingWrapper>
-              <ProductCapsules category={category.cars} />
-            </ProductListingWrapper>
-            <div
-              style={{
-                width: "50%",
-                color: Colors.PRIMARY_DEEP,
-                paddingTop: 10,
-                paddingBottom: 10,
-                fontFamily: "Montserrat",
-                cursor: "pointer",
-              }}
-            >
-              View More in Automobiles {">>>"}
-            </div>
-            <ProductListingWrapper>
-              <ProductCapsules category={category.tvs} />
-            </ProductListingWrapper>
-            <div
-              style={{
-                width: "50%",
-                color: Colors.PRIMARY_DEEP,
-                paddingTop: 10,
-                paddingBottom: 10,
-                fontFamily: "Montserrat",
-                cursor: "pointer",
-              }}
-            >
-              View More in Electronics {">>>"}
-            </div>
+            </div> */}
+
+            {/* <ProductsCategory category={"AUTOMOBILE"}/>
+            <ProductsCategory category={"FASHION"}/> */}
+            {data.map((item, id) => (
+              <ProductsCategory category={item.category} key={id} />
+            ))}
           </FlexWrapper>
         </ProductSection>
       </ProductSectionWrapper>
@@ -274,10 +293,11 @@ const ProductListingWrapper = styled.div`
   width: fit-content;
   height: fit-content;
   display: grid;
-  grid-template-columns: auto auto auto auto;
-  gap: 20px;
+  grid-template-columns: 23% 23% 23% 23%;
+  gap: 10px;
   align-items: flex-start;
   justify-content: flex-start;
+  width: 100%;
 `;
 
 const ProductCapsuleWrapper = styled.div`
@@ -289,6 +309,7 @@ const ProductCapsuleWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  height: 40vh;
 `;
 
 const AdCapsuleWrapper = styled.div`
@@ -343,22 +364,29 @@ const AdvertImageWrapper = styled.img`
 `;
 
 const ProductCapsules = ({ category }) => {
+  const navigate = useNavigate();
   return (
     <>
-      {category.map((product, id) => {
+      {category.map((ads, id) => {
+        console.log(ads);
         return (
           <>
             <ProductCapsuleWrapper key={id}>
-              <img
-                src={product.img_src}
-                alt="product-img"
-                style={{
-                  width: 150,
-                  height: 100,
-                  borderTopLeftRadius: "5px",
-                  borderTopRightRadius: "5px",
+              <div
+                onClick={() => {
+                  navigate(`/item/description/${ads._id}`);
                 }}
-              />
+                style={{
+                  backgroundImage: `url('${ads.item_pictures[0]}')`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "25% center",
+                  borderTopRightRadius: "15px",
+                  borderTopLeftRadius: " 15px",
+                  height: " 50%",
+                  width: " 100%",
+                }}
+              ></div>
               <div
                 style={{
                   fontFamily: "Montserrat",
@@ -370,7 +398,7 @@ const ProductCapsules = ({ category }) => {
                   fontSize: "16px",
                 }}
               >
-                {product.item_name}
+                {ads.item_name}
               </div>
               <div
                 style={{
@@ -379,12 +407,18 @@ const ProductCapsules = ({ category }) => {
                   paddingTop: "10px",
                   color: Colors.PRIMARY_DEEP,
                   fontWeight: 900,
-                  fontSize: "1.5rem",
+                  fontSize: "1rem",
                 }}
               >
-                {product.item_price}
+                NGN{" "}
+                {Number(ads.item_price).toLocaleString("en-US", {
+                  minimumFractionDigits: 0,
+                })}
               </div>
               <div
+                onClick={() => {
+                  navigate(`/product/${ads._id}`);
+                }}
                 style={{
                   color: Colors.WHITE,
                   backgroundColor: Colors.PRIMARY_DEEP,

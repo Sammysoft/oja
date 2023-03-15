@@ -36,7 +36,8 @@ const AdvertWrapper = styled.div`
   width: 30%;
   padding-left: 20px;
   position: relative;
-  justify-content: center
+  justify-content: center;
+  z-index: -1;
 `;
 const TextHolder = styled.div`
   color: ${Colors.WHITE};

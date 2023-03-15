@@ -154,10 +154,10 @@ const ProductCard = styled.div`
 `;
 
 const ProductImage = styled.div`
-background-image: url(${(props) => props.src});
+background-image: url('${(props) => props.src}');
 background-repeat: no-repeat;
 background-size: cover;
-background-position; 25% center;
+background-position; center;
 width: 100%;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;

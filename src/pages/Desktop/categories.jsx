@@ -1,6 +1,10 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
+import { api } from "../../strings";
+import axios from "axios";
 import styled from "styled-components";
 import FloatingActionButton from "../../components/Desktop/floating_action_button";
 import Footer from "../../components/Desktop/Footer";
@@ -14,7 +18,6 @@ import decor from "../../assets/svg/decor.svg";
 import bag from "../../assets/svg/bag.svg";
 import service from "../../assets/svg/service.svg";
 import { Colors } from "../../assets/styles";
-import { category } from "../../assets/data";
 import advert from "../../assets/ads3.png";
 import advert2 from "../../assets/car.png";
 import kids from "../../assets/svg/kid.svg";
@@ -22,6 +25,7 @@ import medic from "../../assets/svg/medic.svg";
 import work from "../../assets/svg/work.svg";
 import agro from "../../assets/svg/agro.svg";
 import sport from "../../assets/svg/sport.svg";
+import { Loader } from "semantic-ui-react";
 
 const data = [
   {
@@ -93,12 +97,20 @@ const Categories = () => {
 
 const ProductListing = ({ right }) => {
   const [searchParams] = useSearchParams();
+  const [loading, setLoading] = useState(Boolean);
+  const [products, setProducts] = useState([]);
   let query = searchParams.get("category");
-  console.log(query);
+  var result = query.substring(1, query.length - 1)
   const [item, setItem] = React.useState("");
 
   React.useEffect(() => {
-    setItem(query);
+    setLoading(true);
+    setItem(result);
+    console.log(result)
+    axios.post(`${api}/product/category`, { query: result }).then((res) => {
+      setProducts(res.data.data);
+      setLoading(false);
+    });
   }, [query]);
 
   return (
@@ -181,7 +193,9 @@ const ProductListing = ({ right }) => {
                         width: "30%",
                         fontFamily: "Montserrat",
                         fontSize: "2rem",
+                        lineHeight:"2.5rem",
                         padding: 10,
+                        height:"70%"
                       }}
                     >
                       Find the style that fits YOU!
@@ -195,22 +209,30 @@ const ProductListing = ({ right }) => {
           <FlexWrapper right={right}>
             <ItemSearchedWrapper>{item}</ItemSearchedWrapper>
             <FilterWrapper>
-              <FilterPoints>
-                <option>All sub-categories</option>
-              </FilterPoints>
-              <FilterPoints>
-                <option>Lagos</option>
-              </FilterPoints>
-              <FilterPoints>
-                <option>Surulere</option>
-              </FilterPoints>
+              <Select>
+                <Option>All sub-categories</Option>
+              </Select>
+              <Select>
+                <Option>Lagos</Option>
+              </Select>
+              <Select>
+                <Option>Surulere</Option>
+              </Select>
 
-              <FilterPoints>
-                <option>Sort By</option>
-              </FilterPoints>
+              <Select>
+                <Option>Sort By</Option>
+              </Select>
             </FilterWrapper>
             <ProductListingWrapper>
-              <ProductCapsules category={category.phones} />
+              {loading === true ? (
+                <>
+                  <Loader active inline="centered" />
+                </>
+              ) : (
+                <>
+                  <ProductCapsules products={products} />
+                </>
+              )}
             </ProductListingWrapper>
             <div
               style={{
@@ -222,7 +244,7 @@ const ProductListing = ({ right }) => {
                 cursor: "pointer",
               }}
             >
-              View More in Mobile Phones {">>>"}
+              View More in {query} {">>>"}
             </div>
           </FlexWrapper>
         </ProductSection>
@@ -231,23 +253,25 @@ const ProductListing = ({ right }) => {
   );
 };
 
-const ProductCapsules = ({ category }) => {
+const ProductCapsules = ({ products }) => {
   return (
     <>
-      {category.map((product, id) => {
+      {products.map((product, id) => {
         return (
           <>
             <ProductCapsuleWrapper key={id}>
-              <img
-                src={product.img_src}
-                alt="product-img"
+              <div
                 style={{
-                  width: 150,
-                  height: 100,
+                  backgroundImage: `url('${product.item_pictures[0]}')`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "25% center",
+                  width: "100%",
+                  height: "45%",
                   borderTopLeftRadius: "5px",
                   borderTopRightRadius: "5px",
                 }}
-              />
+              ></div>
               <div
                 style={{
                   fontFamily: "Montserrat",
@@ -256,7 +280,7 @@ const ProductCapsules = ({ category }) => {
                   textAlign: "center",
                   paddingTop: "10px",
                   color: Colors.PRIMARY_DEEP,
-                  fontSize: "16px",
+                  fontSize: "1rem",
                 }}
               >
                 {product.item_name}
@@ -268,10 +292,13 @@ const ProductCapsules = ({ category }) => {
                   paddingTop: "10px",
                   color: Colors.PRIMARY_DEEP,
                   fontWeight: 900,
-                  fontSize: "1.5rem",
+                  fontSize: "1.2rem",
                 }}
               >
-                {product.item_price}
+                N{" "}
+                {Number(product.item_price).toLocaleString("en-US", {
+                  minimumFractionDigits: 0,
+                })}
               </div>
               <div
                 style={{
@@ -308,7 +335,7 @@ const ItemSearchedWrapper = styled.div`
 `;
 
 const FilterWrapper = styled.div`
-  width: 70%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -316,13 +343,6 @@ const FilterWrapper = styled.div`
   flex-direction: row;
 `;
 
-const FilterPoints = styled.select`
-  background-color: ${Colors.GREY};
-  border-radius: 5px;
-  padding: 10px;
-  text-align: center;
-  width: 25%;
-`;
 
 const PageWrapper = styled.div`
   margin-left: 10vw;
@@ -381,11 +401,11 @@ const ProductSection = styled.div`
 `;
 
 const ProductListingWrapper = styled.div`
-  width: fit-content;
+  width: 100%;
   height: fit-content;
   display: grid;
-  grid-template-columns: auto auto auto auto;
-  gap: 20px;
+  grid-template-columns: 24% 24% 24% 24%;
+  gap: 10px;
   align-items: flex-start;
   justify-content: flex-start;
 `;
@@ -399,6 +419,8 @@ const ProductCapsuleWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  height: 40vh;
 `;
 
 const AdCapsuleWrapper = styled.div`
@@ -450,4 +472,20 @@ const AdvertImageWrapper = styled.img`
   width: 100%;
   height: 100%;
   margin-left: -20%;
+`;
+const Select = styled.select`
+  background: #f7f7f7;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.17);
+  border-radius: 10px;
+  font-family: Montserrat;
+  padding: 15px;
+  font-weight: 800;
+  border: 0px solid white;
+  margin-right: 20px;
+  width: 200px;
+`;
+const Option = styled.option`
+  font-family: Montserrat;
+  color: ${Colors.PRIMARY_DEEP};
+  font-size: 1rem;
 `;

@@ -747,9 +747,6 @@ const AddItemModal = ({ setToggleAdd }) => {
               onChange={(e) => {
                 handlePictureChange(e);
                 setPickFile(e.target.files);
-                // if (picture.length === 4 || picture.length === 5) {
-                //   uploadFile(e.target.files);
-                // }
               }}
               ref={pick}
               style={{ display: "none" }}
@@ -954,7 +951,7 @@ const ItemImage = styled.div`
   border-top-right-radius: 8px;
   width: 100%;
   height: 150px;
-  background: url(${(props) => props.source}) !important;
+  background: url('${(props) => props.source}');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

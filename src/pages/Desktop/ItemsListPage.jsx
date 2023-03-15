@@ -7,7 +7,7 @@ import ItemsList from "../../components/Desktop/ItemsList";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import UploadItemForm from "../../components/Desktop/uploaditemform";
-
+import cancel from "../../assets/svg/cancel_black.svg";
 
 const PageWrapper = styled.div`
   padding: 0vh 10vw;
@@ -16,7 +16,7 @@ const PageWrapper = styled.div`
 const ModalWrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,7 +24,7 @@ const ModalWrapper = styled.div`
   margin: 0px;
   z-index: 1;
   top: 0px;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
 `;
 
 const ModalBody = styled.div`
@@ -35,7 +35,7 @@ display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
-width: 80vw:
+width: 70vw:
 height: 70vh;
 position: relative;
 `;
@@ -51,10 +51,10 @@ const ModalHead = styled.div`
 `;
 
 const ModalContent = styled.div`
-padding: 10px;
-width: 80%;
-height: 80vh;
-`
+  padding: 10px;
+  width: 85%;
+  height: 80vh;
+`;
 
 const ItemListPage = () => {
   const [showModal, setShowModal] = React.useState(Boolean);
@@ -71,6 +71,20 @@ const ItemListPage = () => {
         <>
           <ModalWrapper>
             <ModalBody>
+              <img
+                src={cancel}
+                style={{
+                  position: "absolute",
+                  width: "50px",
+                  height: "50px",
+                  right: "-5px",
+                  top: "-20px",
+                  zIndex: 99,
+                }}
+                onClick={() => {
+                  setShowModal(false);
+                }}
+              />
               <ModalHead>Upload Your Item</ModalHead>
               <ModalContent>
                 <UploadItemForm setShowModal={setShowModal} />

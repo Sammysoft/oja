@@ -53,7 +53,6 @@ const Mobile = () => {
         })
         .then((res) => {
           setUser(res.data.data);
-          // console.log(res.data.data)
           if (res.data.data === null) {
             alert("Empty data");
           }
@@ -70,10 +69,6 @@ const Mobile = () => {
           if (error.response.data === "Unauthorized") {
             localStorage.removeItem("oja-token");
             navigate("/");
-            // Swal.fire({
-            //   title: "Session Timeout ⌛",
-            //   text: "Please Login Again"
-            // })
           }
         });
     }

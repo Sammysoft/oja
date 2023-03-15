@@ -1,12 +1,18 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import logo from "../../assets/logo.png";
 import profile from "../../assets/profile.png";
 import arrow from "../../assets/svg/arrow-down.svg";
 import { Colors } from "../../assets/styles";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../loginContext";
+import Swal from "sweetalert2";
 
 const NavBar = () => {
+  const [toggle, setToggle] = useState(false);
+  const { getUser } = useContext(AuthContext);
   return (
     <>
       <SearchBarWrapper>
@@ -24,8 +30,9 @@ const NavBar = () => {
           </span>
         </NavBarIcon>
         <SearchBar />
-        <ProfileBar />
+        <ProfileBar toggle={toggle} setToggle={setToggle} getUser={getUser}/>
       </SearchBarWrapper>
+      {toggle === true && <Toggler setToggle={setToggle} />}
     </>
   );
 };
@@ -55,6 +62,7 @@ const InputBar = styled.input`
   border-radius: 10px 0px 0px 10px;
   padding: 5px 15px 5px 15px;
   width: 73%;
+  font-family: Montserrat;
 `;
 
 const WrapperSearchBar = styled.div`
@@ -92,11 +100,11 @@ const ProfileBarWrapper = styled.div`
 
 const SearchBar = () => {
   const [query, setQuery] = React.useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const _makeSearch = (query) => {
     if (query) {
-      navigate(`/search/?item_name=${query}`)
+      navigate(`/search/?item_name=${query}`);
     }
   };
   return (
@@ -121,16 +129,141 @@ const SearchBar = () => {
   );
 };
 
-const ProfileBar = () => {
+const ProfileBar = ({ setToggle, toggle, getUser }) => {
+  const navigate = useNavigate();
   return (
     <>
-      <ProfileBarWrapper>
-        <img src={profile} alt="profile" style={{ width: 50, height: 50 }} />
-        <span style={{ padding: "10px" }}>Olanrewaju</span>
-        <img src={arrow} alt="arrow-down" />
-      </ProfileBarWrapper>
+      {getUser.fullname != undefined ? (
+        <>
+          <ProfileBarWrapper
+            onClick={() => {
+              setToggle(!toggle);
+            }}
+          >
+            <img
+              src={getUser.profile_picture}
+              alt="profile"
+              style={{ width: 50, height: 50 }}
+            />
+            <span style={{ padding: "10px" }}>{getUser.fullname}</span>
+            <img src={arrow} alt="arrow-down" />
+          </ProfileBarWrapper>
+        </>
+      ) : (
+        <>
+          <LoginWrapper
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            <LoginButton>Login</LoginButton>
+          </LoginWrapper>
+        </>
+      )}
     </>
   );
 };
+
+const Toggler = ({ setToggle }) => {
+  const navigate = useNavigate();
+  const _logout = () => {
+    localStorage.removeItem("oja-token");
+    Swal.fire({
+      title: "Logged Out",
+      text: "You have logged out successfully",
+    });
+    window.location.reload();
+  };
+  return (
+    <>
+      <ToggleWrapper>
+        <ToggleTransparent
+          onClick={() => {
+            setToggle(false);
+          }}
+        ></ToggleTransparent>
+        <ToggleMain>
+          <Choice
+            onClick={() => {
+              navigate("/dashboard");
+            }}
+          >
+            My Dashboard
+          </Choice>
+          <Choice
+            onClick={() => {
+              navigate("/item-list");
+            }}
+          >
+            Sell Items
+          </Choice>
+          <Choice>About</Choice>
+          <Choice onClick={()=>{
+            _logout()
+          }}>Logout</Choice>
+        </ToggleMain>
+      </ToggleWrapper>
+    </>
+  );
+};
+
+const ToggleWrapper = styled.div`
+  width: 100vw;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 50px;
+  top: 12vh;
+`;
+
+const ToggleTransparent = styled.div`
+background-color; red;
+width: 60%;
+height: 100%;
+`;
+
+const ToggleMain = styled.div`
+  width: 20%;
+  height: 100%;
+  background-color: ${Colors.PRIMARY_DEEP};
+  z-index: 1;
+  margin-right: 5px;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  cursor: pointer;
+`;
+
+const Choice = styled.div`
+  font-family: Montserrat;
+  color: #ffffff;
+  padding: 10px;
+  border-bottom: 1px solid white;
+  width: 100%;
+  font-weight: 900;
+`;
+
+const LoginWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 20;
+  cursor: pointer;
+`;
+
+const LoginButton = styled.div`
+  color: #ffffff;
+  background-color: ${Colors.PRIMARY_DEEP};
+  padding: 10px 40px;
+  border-radius: 10px;
+  width: 100%;
+`;
 
 export default NavBar;

@@ -8,24 +8,23 @@ const HeadText = () => {
       <HeadTextWrapper>
         <HeadTextWrapper style={{ padding: "5vh" }}>
           <section
-            style={{ fontSize: "2rem", fontWeight: 900, lineHeight: "40px" }}
+            style={{ fontSize: "2.5rem", fontWeight: 900, lineHeight: "40px" }}
           >
-            Welcome to Oja. The Online Marketplace.
+            Welcome to Oja
           </section>
           <section
             style={{
               paddingLeft: "10vw",
               paddingRight: "10vw",
               paddingTop: "2vh",
-              color: Colors.DEEP,
-              fontWeight: 700,
+              fontWeight: 500,
               width: "90%",
-              lineHeight: "20px"
+              lineHeight: "20px",
+              fontSize: "2rem",
+              color: Colors.PRIMARY_DEEP,
             }}
           >
-            Oja is an online store where entrepreneurs and business owners and
-            professionals can showcase their products, items, and goods for
-            clients and customers to buy.
+            The Online Marketplace.
           </section>
         </HeadTextWrapper>
       </HeadTextWrapper>
@@ -41,7 +40,7 @@ const HeadTextWrapper = styled.div`
   width: 100%;
   font-family: Montserrat;
   color: ${Colors.PRIMARY};
-  align-items:center
+  align-items: center;
 `;
 
 export default HeadText;

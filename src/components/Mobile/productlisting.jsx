@@ -21,7 +21,6 @@ import axios from "axios";
 import { api } from "../../strings";
 import NaijaStates from "naija-state-local-government";
 import { useNavigate } from "react-router";
-
 import whatsapp from "../../assets/svg/whatsapp.svg";
 import email from "../../assets/svg/email.svg";
 import mobile from "../../assets/svg/mobile.svg";
@@ -95,7 +94,6 @@ const ProductFilter = () => {
   const [regions, setRegions] = useState([]);
 
   const [products, setProducts] = useState([]);
-
 
   //Loading States
   const [loading, setLoading] = useState(Boolean);
@@ -218,46 +216,29 @@ const ProductOption = styled.option`
   font-size: 0.5rem;
 `;
 
-// const Button = styled.div`
-// color: white;
-// background-color: ${Colors.PRIMARY};
-// border-radius: 5px;
-// padding: 5px 15px;
-// text-align: center;
-// font-family: Montserrat;
-// margin; 20px;
-// width: 80%;
-// `;
 
 const ProductListWrapper = ({ cat, products }) => {
-
-  // const [phone, setPhone]= useState([])
-  // const generateMadUrl = (id) =>{
-  //   // axios.get(`${api}/product/${id}`).then((res) => {
-  //   //   axios
-  //   //     .post(`${api}/product/seller`, { user_id: res.data.data.user_id })
-  //   //     .then((res) => {
-  //   //       setPhone([...phone, res.data.data.phone])
-  //   //     });
-  //   // });
-
-  //   console.log(phone)
-  // }
   const navigate = useNavigate();
   return (
     <>
-      {/* {cat === "cars" ? (
-        <> */}
       <ProductListingWrapper>
         {products.map((ads, index) => (
           <ProductItem key={index}>
-            <ProductImage
-              background={ads.item_pictures[0]}
-              // alt="img_product"
-              onClick={() => {
+            <div
+               onClick={() => {
                 navigate(`/item/description/${ads._id}`);
               }}
-            ></ProductImage>
+              style={{
+                backgroundImage:`url('${ads.item_pictures[0]}')`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "25% center",
+                borderTopRightRadius: "15px",
+                borderTopLeftRadius: " 15px",
+                height: " 50%",
+                width: " 100%",
+              }}
+            ></div>
             <ProductItemName>{ads.item_name}</ProductItemName>
             <ProductPrice>
               NGN{" "}
@@ -265,13 +246,6 @@ const ProductListWrapper = ({ cat, products }) => {
                 minimumFractionDigits: 0,
               })}
             </ProductPrice>
-            {/* <Button
-              onClick={() => {
-                navigate(`/item/description/${ads._id}`);
-              }}
-            >
-              View
-            </Button> */}
             <ItemContact>
               <ItemContactIcon>
                 <a
@@ -283,12 +257,12 @@ const ProductListWrapper = ({ cat, products }) => {
                 </a>
               </ItemContactIcon>
               <ItemContactIcon>
-              <a
+                <a
                   href={`mailto:${ads.email}`}
                   target="_blank"
                   rel="noreferrer"
                 >
-                <img src={email} alt="email" />
+                  <img src={email} alt="email" />
                 </a>
               </ItemContactIcon>
               <ItemContactIcon>
@@ -298,44 +272,6 @@ const ProductListWrapper = ({ cat, products }) => {
           </ProductItem>
         ))}
       </ProductListingWrapper>
-      {/* </>
-      ) : cat === "phones" ? (
-        <>
-          <ProductListingWrapper>
-            {category.cars.map((ads, index) => (
-              <ProductItem key={index}>
-                <img
-                  src={ads.img_src}
-                  alt="product"
-                  style={{ height: 150, width: 180, padding: "5px" }}
-                />
-                <ProductItemName>{ads.item_name}</ProductItemName>
-                <ProductPrice>{ads.item_price}</ProductPrice>
-                <Button>View</Button>
-              </ProductItem>
-            ))}
-          </ProductListingWrapper>
-        </>
-      ) : cat === "tvs" ? (
-        <>
-          <ProductListingWrapper>
-            {category.tvs.map((ads, index) => (
-              <ProductItem key={index}>
-                <img
-                  src={ads.img_src}
-                  alt="product"
-                  style={{ height: 150, width: 180, padding: "5px" }}
-                />
-                <ProductItemName>{ads.item_name}</ProductItemName>
-                <ProductPrice>{ads.item_price}</ProductPrice>
-                <Button>View</Button>
-              </ProductItem>
-            ))}
-          </ProductListingWrapper>
-        </>
-      ) : (
-        <></>
-      )} */}
     </>
   );
 };
@@ -375,20 +311,6 @@ const ProductItem = styled.div`
   height: 40vh;
 `;
 
-const ProductImage = styled.div`
-// flex-shrink:0;
-// -webkit-flex-shrink: 0;
-// max-width:100%;
-// max-height:150px;
-  background-image: url(${(props) => props.background});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position; 25% center;
-  border-top-right-radius: 15px;
-  border-top-left-radius: 15px;
-  height: 50%;
-  width: 100%;
-`;
 
 const ProductItemName = styled.div`
   font-family: Montserrat;

@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import { Adverts } from "../../assets/data";
@@ -8,8 +8,24 @@ import ads3 from "../../assets/ads3.png";
 import ads1 from "../../assets/ads1.png";
 import { category } from "../../assets/data";
 import plus from "../../assets/svg/plus_circle.svg";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
+
 
 const ItemsList = ({ setShowModal }) => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("oja-token");
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      Swal.fire({
+        icon: "info",
+        title: "Oops 😟",
+        text: "You need to create an account or login to post items on OJA",
+        position: "top",
+      });
+    }
+  }, [token]);
   return (
     <>
       <ItemsListWrapper>
@@ -43,7 +59,7 @@ const ItemsListWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  width: 80%;
+  width: 90%;
   height: fit-content;
 `;
 
@@ -60,11 +76,14 @@ const RightWrapper = styled.div`
   margin-left: 5vw;
   display: grid;
   grid-template-columns: auto auto auto auto;
-  gap: 2.5%;
+  gap: 2%;
+  height: 70vh;
+  overflow-y: scroll;
+  width: 70%;
 `;
 
 const ItemCapsule = styled.div`
-  height: stretch;
+  height: 40vh;
   box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
   padding: 5px;
@@ -115,54 +134,42 @@ const StateButton = styled.div`
   color: ${Colors.WHITE};
 `;
 
-var keys = {37: 1, 38: 1, 39: 1, 40: 1};
-
-function preventDefaultForScrollKeys(e) {
-  if (keys[e.keyCode]) {''
-    preventDefault(e);
-    return false;
-  }
-}
-
-var supportsPassive = false;
-try {
-  window.addEventListener("test", null, Object.defineProperty({}, 'passive', {
-    get: function () { supportsPassive = true; }
-  }));
-} catch(e) {}
-
-var wheelOpt = supportsPassive ? { passive: false } : false;
-var wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
-function preventDefault(e) {
-  e.preventDefault();
-}
-
-function disableScroll() {
-  window.addEventListener('DOMMouseScroll', preventDefault, false);
-  window.addEventListener(wheelEvent, preventDefault, wheelOpt);
-  window.addEventListener('touchmove', preventDefault, wheelOpt);
-  window.addEventListener('keydown', preventDefaultForScrollKeys, false);
-}
-
 const Items = ({ img_src, Items, setShowModal }) => {
+
+
+
   return (
     <>
-      <AddItem>
+      <AddItem
+        onClick={() => {
+          setShowModal(true);
+        }}
+      >
         <img src={plus} alt="plus" />
-        <span
-          onClick={() => {
-            setShowModal(true);
-            disableScroll();
-          }}
-        >
-          Add new Item for sale
-        </span>
+        <span>Add new Item for sale</span>
       </AddItem>
       {Items.map((item) => (
         <ItemCapsule img={img_src} Items={Items}>
-          <img src={item.img_src} alt="about" width={"95%"} />
+          <div
+            style={{
+              backgroundImage: `url('${item.img_src}')`,
+              backgroundRepeat: "no-repeat",
+              height: "50%",
+              width: "100%",
+            }}
+          ></div>
           <span style={{ fontFamily: "Montserrat", textAlign: "center" }}>
             {item.item_name}
+          </span>
+          <span
+            style={{
+              fontFamily: "Montserrat",
+              textAlign: "center",
+              fontSize: "1.5rem",
+              fontWeight: 700,
+            }}
+          >
+            {item.item_price}
           </span>
           <StateButtonWrapper>
             <StateButton state={"edit"}>Edit</StateButton>
@@ -172,9 +179,26 @@ const Items = ({ img_src, Items, setShowModal }) => {
       ))}
       {Items.map((item) => (
         <ItemCapsule img={item.img_src} Items={Items}>
-          <img src={item.img_src} alt="about" width={"95%"} />
+          <div
+            style={{
+              backgroundImage: `url('${item.img_src}')`,
+              backgroundRepeat: "no-repeat",
+              height: "50%",
+              width: "100%",
+            }}
+          ></div>
           <span style={{ fontFamily: "Montserrat", textAlign: "center" }}>
             {item.item_name}
+          </span>
+          <span
+            style={{
+              fontFamily: "Montserrat",
+              textAlign: "center",
+              fontSize: "1.5rem",
+              fontWeight: 700,
+            }}
+          >
+            {item.item_price}
           </span>
           <StateButtonWrapper>
             <StateButton state={"edit"}>Edit</StateButton>

@@ -48,7 +48,8 @@ const SignInForm = () => {
   };
   return (
     <>
-      <Header>Sign in to your account</Header>
+   <div>
+   <Header>Sign in to your account</Header>
       <FormBody>
         <FormInput
           type={"text"}
@@ -111,6 +112,7 @@ const SignInForm = () => {
           </Link>
         </BottomText>
       </BottomTextWrapper>
+   </div>
     </>
   );
 };
@@ -167,7 +169,7 @@ const BottomTextWrapper = styled.div`
   cursor: pointer;
 `;
 const BottomText = styled.div`
-  width: 40%;
+  width: 50%;
   color: ${Colors.DEEP};
   font-family: Montserrat;
 `;

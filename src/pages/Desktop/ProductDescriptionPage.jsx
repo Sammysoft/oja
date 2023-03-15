@@ -1,4 +1,7 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
@@ -14,48 +17,96 @@ import { Colors } from "../../assets/styles";
 import { category } from "../../assets/data";
 import advert from "../../assets/ads3.png";
 import advert2 from "../../assets/car.png";
+import kids from "../../assets/svg/kid.svg";
+import medic from "../../assets/svg/medic.svg";
+import work from "../../assets/svg/work.svg";
+import agro from "../../assets/svg/agro.svg";
+import sport from "../../assets/svg/sport.svg";
 import ProductDescription from "../../components/Desktop/ProductDescription";
+import { Loader } from "semantic-ui-react";
+import axios from "axios";
+import { api } from "../../strings";
+import Swal from "sweetalert2";
 
 const data = [
   {
-    category: "Automobile",
+    category: "AUTOMOBILE",
     icon: car,
   },
   {
-    category: "Landed properties",
+    category: "LANDED PROPERTIES",
     icon: house,
   },
   {
-    category: "Phones, computers & accessories",
+    category: "PHONES, COMPUTERS AND ACCESSORIES",
     icon: phone,
   },
   {
-    category: "Electronics & electronic accessories",
+    category: "ELECTRONICS AND ACCESSORIES",
     icon: television,
   },
   {
-    category: "Fashion",
+    category: "MEDICALS / COSMETICS / BEAUTIES",
+    icon: medic,
+  },
+  {
+    category: "SPORTS",
+    icon: sport,
+  },
+  {
+    category: "FASHION",
     icon: fashion,
   },
   {
-    category: "Home decor",
+    category: "KIDDIES / BABIES",
+    icon: kids,
+  },
+  {
+    category: "HOME DECORS",
     icon: decor,
   },
   {
-    category: "Groceries",
+    category: "ANIMALS / LIVESTOCK / AGRICULTURE",
+    icon: agro,
+  },
+  {
+    category: "GROCERIES / BREWERIES",
     icon: bag,
   },
   {
-    category: "Services",
+    category: "SERVICES",
     icon: service,
+  },
+  {
+    category: "FACTORY / INDUSTRIAL / CONSTRUCTIONS",
+    icon: work,
   },
 ];
 
 const ProductDescriptionPage = ({ right }) => {
+  const url = window.location.pathname;
+  const item_id = url.slice(-24);
+  const [item, setItem] = useState({});
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    axios.get(`${api}/product/${item_id}`).then((res) => {
+      axios
+        .post(`${api}/product/category`, { query: res.data.data.item_category })
+        .then((res) => {
+          setProducts(res.data.data);
+        });
+      setItem(res.data.data);
+      setLoading(false);
+    });
+  }, [item_id]);
+
   return (
     <>
       <PageWrapper>
-        <NavBar></NavBar>
+        <NavBar />
       </PageWrapper>
       <ProductSectionWrapper right={right}>
         <ProductSection right={right}>
@@ -84,21 +135,34 @@ const ProductDescriptionPage = ({ right }) => {
             ) : (
               <>
                 <ProductCategory>
-                  {data.map((datum, id) => (
-                    <ProductWrapper key={id}>
-                      <div
-                        style={{
-                          borderBottom: "3px solid #FFFFFF",
-                          width: "100%",
-                        }}
-                      >
-                        <img src={datum.icon} alt="category" />
-                        <span style={{ paddingLeft: "5px" }}>
-                          {datum.category}
-                        </span>
-                      </div>
-                    </ProductWrapper>
-                  ))}
+                  {data.map((datum, id) => {
+                    return (
+                      <>
+                        <ProductWrapper key={id}>
+                          <div
+                            style={{
+                              borderBottom: "3px solid #FFFFFF",
+                              width: "100%",
+                            }}
+                          >
+                            <img src={datum.icon} alt="category" />
+                            <span style={{ paddingLeft: "5px" }}>
+                              <Link
+                                to={`/categories/?category=${datum.category}`}
+                                style={{
+                                  textDecoration: "none",
+                                  textDecorationLine: "none",
+                                  color: `${Colors.PRIMARY_DEEP}`,
+                                }}
+                              >
+                                {datum.category}
+                              </Link>
+                            </span>
+                          </div>
+                        </ProductWrapper>
+                      </>
+                    );
+                  })}
                 </ProductCategory>
                 <AdCapsuleWrapper>
                   <img
@@ -118,10 +182,11 @@ const ProductDescriptionPage = ({ right }) => {
                       style={{
                         color: Colors.WHITE,
                         fontWeight: 900,
-                        width: "30%",
+                        width: "35%",
                         fontFamily: "Montserrat",
                         fontSize: "2rem",
                         padding: 10,
+                        lineHeight: "2.5rem",
                       }}
                     >
                       Find the style that fits YOU!
@@ -139,17 +204,17 @@ const ProductDescriptionPage = ({ right }) => {
                 fontFamily: "Montserrat",
                 color: Colors.DEEP,
                 padding: "10px",
-                fontWeight: 900
+                fontWeight: 900,
               }}
             >
               OTHER LISTINGS LIKE THIS
             </div>
             <ProductListingWrapper>
-              <ProductCapsules category={category.phones} />
+              <ProductCapsules products={products} loading={loading} />
             </ProductListingWrapper>
             <div
               style={{
-                width: "50%",
+                width: "90%",
                 color: Colors.PRIMARY_DEEP,
                 paddingTop: 10,
                 paddingBottom: 10,
@@ -157,7 +222,7 @@ const ProductDescriptionPage = ({ right }) => {
                 cursor: "pointer",
               }}
             >
-              View More in Mobile Phones {">>>"}
+              View More in {item.item_category} {">>>"}
             </div>
           </FlexWrapper>
         </ProductSection>
@@ -169,68 +234,86 @@ const ProductDescriptionPage = ({ right }) => {
   );
 };
 
-const ProductCapsules = ({ category }) => {
+const ProductCapsules = ({ products, loading }) => {
+  const navigate = useNavigate();
   return (
     <>
-      {category.map((product, id) => {
-        return (
-          <>
-            <ProductCapsuleWrapper key={id}>
-              <img
-                src={product.img_src}
-                alt="product-img"
-                style={{
-                  width: 150,
-                  height: 100,
-                  borderTopLeftRadius: "5px",
-                  borderTopRightRadius: "5px",
-                }}
-              />
-              <div
-                style={{
-                  fontFamily: "Montserrat",
-                  fontWeight: 600,
-                  width: "90%",
-                  textAlign: "center",
-                  paddingTop: "10px",
-                  color: Colors.PRIMARY_DEEP,
-                  fontSize: "16px",
-                }}
-              >
-                {product.item_name}
-              </div>
-              <div
-                style={{
-                  fontFamily: "Montserrat",
-                  textAlign: "center",
-                  paddingTop: "10px",
-                  color: Colors.PRIMARY_DEEP,
-                  fontWeight: 900,
-                  fontSize: "1.5rem",
-                }}
-              >
-                {product.item_price}
-              </div>
-              <div
-                style={{
-                  color: Colors.WHITE,
-                  backgroundColor: Colors.PRIMARY_DEEP,
-                  padding: "5px 5px",
-                  borderRadius: "10px",
-                  width: "80%",
-                  textAlign: "center",
-                  marginTop: "5px",
-                  fontFamily: "Montserrat",
-                  marginBottom: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                View
-              </div>
-            </ProductCapsuleWrapper>
-          </>
-        );
-      })}
+      {loading === true ? (
+        <>
+          <Loader active inline="centered" />
+        </>
+      ) : (
+        <>
+          {" "}
+          {products.map((product, id) => {
+            return (
+              <>
+                <ProductCapsuleWrapper key={id}>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "50%",
+                      borderTopLeftRadius: "5px",
+                      borderTopRightRadius: "5px",
+                      backgroundImage: `url('${product.item_pictures[0]}')`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      backgroundSize: "100%",
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      fontFamily: "Montserrat",
+                      fontWeight: 400,
+                      width: "90%",
+                      textAlign: "center",
+                      paddingTop: "10px",
+                      color: Colors.PRIMARY_DEEP,
+                      fontSize: "16px",
+                    }}
+                  >
+                    {product.item_name}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "Montserrat",
+                      textAlign: "center",
+                      paddingTop: "10px",
+                      color: Colors.PRIMARY_DEEP,
+                      fontWeight: 900,
+                      fontSize: "1.3rem",
+                    }}
+                  >
+                    N{" "}
+                    {Number(product.item_price).toLocaleString("en-US", {
+                      minimumFractionDigits: 0,
+                    })}
+                  </div>
+                  <div
+                    onClick={() => {
+                      navigate(`/product/${product._id}`);
+                    }}
+                    style={{
+                      color: Colors.WHITE,
+                      backgroundColor: Colors.PRIMARY_DEEP,
+                      padding: "5px 5px",
+                      borderRadius: "10px",
+                      width: "80%",
+                      textAlign: "center",
+                      marginTop: "5px",
+                      fontFamily: "Montserrat",
+                      marginBottom: "5px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    View
+                  </div>
+                </ProductCapsuleWrapper>
+              </>
+            );
+          })}
+        </>
+      )}
     </>
   );
 };
@@ -292,13 +375,14 @@ const ProductSection = styled.div`
 `;
 
 const ProductListingWrapper = styled.div`
-  width: fit-content;
-  height: fit-content;
+  width: 100%;
+  height: 80vh;
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: 23% 23% 23% 23%;
   gap: 20px;
   align-items: flex-start;
   justify-content: flex-start;
+  overflow-y: scroll;
 `;
 
 const ProductCapsuleWrapper = styled.div`
@@ -310,6 +394,7 @@ const ProductCapsuleWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  height: 35vh;
 `;
 
 const AdCapsuleWrapper = styled.div`

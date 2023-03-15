@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Colors } from "../../assets/styles";
@@ -7,10 +7,10 @@ import NavBar from "../../components/Desktop/navbar";
 import left from "../../assets/svg/left_arrow.svg";
 import SignInForm from "../../components/Desktop/Signinform";
 
-const LoginPage = ()=>{
+const LoginPage = () => {
   const navigate = useNavigate();
-    return(
-        <>
+  return (
+    <>
       <PageWrapper>
         <NavBar />
       </PageWrapper>
@@ -22,7 +22,9 @@ const LoginPage = ()=>{
             display: "flex",
             cursor: "pointer",
           }}
-          onClick={()=>{navigate(-1)}}
+          onClick={() => {
+            navigate(-1);
+          }}
         >
           <img src={left} alt="pointer" />
           <span style={{ fontFamily: "Montserrat", paddingLeft: "5px" }}>
@@ -63,13 +65,13 @@ const LoginPage = ()=>{
           </div>
         </AdCapsuleWrapper>
         <FormWrapper>
-              <SignInForm />
+          <SignInForm />
         </FormWrapper>
       </PageBody>
       <Footer />
-        </>
-    )
-}
+    </>
+  );
+};
 
 const NavigateBack = styled.div`
   width: 100%;
@@ -105,7 +107,7 @@ const AdCapsuleWrapper = styled.div`
   //   margin-top: 15vh;
   width: 35%;
   background-color: ${Colors.DIRTY_GREEN};
-  //   height: 55vh;
+  height: 75vh;
   border-radius: 0px 15px 15px 0px;
   display: flex;
   flex-direction: row;
@@ -115,11 +117,15 @@ const AdCapsuleWrapper = styled.div`
 
 const FormWrapper = styled.div`
   width: 63%;
-  padding: 20px;
+  padding: 10px;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   background-color: rgba(0, 60, 13, 0.2);
-  height: fit-content;
+  height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 `;
 
 export default LoginPage;
