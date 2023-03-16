@@ -17,6 +17,7 @@ import { api } from "./strings";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { AuthContext } from "./loginContext";
+import AboutPage from "./pages/Desktop/AboutPage";
 
 function Desktop() {
   const navigate = useNavigate();
@@ -155,6 +156,15 @@ function Desktop() {
           element={
             <AuthContext.Provider value={authContext}>
               <Categories />
+            </AuthContext.Provider>
+          }
+        />
+        <Route
+          path="/about"
+          exact
+          element={
+            <AuthContext.Provider value={authContext}>
+              <AboutPage />
             </AuthContext.Provider>
           }
         />

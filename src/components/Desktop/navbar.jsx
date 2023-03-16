@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 const NavBar = () => {
   const [toggle, setToggle] = useState(false);
   const { getUser } = useContext(AuthContext);
+  
   return (
     <>
       <SearchBarWrapper>
@@ -30,7 +31,7 @@ const NavBar = () => {
           </span>
         </NavBarIcon>
         <SearchBar />
-        <ProfileBar toggle={toggle} setToggle={setToggle} getUser={getUser}/>
+        <ProfileBar toggle={toggle} setToggle={setToggle} getUser={getUser} />
       </SearchBarWrapper>
       {toggle === true && <Toggler setToggle={setToggle} />}
     </>
@@ -197,10 +198,20 @@ const Toggler = ({ setToggle }) => {
           >
             Sell Items
           </Choice>
-          <Choice>About</Choice>
-          <Choice onClick={()=>{
-            _logout()
-          }}>Logout</Choice>
+          <Choice
+            onClick={() => {
+              navigate("/about");
+            }}
+          >
+            About
+          </Choice>
+          <Choice
+            onClick={() => {
+              _logout();
+            }}
+          >
+            Logout
+          </Choice>
         </ToggleMain>
       </ToggleWrapper>
     </>
