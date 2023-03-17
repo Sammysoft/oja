@@ -59,7 +59,6 @@ const Header = styled.div`
 `;
 
 const ItemList = () => {
-  const { user } = useContext(AuthContext);
   const [toggleAdd, setToggleAdd] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem("oja-token");
@@ -271,7 +270,7 @@ font-weight: 900;
 `;
 
 const AddItemModal = ({ setToggleAdd }) => {
-  const { user } = useContext(AuthContext);
+  const { getUser } = useContext(AuthContext);
   const [item_name, setItemName] = useState("");
   const [item_category, setItemCategory] = useState("");
   const [item_subcategory, setItemSubCategory] = useState("");
@@ -380,12 +379,12 @@ const AddItemModal = ({ setToggleAdd }) => {
       item_name,
       item_pictures,
       item_subcategory,
-      user_id: user._id,
+      user_id: getUser._id,
       item_status,
       item_state: pickedState,
       item_local: pickedLocal,
-      item_phone: user.phone,
-      item_email: user.email,
+      item_phone: getUser.phone,
+      item_email: getUser.email,
     };
 
     axios

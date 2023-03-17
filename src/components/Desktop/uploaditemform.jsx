@@ -176,7 +176,7 @@ const InputWrapper = styled.div`
 `;
 
 const UploadItemForm = ({ setShowModal }) => {
-  const { user } = useContext(AuthContext);
+  const { getUser } = useContext(AuthContext);
   const [item_name, setItemName] = useState("");
   const [item_category, setItemCategory] = useState("");
   const [item_subcategory, setItemSubCategory] = useState("");
@@ -289,12 +289,12 @@ const UploadItemForm = ({ setShowModal }) => {
       item_name,
       item_pictures,
       item_subcategory,
-      user_id: user._id,
+      user_id: getUser._id,
       item_status,
       item_state: pickedState,
       item_local: pickedLocal,
-      item_phone: user.phone,
-      item_email: user.email,
+      item_phone: getUser.phone,
+      item_email: getUser.email,
     };
 
     axios
@@ -690,11 +690,17 @@ const UploadItemForm = ({ setShowModal }) => {
               }}
             />
             <Button
-              onClick={() => {
-                _submitForm();
-              }}
-            >
-              Post My Item
+                onClick={() => {
+                  _submitForm();
+                }}
+              >
+                {loading === true ? (
+                  <>
+                    <Loader active inline="centered" />
+                  </>
+                ) : (
+                  <>Post Item</>
+                )}
             </Button>
           </div>
         </InputWrapper>

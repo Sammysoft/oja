@@ -6,14 +6,14 @@ import { Colors } from "../../assets/styles";
 import { Adverts } from "../../assets/data";
 import ads3 from "../../assets/ads3.png";
 import ads1 from "../../assets/ads1.png";
-import plus from "../../assets/svg/plus_circle.svg";
 import { useNavigate } from "react-router";
-import Swal from "sweetalert2";
 import { AuthContext } from "../../loginContext";
-import axios from "axios";
 import { api } from "../../strings";
+import left from "../../assets/svg/left_arrow.svg";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-const ItemsList = ({ setShowModal }) => {
+const ItemApprovalList = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("oja-token");
   useEffect(() => {
@@ -28,19 +28,66 @@ const ItemsList = ({ setShowModal }) => {
     }
   }, [token]);
 
-  const [loading, setLoading] = useState(Boolean);
-  const [items, setItems] = useState([]);
+  const [products, setProducts] = useState([]);
   const { getUser } = useContext(AuthContext);
+
   useEffect(() => {
-    setLoading(true);
-    axios.get(`${api}/item/${getUser._id}`).then((res) => {
-      setItems(res.data.data);
-      setLoading(false);
-    });
-  }, [getUser._id]);
+    if (getUser.usertype !== "Admin") {
+      navigate("/");
+    }
+    axios
+      .get(`${api}/products/pending`)
+      .then((res) => {
+        setProducts(res.data.data);
+      })
+      .catch((error) => {
+        Swal.fire({
+          text: error.response.data,
+          title: "Oops",
+        });
+      });
+  }, [getUser, navigate]);
+
+  const _approveProduct = (user_id) => {
+    axios
+      .get(`${api}/product/approve/${user_id}`)
+      .then((res) => {
+        Swal.fire({
+          title: `Approved Product 👍`,
+          text: `Successfully approved ${res.data.data}'s product on OJA`,
+        });
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Oops",
+          text: error.response.data.data,
+        });
+      });
+  };
 
   return (
     <>
+      <Header>
+        <span
+          style={{
+            fontFamily: "Montserrat",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <img
+            src={left}
+            alt="pointer"
+            onClick={() => {
+              navigate(-1);
+            }}
+            style={{ width: 35, height: 40 }}
+          />{" "}
+          back
+        </span>
+        <ItemApprove>New Items for approval ({products.length})</ItemApprove>
+      </Header>
       <ItemsListWrapper>
         <LeftWrapper>
           <AdvertBanner
@@ -60,12 +107,28 @@ const ItemsList = ({ setShowModal }) => {
           />
         </LeftWrapper>
         <RightWrapper>
-          <Items Items={items} setShowModal={setShowModal} />
+          <Items Items={products} />
         </RightWrapper>
       </ItemsListWrapper>
     </>
   );
 };
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 20px;
+`;
+
+const ItemApprove = styled.div`
+  font-family: Montserrat;
+  font-weight: 800;
+  width: 60%;
+  text-align: center;
+`;
 
 const ItemsListWrapper = styled.div`
   display: flex;
@@ -74,6 +137,7 @@ const ItemsListWrapper = styled.div`
   align-items: flex-start;
   width: 90%;
   height: fit-content;
+  margin-bottom: 10vh;
 `;
 
 const LeftWrapper = styled.div`
@@ -109,24 +173,6 @@ const ItemCapsule = styled.div`
   cursor: pointer;
   min-height: 30vh;
 `;
-const AddItem = styled.div`
-  height: 35vh;
-  box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.2);
-  border-radius: 15px;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  background-color: ${Colors.CHOCOLATE};
-  font-family: Montserrat;
-  text-align: center;
-  color: ${Colors.WHITE};
-  min-height: 30vh;
-  width: 100%;
-  cursor: pointer;
-  margin: 30px 0px;
-`;
 
 const StateButtonWrapper = styled.div`
   display: flex;
@@ -143,24 +189,15 @@ const StateButton = styled.div`
   border-radius: 5px;
   width: 45%;
   background-color: ${(props) =>
-    props.state === "edit" ? `${Colors.DEEP_GREEN}` : `${Colors.RED}`};
+    props.state === "edit" ? `${Colors.PRIMARY_DEEP}` : `${Colors.DEEP_GREEN}`};
   color: ${Colors.WHITE};
 `;
 
-const Items = ({ Items, setShowModal }) => {
-
+const Items = ({ Items }) => {
   return (
     <>
-      <AddItem
-        onClick={() => {
-          setShowModal(true);
-        }}
-      >
-        <img src={plus} alt="plus" />
-        <span>Add new Item for sale</span>
-      </AddItem>
-      {Items.map((item) => (
-        <ItemCapsule Items={Items}>
+      {Items.map((item, id) => (
+        <ItemCapsule Items={Items} key={id}>
           <div
             style={{
               backgroundImage: `url('${item.item_pictures[0]}')`,
@@ -188,8 +225,8 @@ const Items = ({ Items, setShowModal }) => {
             })}
           </span>
           <StateButtonWrapper>
-            <StateButton state={"edit"}>Edit</StateButton>
-            <StateButton state={"delete"}>Delete</StateButton>
+            <StateButton state={"edit"}>View</StateButton>
+            <StateButton state={"delete"}>Approve</StateButton>
           </StateButtonWrapper>
         </ItemCapsule>
       ))}
@@ -277,4 +314,4 @@ const Button = styled.div`
   cursor: pointer;
 `;
 
-export default ItemsList;
+export default ItemApprovalList;

@@ -151,7 +151,7 @@ const ViewItem = () => {
                   width: "100%",
                   height: "100%",
                   borderRadius: "15px",
-                  backgroundImage: `url(${itemPictures[picker]})`,
+                  backgroundImage: `url("${itemPictures[picker]}")`,
                   backgroundRepeat: "no-repeat",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
@@ -405,7 +405,7 @@ const LittleGallery = styled.div`
 `;
 
 const LittleImage = styled.div`
-background-image: url(${(props) => props.background});
+background-image: url("${(props) => props.background}");
 background-repeat: no-repeat;
 background-size: cover;
 background-position; center;

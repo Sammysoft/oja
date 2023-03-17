@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Dashboard from "./pages/Desktop/Dashboard";
+import Dashboard from "./pages/Desktop/Admin/Dashboard";
 import HomePage from "./pages/Desktop/HomePage";
 import LoginPage from "./pages/Desktop/LoginPage";
 import OnboardPage from "./pages/Desktop/OnboardPage";
@@ -18,6 +18,8 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { AuthContext } from "./loginContext";
 import AboutPage from "./pages/Desktop/AboutPage";
+import ItemApproval from "./pages/Desktop/Admin/ItemApproval";
+import ItemManage from "./pages/Desktop/Admin/ItemManage";
 
 function Desktop() {
   const navigate = useNavigate();
@@ -165,6 +167,24 @@ function Desktop() {
           element={
             <AuthContext.Provider value={authContext}>
               <AboutPage />
+            </AuthContext.Provider>
+          }
+        />
+        <Route
+          path="/admin/item_approval"
+          exact
+          element={
+            <AuthContext.Provider value={authContext}>
+              <ItemApproval />
+            </AuthContext.Provider>
+          }
+        />
+        <Route
+          path="/admin/manage_items"
+          exact
+          element={
+            <AuthContext.Provider value={authContext}>
+              <ItemManage />
             </AuthContext.Provider>
           }
         />
