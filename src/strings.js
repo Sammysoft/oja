@@ -1,3 +1,3 @@
-export const api = "http://localhost:8081/api";
+export const api = "https://oja-api.onrender.com/api";
 
 //https://oja-api.onrender.com/api

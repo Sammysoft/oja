@@ -6,9 +6,12 @@ import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import new_item from "../../assets/new_item.png";
 import item from "../../assets/items.png";
-import person from "../../assets/svg/person.svg";
 import user from "../../assets/users.png";
-import logout from "../../assets/logout.png";
+import admin_logout from "../../assets/logout.png";
+import plus_circle from "../../assets/svg/plus_circle.svg";
+import chat_dot from "../../assets/svg/chat_dot.svg";
+import person from "../../assets/svg/person.svg";
+import logout from "../../assets/svg/logout.svg"
 import { Link } from "react-router-dom";
 
 const DashboardComponent = () => {
@@ -94,7 +97,7 @@ const DashboardComponent = () => {
                 </Link>
               </ChoicesCard>
               <ChoicesCard color={Colors.DIRTY_GREEN}>
-                <img src={logout} alt="plus" />
+                <img src={admin_logout} alt="plus" />
                 <Link
                   style={{
                     textDecorationLine: "none",

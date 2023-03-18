@@ -175,7 +175,7 @@ const InputWrapper = styled.div`
   flex-direction: row;
 `;
 
-const UploadItemForm = ({ setShowModal }) => {
+const UploadItemForm = ({ setShowModal, setToggleAdd }) => {
   const { getUser } = useContext(AuthContext);
   const [item_name, setItemName] = useState("");
   const [item_category, setItemCategory] = useState("");

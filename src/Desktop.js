@@ -20,6 +20,7 @@ import { AuthContext } from "./loginContext";
 import AboutPage from "./pages/Desktop/AboutPage";
 import ItemApproval from "./pages/Desktop/Admin/ItemApproval";
 import ItemManage from "./pages/Desktop/Admin/ItemManage";
+import ItemApprovalView from "./pages/Desktop/Admin/ItemApprovalView";
 
 function Desktop() {
   const navigate = useNavigate();
@@ -176,6 +177,15 @@ function Desktop() {
           element={
             <AuthContext.Provider value={authContext}>
               <ItemApproval />
+            </AuthContext.Provider>
+          }
+        />
+        <Route
+          path="/admin/item_approval/*"
+          exact
+          element={
+            <AuthContext.Provider value={authContext}>
+              <ItemApprovalView />
             </AuthContext.Provider>
           }
         />
