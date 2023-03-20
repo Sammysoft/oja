@@ -8,6 +8,7 @@ import plus from "../../assets/svg/bag_plus.svg";
 import chat from "../../assets/svg/chat_dot_white.svg";
 import profile from "../../assets/svg/person.svg";
 import logout from "../../assets/svg/logout.svg";
+import chart from "../../assets/svg/chart.svg"
 import bag2 from "../../assets/svg/bag2.svg";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../loginContext";
@@ -93,11 +94,11 @@ const Admin = () => {
           <DashMenu
             background={"#003C11"}
             onClick={() => {
-              _logout();
+             navigate("/metrics")
             }}
           >
-            <img src={logout} alt="logout" />
-            <LittleText>Logout</LittleText>
+            <img src={chart} alt="logout" />
+            <LittleText>Metrics</LittleText>
           </DashMenu>
         </DashMenuWrapper>
       </AdvertUpperText>

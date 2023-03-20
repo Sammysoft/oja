@@ -11,12 +11,11 @@ import admin_logout from "../../assets/logout.png";
 import plus_circle from "../../assets/svg/plus_circle.svg";
 import chat_dot from "../../assets/svg/chat_dot.svg";
 import person from "../../assets/svg/person.svg";
-import logout from "../../assets/svg/logout.svg"
+import logout from "../../assets/svg/logout.svg";
 import { Link } from "react-router-dom";
 
 const DashboardComponent = () => {
   const { getUser } = useContext(AuthContext);
-  console.log(getUser);
 
   switch (getUser.usertype) {
     case "Admin":
@@ -106,7 +105,7 @@ const DashboardComponent = () => {
                     fontFamily: "Montserrat",
                   }}
                 >
-                  Logout
+                  Metrics
                 </Link>
               </ChoicesCard>
             </Choices>

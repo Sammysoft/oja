@@ -122,9 +122,9 @@ const ItemDescription = () => {
             <>
               <div
                 style={{
-                  background: `url('${itemPictures[picker]}')`,
+                  backgroundImage: `url('${itemPictures[picker]}')`,
                   backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
+                  backgroundSize: "100%",
                   backgroundPosition: "center",
                   borderRadius: "15px",
                   height: "100%",
@@ -145,7 +145,7 @@ const ItemDescription = () => {
                 style={{
                   background: `url('${source}')`,
                   backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
+                  backgroundSize: "100%",
                   backgroundPosition: "center",
                   borderRadius: "15px",
                   height: "70px",

@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
@@ -8,8 +8,10 @@ import axios from "axios";
 import { api } from "../../strings";
 import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
+import { AuthContext } from "../../loginContext";
 
 const SignInForm = () => {
+  const {_setUser} = useContext(AuthContext)
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +36,38 @@ const SignInForm = () => {
         .then((res) => {
           setLoading(false);
           localStorage.setItem("oja-token", res.data.token);
-          navigate("/dashboard");
+          axios
+            .get(`${api}/dashboard`, {
+              headers: {
+                Authorization: res.data.token,
+              },
+            })
+            .then((res) => {
+              _setUser(res.data.data);
+              if (res.data.data.usertype === "Admin") {
+                navigate("/dashboard");
+              } else {
+                navigate("/");
+              }
+              if (res.data.data === null) {
+                alert("Empty data");
+              }
+              if (!res.data.data.profile_picture) {
+                navigate(`/profile?settings/${res.data.data._id}`);
+                Swal.fire({
+                  icon: "warning",
+                  text: "Help us know you better",
+                  title: "Add a profile picture",
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+              if (error.response.data === "Unauthorized") {
+                localStorage.removeItem("oja-token");
+                navigate("/");
+              }
+            });
         })
         .catch((error) => {
           setLoading(false);
@@ -48,71 +81,71 @@ const SignInForm = () => {
   };
   return (
     <>
-   <div>
-   <Header>Sign in to your account</Header>
-      <FormBody>
-        <FormInput
-          type={"text"}
-          placeholder={"Email / Phone number"}
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-        <FormInput
-          type={"password"}
-          placeholder={"Password"}
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
-      </FormBody>
-      <SubmitButtonWrapper>
-        <SubmitButton
-          onClick={() => {
-            handleLogin();
-          }}
-        >
-          {loading === true ? (
-            <>
-              <Loader active inline="centered" />
-            </>
-          ) : (
-            <> Login</>
-          )}
-        </SubmitButton>
-      </SubmitButtonWrapper>
-      <BottomTextWrapper>
-        <BottomText>
-          <Link
-            to="/onboard"
-            style={{
-              textDecorationColor: "",
-              textDecoration: "none",
-              textDecorationLine: "none",
-              color: "black",
+      <div>
+        <Header>Sign in to your account</Header>
+        <FormBody>
+          <FormInput
+            type={"text"}
+            placeholder={"Email / Phone number"}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          />
+          <FormInput
+            type={"password"}
+            placeholder={"Password"}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          />
+        </FormBody>
+        <SubmitButtonWrapper>
+          <SubmitButton
+            onClick={() => {
+              handleLogin();
             }}
           >
-            Don’t have an account? SIGN UP here
-          </Link>
-        </BottomText>
-        <BottomText style={{ textAlign: "right" }}>
-          <Link
-            to="/reset-password"
-            style={{
-              textDecorationColor: "black",
-              textDecoration: "none",
-              textDecorationLine: "none",
-              color: "black",
-            }}
-          >
-            {" "}
-            <i>Forgot Password?</i>
-          </Link>
-        </BottomText>
-      </BottomTextWrapper>
-   </div>
+            {loading === true ? (
+              <>
+                <Loader active inline="centered" />
+              </>
+            ) : (
+              <> Login</>
+            )}
+          </SubmitButton>
+        </SubmitButtonWrapper>
+        <BottomTextWrapper>
+          <BottomText>
+            <Link
+              to="/onboard"
+              style={{
+                textDecorationColor: "",
+                textDecoration: "none",
+                textDecorationLine: "none",
+                color: "black",
+              }}
+            >
+              Don’t have an account? SIGN UP here
+            </Link>
+          </BottomText>
+          <BottomText style={{ textAlign: "right" }}>
+            <Link
+              to="/reset-password"
+              style={{
+                textDecorationColor: "black",
+                textDecoration: "none",
+                textDecorationLine: "none",
+                color: "black",
+              }}
+            >
+              {" "}
+              <i>Forgot Password?</i>
+            </Link>
+          </BottomText>
+        </BottomTextWrapper>
+      </div>
     </>
   );
 };

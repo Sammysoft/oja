@@ -35,6 +35,9 @@ function Desktop() {
         setToken(value);
         localStorage.setItem("oja-token", value);
       },
+      _setUser:(value)=>{
+        setUser(value)
+      }
     };
   });
   useEffect(() => {
@@ -69,6 +72,8 @@ function Desktop() {
         });
     }
   }, [refreshToken]);
+
+
   return (
     <>
       <Routes>

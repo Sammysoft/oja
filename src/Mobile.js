@@ -24,6 +24,8 @@ import { api } from "./strings";
 import Swal from "sweetalert2";
 import { AuthContext } from "./loginContext";
 import AboutPage from "./pages/Mobile/AboutPage";
+import FavouritePage from "./pages/Mobile/FavouritesPage";
+import MetricsPage from "./pages/Mobile/Admin/MetricsPage";
 
 const Mobile = () => {
   const navigate = useNavigate();
@@ -37,6 +39,9 @@ const Mobile = () => {
       setToken: (value) => {
         setToken(value);
         localStorage.setItem("oja-token", value);
+      },
+      setUser: (value) => {
+        setUser(value);
       },
     };
   });
@@ -208,6 +213,24 @@ const Mobile = () => {
         element={
           <AuthContext.Provider value={authContext}>
             <AboutPage />
+          </AuthContext.Provider>
+        }
+      />
+      <Route
+        path="/favourites"
+        exact
+        element={
+          <AuthContext.Provider value={authContext}>
+            <FavouritePage />
+          </AuthContext.Provider>
+        }
+      />
+      <Route
+        path="/metrics"
+        exact
+        element={
+          <AuthContext.Provider value={authContext}>
+            <MetricsPage />
           </AuthContext.Provider>
         }
       />

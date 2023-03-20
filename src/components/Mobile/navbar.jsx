@@ -23,6 +23,7 @@ import agro from "../../assets/svg/agro.svg";
 import kids from "../../assets/svg/kid.svg";
 import work from "../../assets/svg/work.svg";
 import dashboard from "../../assets/svg/dashboard.svg";
+import love from "../../assets/svg/heart_empty.svg";
 import { AuthContext } from "../../loginContext";
 import Swal from "sweetalert2";
 
@@ -250,6 +251,14 @@ const BottomNav = () => {
         >
           <BottomNavIcon src={sell} alt="sell" width={30} height={30} />
           <BottomNavText>Sell</BottomNavText>
+        </BottomNavItem>
+        <BottomNavItem
+          onClick={() => {
+            navigate("/favourites");
+          }}
+        >
+          <BottomNavIcon src={love} alt="love" width={30} height={30} />
+          <BottomNavText>Favourites</BottomNavText>
         </BottomNavItem>
         <BottomNavItem
           onClick={() => {

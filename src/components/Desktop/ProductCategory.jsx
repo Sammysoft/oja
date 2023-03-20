@@ -16,7 +16,7 @@ const ProductsCategory = ({ category }) => {
       // setStates(NaijaStates.states());
       axios.post(`${api}/product/category`, { query: category }).then((res) => {
         setProducts(res.data.data);
-        console.log(res.data.data);
+        // console.log(res.data.data);
         setLoading(false);
       // }, 1000);
       // return () => clearInterval(interval);
@@ -63,7 +63,7 @@ const ProductCapsules = ({ products }) => {
   return (
     <>
       {products.map((ads, id) => {
-        console.log(ads);
+        // console.log(ads);
         return (
           <>
             <ProductCapsuleWrapper key={id}>

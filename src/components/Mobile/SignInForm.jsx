@@ -67,10 +67,11 @@ const LinkAway = styled.div`
   text-align: center;
 `;
 const SignInForm = () => {
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {setToken} = useContext(AuthContext)
+  const { setToken } = useContext(AuthContext);
 
   //State indicators
   const [loading, setLoading] = useState(Boolean);
@@ -92,13 +93,44 @@ const SignInForm = () => {
       axios
         .post(`${api}/auth`, payload)
         .then((res) => {
-          setLoading(false)
           localStorage.setItem("oja-token", res.data.token);
-          setToken(res.data.token)
-          navigate('/dashboard');
+          setToken(res.data.token);
+          axios
+            .get(`${api}/dashboard`, {
+              headers: {
+                Authorization: res.data.token,
+              },
+            })
+            .then((res) => {
+              setLoading(false);
+              setUser(res.data.data);
+              if (res.data.data.usertype === "Admin") {
+                navigate("/dashboard");
+              } else {
+                navigate("/");
+              }
+              if (res.data.data === null) {
+                alert("Empty data");
+              }
+              if (!res.data.data.profile_picture) {
+                navigate(`/profile?settings/${res.data.data._id}`);
+                Swal.fire({
+                  icon: "warning",
+                  text: "Help us know you better",
+                  title: "Add a profile picture",
+                });
+              }
+            })
+            .catch((error) => {
+              console.log(error)
+              if (error.response.data === "Unauthorized") {
+                localStorage.removeItem("oja-token");
+                navigate("/");
+              }
+            });
         })
         .catch((error) => {
-          setLoading(false)
+          setLoading(false);
           Swal.fire({
             icon: "error",
             title: "Oops",

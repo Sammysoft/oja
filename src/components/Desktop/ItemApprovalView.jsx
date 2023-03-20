@@ -318,7 +318,7 @@ const BigImage = styled.div`
   border-radius: 10px;
   background-image: url("${(props) => props.background}");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100%;
   background-position: center;
 `;
 

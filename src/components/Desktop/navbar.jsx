@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 const NavBar = () => {
   const [toggle, setToggle] = useState(false);
   const { getUser } = useContext(AuthContext);
-  
+
   return (
     <>
       <SearchBarWrapper>
@@ -166,14 +166,16 @@ const ProfileBar = ({ setToggle, toggle, getUser }) => {
 };
 
 const Toggler = ({ setToggle }) => {
+  const { _setUser } = useContext(AuthContext)
   const navigate = useNavigate();
   const _logout = () => {
     localStorage.removeItem("oja-token");
+    _setUser({})
+    navigate("/");
     Swal.fire({
       title: "Logged Out",
       text: "You have logged out successfully",
     });
-    window.location.reload();
   };
   return (
     <>

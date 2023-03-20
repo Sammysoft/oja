@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import man_hair from "../../assets/man_hair2.png";
@@ -17,6 +17,8 @@ import sport from "../../assets/svg/sport.svg";
 import agro from "../../assets/svg/agro.svg";
 import kids from "../../assets/svg/kid.svg";
 import work from "../../assets/svg/work.svg";
+import love from "../../assets/svg/heart_empty.svg";
+import no_love from "../../assets/svg/heart_filled.svg";
 import axios from "axios";
 import { api } from "../../strings";
 import NaijaStates from "naija-state-local-government";
@@ -24,6 +26,8 @@ import { useNavigate } from "react-router";
 import whatsapp from "../../assets/svg/whatsapp.svg";
 import email from "../../assets/svg/email.svg";
 import mobile from "../../assets/svg/mobile.svg";
+import { AuthContext } from "../../loginContext";
+import Swal from "sweetalert2";
 
 const data = [
   {
@@ -216,20 +220,32 @@ const ProductOption = styled.option`
   font-size: 0.5rem;
 `;
 
-
 const ProductListWrapper = ({ cat, products }) => {
+  const { getUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const setLiked = (id) => {
+    axios
+      .post(`${api}/product/like`, { id: id, user_id: getUser._id })
+      .then((res) => {
+        Swal.fire({
+          title: "Added to favourites",
+          text: `${res.data.data}`,
+        });
+      })
+      .catch((error) =>
+        Swal.fire({ title: "Oops", text: error.response.data.data })
+      );
+  };
   return (
     <>
       <ProductListingWrapper>
         {products.map((ads, index) => (
           <ProductItem key={index}>
-            <div
-               onClick={() => {
-                navigate(`/item/description/${ads._id}`);
-              }}
+              <div
               style={{
-                backgroundImage:`url('${ads.item_pictures[0]}')`,
+                backgroundImage: `url('${ads.item_pictures[0]}')`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 backgroundPosition: "25% center",
@@ -237,8 +253,41 @@ const ProductListWrapper = ({ cat, products }) => {
                 borderTopLeftRadius: " 15px",
                 height: " 50%",
                 width: " 100%",
+                position: "relative",
               }}
-            ></div>
+            >
+              <img
+                src={
+                  selectedItem === index ||
+                  ads.item_likes.indexOf(getUser._id) !== -1
+                    ? no_love
+                    : love
+                }
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  left: "10px",
+                  width: "30px",
+                  height: "30px",
+                }}
+                alt={"love"}
+                onClick={() => {
+                  setSelectedItem(index);
+                  setLiked(ads._id);
+                }}
+              />
+              <div
+                onClick={() => {
+                  navigate(`/item/description/${ads._id}`);
+                }}
+                style={{
+                  position: "absolute",
+                  height: "75%",
+                  width: "100%",
+                  bottom: "0px",
+                }}
+              ></div>
+            </div>
             <ProductItemName>{ads.item_name}</ProductItemName>
             <ProductPrice>
               NGN{" "}
@@ -249,7 +298,7 @@ const ProductListWrapper = ({ cat, products }) => {
             <ItemContact>
               <ItemContactIcon>
                 <a
-                  href={`http://wa.me/${ads.phone}?text=I am messaging you about ${ads.item_name} on oja-online for ${ads.price}, `}
+                  href={`http://wa.me/${ads.item_phone}?text=I am messaging you about ${ads.item_name} on oja-online for NGN ${ads.item_price}, `}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -258,7 +307,7 @@ const ProductListWrapper = ({ cat, products }) => {
               </ItemContactIcon>
               <ItemContactIcon>
                 <a
-                  href={`mailto:${ads.email}`}
+                  href={`mailto:${ads.item_email}`}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -310,7 +359,6 @@ const ProductItem = styled.div`
   padding: ${(props) => props.padding};
   height: 40vh;
 `;
-
 
 const ProductItemName = styled.div`
   font-family: Montserrat;
