@@ -99,7 +99,7 @@ const NavBar = () => {
 
   const handleScroll = () => {
     const currentScrollPos = window.pageYOffset;
-    if (prevScrollPos > currentScrollPos) {
+    if (prevScrollPos < currentScrollPos) {
       setShowComponent(true);
     } else {
       setShowComponent(false);

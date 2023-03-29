@@ -308,7 +308,11 @@ const ProductListWrapper = ({ cat, products }) => {
                   <img src={email} alt="email" />
                 </a>
               </ItemContactIcon>
-              <ItemContactIcon onClick={()=>{handleCall(ads.item_phone)}}>
+              <ItemContactIcon
+                onClick={() => {
+                  handleCall(ads.item_phone);
+                }}
+              >
                 <img src={mobile} alt="mobile" />
               </ItemContactIcon>
             </ItemContact>

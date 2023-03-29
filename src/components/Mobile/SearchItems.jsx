@@ -1,18 +1,24 @@
 /* eslint-disable */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Colors } from "../../assets/styles";
 import styled from "styled-components";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "../../strings";
 import Swal from "sweetalert2";
-
+import { AuthContext } from "../../loginContext";
+import love from "../../assets/svg/heart_empty.svg";
+import no_love from "../../assets/svg/heart_filled.svg";
+import whatsapp from "../../assets/svg/whatsapp.svg";
+import email from "../../assets/svg/email.svg";
+import mobile from "../../assets/svg/mobile.svg";
 
 const SearchItems = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
+  const { getUser } = useContext(AuthContext);
   useEffect(() => {
     axios
       .post(`${api}/product/category`, { query: searchParams.get("category") })
@@ -21,6 +27,26 @@ const SearchItems = () => {
       })
       .catch((error) => console.log(error.response.data));
   }, [searchParams]);
+
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const setLiked = (id) => {
+    axios
+      .post(`${api}/product/like`, { id: id, user_id: getUser._id })
+      .then((res) => {
+        Swal.fire({
+          title: "Added to favourites",
+          text: `${res.data.data}`,
+        });
+      })
+      .catch((error) =>
+        Swal.fire({ title: "Oops", text: error.response.data.data })
+      );
+  };
+
+  const handleCall = (phoneNumber) => {
+    window.location.href = `tel:${phoneNumber}`;
+  };
 
   return (
     <>
@@ -34,34 +60,87 @@ const SearchItems = () => {
               </>
             ) : (
               <>
-                {" "}
-                {products.map((product, index) => (
+                {products.map((ads, index) => (
                   <ProductItem key={index}>
-                    <img
-                      src={product.item_pictures[0]}
-                      alt="product"
+                    <div
                       style={{
-                        height: "50%",
+                        backgroundImage: `url('${ads.item_pictures[0]}')`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "cover",
+                        backgroundPosition: "25% center",
+                        borderTopRightRadius: "15px",
+                        borderTopLeftRadius: " 15px",
+                        height: "60%",
                         width: "100%",
-                        padding: "5px",
-                        borderTopLeftRadius: "8px",
-                        borderTopRightRadius: "8px",
+                        position: "relative",
                       }}
-                    />
-                    <ProductItemName>{product.item_name}</ProductItemName>
+                    >
+                      <img
+                        src={
+                          selectedItem === index ||
+                          ads.item_likes.indexOf(getUser._id) !== -1
+                            ? no_love
+                            : love
+                        }
+                        style={{
+                          position: "absolute",
+                          top: "10px",
+                          left: "10px",
+                          width: "30px",
+                          height: "30px",
+                        }}
+                        alt={"love"}
+                        onClick={() => {
+                          setSelectedItem(index);
+                          setLiked(ads._id);
+                        }}
+                      />
+                      <div
+                        onClick={() => {
+                          navigate(`/item/description/${ads._id}`);
+                        }}
+                        style={{
+                          position: "absolute",
+                          height: "75%",
+                          width: "100%",
+                          bottom: "0px",
+                        }}
+                      ></div>
+                    </div>
+                    <ProductItemName>{ads.item_name}</ProductItemName>
                     <ProductPrice>
                       NGN{" "}
-                      {Number(product.item_price).toLocaleString("en-US", {
+                      {Number(ads.item_price).toLocaleString("en-US", {
                         minimumFractionDigits: 0,
                       })}
                     </ProductPrice>
-                    <Button
-                      onClick={() => {
-                        navigate(`/item/description/${product._id}`);
-                      }}
-                    >
-                      View
-                    </Button>
+                    <ItemContact>
+                      <ItemContactIcon>
+                        <a
+                          href={`http://wa.me/${ads.item_phone}?text=I am messaging you about ${ads.item_name} on oja-online for NGN ${ads.item_price}, `}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src={whatsapp} alt="whatsapp" />
+                        </a>
+                      </ItemContactIcon>
+                      <ItemContactIcon>
+                        <a
+                          href={`mailto:${ads.item_email}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img src={email} alt="email" />
+                        </a>
+                      </ItemContactIcon>
+                      <ItemContactIcon
+                        onClick={() => {
+                          handleCall(ads.item_phone);
+                        }}
+                      >
+                        <img src={mobile} alt="mobile" />
+                      </ItemContactIcon>
+                    </ItemContact>
                   </ProductItem>
                 ))}
               </>
@@ -75,6 +154,20 @@ const SearchItems = () => {
 
 export default SearchItems;
 
+
+const ItemContact = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  padding: 5px;
+`;
+const ItemContactIcon = styled.div`
+width: 100px,
+height: 100px;
+`;
+
 const Info = styled.div`
   width: 90vw;
   height: 60vh;
@@ -85,7 +178,7 @@ const Info = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: .7;
+  opacity: 0.7;
 `;
 
 const SearchItemWrapper = styled.div`
