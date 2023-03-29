@@ -1,13 +1,13 @@
 /* eslint-disable */
 
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import logo from "../../assets/logo.png";
 import menu from "../../assets/menu.png";
-import sell from "../../assets/sell.png";
-import chat from "../../assets/chat.png";
-import pro from "../../assets/pro.png";
+import sell from "../../assets/svg/upload.svg";
+import chat from "../../assets/svg/mobile_chat.svg";
+import pro from "../../assets/svg/profile.svg";
 import { Link, useNavigate } from "react-router-dom";
 import car from "../../assets/svg/truck.svg";
 import house from "../../assets/svg/house.svg";
@@ -86,7 +86,27 @@ const NavBar = () => {
   const { getUser } = useContext(AuthContext);
   // console.log(getUser)
   const navigate = useNavigate();
-  const [toggleMenu, setToggleMenu] = React.useState(false);
+  const [toggleMenu, setToggleMenu] = useState(false);
+  const [showComponent, setShowComponent] = useState(false);
+  const [prevScrollPos, setPrevScrollPos] = useState(window.pageYOffset);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    const currentScrollPos = window.pageYOffset;
+    if (prevScrollPos > currentScrollPos) {
+      setShowComponent(true);
+    } else {
+      setShowComponent(false);
+    }
+    setPrevScrollPos(currentScrollPos);
+  };
+
   return (
     <>
       <NavWrapper>
@@ -124,7 +144,7 @@ const NavBar = () => {
           setToggleMenu={setToggleMenu}
         />
       )}
-      <BottomNav />
+      {showComponent && <BottomNav />}
     </>
   );
 };
@@ -241,7 +261,7 @@ const BottomNav = () => {
             navigate("/");
           }}
         >
-          <BottomNavIcon src={house} alt="home" width={30} height={30} />
+          <BottomNavIcon src={house} alt="home" width={20} height={20} />
           <BottomNavText>Home</BottomNavText>
         </BottomNavItem>
         <BottomNavItem
@@ -249,7 +269,7 @@ const BottomNav = () => {
             navigate("/items");
           }}
         >
-          <BottomNavIcon src={sell} alt="sell" width={30} height={30} />
+          <BottomNavIcon src={sell} alt="sell" width={20} height={20} />
           <BottomNavText>Sell</BottomNavText>
         </BottomNavItem>
         <BottomNavItem
@@ -257,7 +277,7 @@ const BottomNav = () => {
             navigate("/favourites");
           }}
         >
-          <BottomNavIcon src={love} alt="love" width={30} height={30} />
+          <BottomNavIcon src={love} alt="love" width={20} height={20} />
           <BottomNavText>Favourites</BottomNavText>
         </BottomNavItem>
         <BottomNavItem
@@ -265,7 +285,7 @@ const BottomNav = () => {
             navigate("/chats");
           }}
         >
-          <BottomNavIcon src={chat} alt="chat" width={30} height={30} />
+          <BottomNavIcon src={chat} alt="chat" width={20} height={20} />
           <BottomNavText>Chats</BottomNavText>
         </BottomNavItem>
         <BottomNavItem
@@ -273,7 +293,7 @@ const BottomNav = () => {
             navigate("/profile");
           }}
         >
-          <BottomNavIcon src={pro} alt="chat" width={30} height={30} />
+          <BottomNavIcon src={pro} alt="chat" width={20} height={20} />
           <BottomNavText>Profile</BottomNavText>
         </BottomNavItem>
       </BottomNavWrapper>
@@ -313,6 +333,7 @@ const BottomNavText = styled.div`
   color: ${Colors.PRIMARY};
   font-weight: 700;
   padding-top: 5px;
+  font-size: 0.8rem;
 `;
 
 const Logout = styled.div`

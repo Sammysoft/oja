@@ -34,8 +34,8 @@ const Favourites = () => {
       <div
         style={{
           fontFamily: "Montserrat",
-          fontWeight: 900,
-          fontSize: "2rem",
+          fontWeight: 700,
+          fontSize: "1.5rem",
           width: "100%",
           textAlign: "center",
           marginTop: "15vh"
@@ -54,7 +54,7 @@ const Favourites = () => {
                 backgroundPosition: "25% center",
                 borderTopRightRadius: "15px",
                 borderTopLeftRadius: " 15px",
-                height: " 50%",
+                height: " 60%",
                 width: " 100%",
                 position: "relative",
               }}
@@ -143,11 +143,11 @@ height: 100px;
 const ProductListingWrapper = styled.div`
   width: 100vw;
   display: grid;
-  grid-template-columns: 50% 50%;
-  gap: 5%;
+  grid-template-columns: 48% 48%;
+  gap: 2%;
   margin-top: 3vh;
-  padding: 5%;
-  height: 120vh;
+  padding-left: 2%;
+  height: 80vh;
   overflow-y: scroll;
 `;
 const ProductItem = styled.div`
@@ -160,7 +160,7 @@ const ProductItem = styled.div`
   justify-content: flex-start;
   width: 100%;
   padding: ${(props) => props.padding};
-  height: 40vh;
+  height: 35vh;
 `;
 
 const ProductItemName = styled.div`

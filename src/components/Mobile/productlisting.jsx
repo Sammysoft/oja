@@ -159,7 +159,7 @@ const ProductFilter = () => {
         <>
           <div
             style={{
-              width: "100vw",
+              width: "100%",
               height: "60vh",
               display: "flex",
               flexDirection: "column",
@@ -175,16 +175,6 @@ const ProductFilter = () => {
           <ProductListWrapper cat={"cars"} products={products} />
           <br />
           <br />
-          <div
-            style={{
-              fontFamily: "Montserrat",
-              paddingLeft: "20px",
-              color: Colors.PRIMARY_DEEP,
-              textAlign: "center",
-            }}
-          >
-            View more in Mobile Phones {">>>"}
-          </div>
         </>
       )}
       <Advert
@@ -238,12 +228,16 @@ const ProductListWrapper = ({ cat, products }) => {
         Swal.fire({ title: "Oops", text: error.response.data.data })
       );
   };
+
+  const handleCall = (phoneNumber) => {
+    window.location.href = `tel:${phoneNumber}`;
+  };
   return (
     <>
       <ProductListingWrapper>
         {products.map((ads, index) => (
           <ProductItem key={index}>
-              <div
+            <div
               style={{
                 backgroundImage: `url('${ads.item_pictures[0]}')`,
                 backgroundRepeat: "no-repeat",
@@ -251,8 +245,8 @@ const ProductListWrapper = ({ cat, products }) => {
                 backgroundPosition: "25% center",
                 borderTopRightRadius: "15px",
                 borderTopLeftRadius: " 15px",
-                height: " 50%",
-                width: " 100%",
+                height: "60%",
+                width: "100%",
                 position: "relative",
               }}
             >
@@ -314,7 +308,7 @@ const ProductListWrapper = ({ cat, products }) => {
                   <img src={email} alt="email" />
                 </a>
               </ItemContactIcon>
-              <ItemContactIcon>
+              <ItemContactIcon onClick={()=>{handleCall(ads.item_phone)}}>
                 <img src={mobile} alt="mobile" />
               </ItemContactIcon>
             </ItemContact>
@@ -338,12 +332,12 @@ width: 100px,
 height: 100px;
 `;
 const ProductListingWrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   display: grid;
-  grid-template-columns: 50% 50%;
-  gap: 5%;
+  grid-template-columns: 48% 48%;
+  gap: 2%;
   margin-top: 5vh;
-  padding: 5%;
+  padding-left: 1%;
   height: 120vh;
   overflow-y: scroll;
 `;
@@ -355,9 +349,8 @@ const ProductItem = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
   padding: ${(props) => props.padding};
-  height: 40vh;
+  height: 35vh;
 `;
 
 const ProductItemName = styled.div`
