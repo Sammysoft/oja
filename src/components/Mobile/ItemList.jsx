@@ -121,6 +121,7 @@ const ItemList = () => {
           </span>
         </span>
       </Header>
+      <AddItem setToggleAdd={setToggleAdd}/>
       <ListWrapper>
         <Items setToggleAdd={setToggleAdd} />
       </ListWrapper>
@@ -807,18 +808,8 @@ const AddItem = ({ setToggleAdd }) => {
           setToggleAdd(true);
         }}
       >
-        <div style={{ flex: "1" }}>
+        <div>
           <img src={plus} alt="plus" />
-        </div>
-        <div
-          style={{
-            flex: "1",
-            padding: "10px",
-            fontFamily: "Montserrat",
-            textAlign: "center",
-          }}
-        >
-          Add new Item for sale
         </div>
       </AddItemElement>
     </>
@@ -859,11 +850,11 @@ const Items = ({ setToggleAdd }) => {
         </>
       ) : (
         <>
-          <Card
+          {/* <Card
             color={"white"}
             background={"#3C0300"}
             element={<AddItem setToggleAdd={setToggleAdd} />}
-          />
+          /> */}
           {items.map((item, id) => (
             <ItemWrapper key={id}>
               <ItemImage source={item.item_pictures[0]}></ItemImage>
@@ -950,7 +941,7 @@ const ItemImage = styled.div`
   border-top-right-radius: 8px;
   width: 100%;
   height: 150px;
-  background: url('${(props) => props.source}');
+  background: url("${(props) => props.source}");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -997,13 +988,14 @@ const Button = styled.div`
 `;
 
 const AddItemElement = styled.div`
-  width: 100%;
-  min-height: 30vh;
+  width: fit-content;
   height: fit-content;
+  border-radius: 50%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  border-radius: 8px;
+  background-color: ${Colors.CHOCOLATE};
 `;
 
 const CardWrapper = styled.div`

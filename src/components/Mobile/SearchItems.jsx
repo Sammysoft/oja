@@ -52,7 +52,6 @@ const SearchItems = () => {
     <>
       <SearchItemWrapper>
         <Header>{searchParams.get("category")}</Header>
-        <ProductListingWrapper>
           <ProductListingWrapper>
             {products.length === 0 ? (
               <>
@@ -146,7 +145,6 @@ const SearchItems = () => {
               </>
             )}
           </ProductListingWrapper>
-        </ProductListingWrapper>
       </SearchItemWrapper>
     </>
   );
@@ -197,12 +195,12 @@ const Header = styled.div`
 `;
 
 const ProductListingWrapper = styled.div`
-  width: 95vw;
+  width: 100%;
   display: grid;
-  grid-template-columns: 50% 50%;
-  gap: 5%;
+  grid-template-columns: 48% 48%;
+  gap: 1%;
   margin-top: 2vh;
-  padding: 5px;
+  padding-left: 2%;
   height: 70vh;
   overflow-y: scroll;
 `;

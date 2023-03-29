@@ -341,7 +341,7 @@ const ProductListingWrapper = styled.div`
   grid-template-columns: 48% 48%;
   gap: 2%;
   margin-top: 5vh;
-  padding-left: 1%;
+  padding-left: 2%;
   height: 120vh;
   overflow-y: scroll;
 `;
