@@ -21,6 +21,8 @@ import AboutPage from "./pages/Desktop/AboutPage";
 import ItemApproval from "./pages/Desktop/Admin/ItemApproval";
 import ItemManage from "./pages/Desktop/Admin/ItemManage";
 import ItemApprovalView from "./pages/Desktop/Admin/ItemApprovalView";
+import UsersList from "./pages/Desktop/Admin/UsersList";
+import MetricsAdmin from "./pages/Desktop/Metrics";
 
 function Desktop() {
   const navigate = useNavigate();
@@ -35,9 +37,9 @@ function Desktop() {
         setToken(value);
         localStorage.setItem("oja-token", value);
       },
-      _setUser:(value)=>{
-        setUser(value)
-      }
+      _setUser: (value) => {
+        setUser(value);
+      },
     };
   });
   useEffect(() => {
@@ -72,7 +74,6 @@ function Desktop() {
         });
     }
   }, [refreshToken]);
-
 
   return (
     <>
@@ -200,6 +201,24 @@ function Desktop() {
           element={
             <AuthContext.Provider value={authContext}>
               <ItemManage />
+            </AuthContext.Provider>
+          }
+        />
+        <Route
+          path="/admin/users"
+          exact
+          element={
+            <AuthContext.Provider value={authContext}>
+              <UsersList />
+            </AuthContext.Provider>
+          }
+        />
+        <Route
+          path="/admin/metrics"
+          exact
+          element={
+            <AuthContext.Provider value={authContext}>
+              <MetricsAdmin />
             </AuthContext.Provider>
           }
         />

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import { Colors } from "../../assets/styles";
 import { api } from "../../strings";
 import left from "../../assets/svg/left_arrow.svg"
@@ -21,26 +21,26 @@ const Users = () => {
   }, [users]);
 
   const _blockUser = (id, status) => {
-    let action = "";
-    if (status === false) {
-      action = "Unblocked";
-    } else {
-      action = "Blocked";
-    }
+    // let action = "";
+    // if (status === false) {
+    //   action = "Unblocked";
+    // } else {
+    //   action = "Blocked";
+    // }
     axios
       .post(`${api}/users/block/${id}`)
       .then((res) => {
-        Swal.fire({
-          title: "Done 👍",
-          text: `${res.data.data} has been ${action} on OJA!`,
-        });
+        // Swal.fire({
+        //   title: "Done 👍",
+        //   text: `${res.data.data} has been ${action} on OJA!`,
+        // });
         console.log(res.data.data);
       })
       .catch((error) => {
-        Swal.fire({
-          title: "Error!",
-          text: error.response.data,
-        });
+        // Swal.fire({
+        //   title: "Error!",
+        //   text: error.response.data,
+        // });
       });
   };
 
@@ -49,7 +49,7 @@ const Users = () => {
     const month =  ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
     return(
-        `${month[d.getMonth()]} ${d.getDay()} ${d.getFullYear()}`
+        `${month[d.getMonth()]} ${d.getDate()} ${d.getFullYear()}`
     )
   }
 

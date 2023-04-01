@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import About from "../../components/Desktop/About";
-import Footer from "../../components/Desktop/Footer";
+// import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
 
 const AboutPage = () => {
@@ -11,7 +11,7 @@ const AboutPage = () => {
         <NavBar />
       </PageWrapper>
       <About />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

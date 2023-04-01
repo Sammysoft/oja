@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from "react";
-import Footer from "../../../components/Desktop/Footer";
+// import Footer from "../../../components/Desktop/Footer";
 import NavBar from "../../../components/Desktop/navbar";
 import styled from "styled-components";
 import ItemApproval from "../../../components/Desktop/ItemApprovalView";
@@ -18,7 +18,7 @@ const ItemApprovalView= () => {
         <NavBar />
       </PageWrapper>
        <ItemApproval />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

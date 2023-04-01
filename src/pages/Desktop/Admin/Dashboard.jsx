@@ -3,7 +3,7 @@
 import React from "react";
 import NavBar from "../../../components/Desktop/navbar";
 import styled from "styled-components";
-import Footer from "../../../components/Desktop/Footer";
+// import Footer from "../../../components/Desktop/Footer";
 import DashboardComponent from "../../../components/Desktop/Dashboard";
 
 
@@ -15,7 +15,7 @@ const Dashboard = () => {
         <NavBar />
       </PageWrapper>
         <DashboardComponent />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

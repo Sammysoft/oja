@@ -4,22 +4,22 @@ import React from "react";
 // import Footer from "../../../components/Desktop/Footer";
 import NavBar from "../../../components/Desktop/navbar";
 import styled from "styled-components";
-import ItemApprovalList from "../../../components/Desktop/ItemApprovalList";
+import ListUsers from "../../../components/Desktop/ListUsers";
 
 const PageWrapper = styled.div`
   padding: 0vh 10vw;
 `;
 
-const ItemApproval = () => {
+const UsersList = () => {
   return (
     <>
       <PageWrapper>
         <NavBar />
       </PageWrapper>
-        <ItemApprovalList />
+       <ListUsers />
       {/* <Footer /> */}
     </>
   );
 };
 
-export default ItemApproval;
+export default UsersList;

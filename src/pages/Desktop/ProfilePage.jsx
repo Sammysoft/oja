@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import left from "../../assets/svg/left_arrow.svg"
 import EditForm from "../../components/Desktop/Editform";
-import Footer from "../../components/Desktop/Footer";
+// import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
 
 const ProfilePage = () => {
@@ -77,7 +77,7 @@ const ProfilePage = () => {
               <EditForm />
         </EditWrapper>
       </PageBody>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

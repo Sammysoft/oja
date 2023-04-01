@@ -9,7 +9,7 @@ import { Adverts } from "../../assets/data";
 import ProductListing from "../../components/Desktop/productlistings";
 import FloatingActionButton from "../../components/Desktop/floating_action_button";
 import LongAdvert from "../../components/Desktop/longAdvert";
-import Footer from "../../components/Desktop/Footer";
+// import Footer from "../../components/Desktop/Footer";
 import car from "../../assets/svg/truck.svg";
 import house from "../../assets/svg/house.svg";
 import phone from "../../assets/svg/phone.svg";
@@ -182,7 +182,7 @@ const HomePage = () => {
       >
         <ProductListing right={true} />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

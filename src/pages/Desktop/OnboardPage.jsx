@@ -3,7 +3,7 @@ import React  from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { Colors } from "../../assets/styles";
-import Footer from "../../components/Desktop/Footer";
+// import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
 import SignUpForm from "../../components/Desktop/Signupform";
 import left from "../../assets/svg/left_arrow.svg";
@@ -68,7 +68,7 @@ const OnboardPage = () => {
           <SignUpForm />
         </FormWrapper>
       </PageBody>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

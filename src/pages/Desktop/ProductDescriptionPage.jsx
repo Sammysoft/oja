@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Footer from "../../components/Desktop/Footer";
+// import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
 import car from "../../assets/svg/truck.svg";
 import house from "../../assets/svg/house.svg";
@@ -229,7 +229,7 @@ const ProductDescriptionPage = ({ right }) => {
       </ProductSectionWrapper>
       <br />
       <br />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

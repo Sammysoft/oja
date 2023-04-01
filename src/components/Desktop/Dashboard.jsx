@@ -7,15 +7,16 @@ import { Colors } from "../../assets/styles";
 import new_item from "../../assets/new_item.png";
 import item from "../../assets/items.png";
 import user from "../../assets/users.png";
-import admin_logout from "../../assets/logout.png";
+import admin_logout from "../../assets/svg/long_bar.svg";
 import plus_circle from "../../assets/svg/plus_circle.svg";
 import chat_dot from "../../assets/svg/chat_dot.svg";
 import person from "../../assets/svg/person.svg";
 import logout from "../../assets/svg/logout.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const DashboardComponent = () => {
   const { getUser } = useContext(AuthContext);
+  const navigate = useNavigate()
 
   switch (getUser.usertype) {
     case "Admin":
@@ -54,7 +55,12 @@ const DashboardComponent = () => {
               </div>
             </AdCapsuleWrapper>
             <Choices>
-              <ChoicesCard color={Colors.CHOCOLATE}>
+              <ChoicesCard
+                color={Colors.CHOCOLATE}
+                onClick={() => {
+                  navigate("/admin/item_approval");
+                }}
+              >
                 <img src={new_item} alt="plus" />
                 <Link
                   to="/admin/item_approval"
@@ -68,10 +74,15 @@ const DashboardComponent = () => {
                   New Items for Approval
                 </Link>
               </ChoicesCard>
-              <ChoicesCard color={Colors.PRIMARY_DEEP}>
+              <ChoicesCard
+                color={Colors.PRIMARY_DEEP}
+                onClick={() => {
+                  navigate("/admin/manage_items");
+                }}
+              >
                 <img src={item} alt="plus" />
                 <Link
-                to="/admin/manage_items"
+                  to="/admin/manage_items"
                   style={{
                     textDecorationLine: "none",
                     color: "white",
@@ -82,7 +93,12 @@ const DashboardComponent = () => {
                   Manage All Items
                 </Link>
               </ChoicesCard>
-              <ChoicesCard color={Colors.DEEP_GREEN}>
+              <ChoicesCard
+                color={Colors.DEEP_GREEN}
+                onClick={() => {
+                  navigate("/admin/users");
+                }}
+              >
                 <img src={user} alt="chat" />
                 <Link
                   style={{
@@ -95,7 +111,12 @@ const DashboardComponent = () => {
                   Manage Users
                 </Link>
               </ChoicesCard>
-              <ChoicesCard color={Colors.DIRTY_GREEN}>
+              <ChoicesCard
+                color={Colors.DIRTY_GREEN}
+                onClick={() => {
+                  navigate("/admin/metrics");
+                }}
+              >
                 <img src={admin_logout} alt="plus" />
                 <Link
                   style={{

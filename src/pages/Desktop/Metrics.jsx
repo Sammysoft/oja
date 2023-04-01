@@ -2,24 +2,24 @@
 
 import React from "react";
 // import Footer from "../../../components/Desktop/Footer";
-import NavBar from "../../../components/Desktop/navbar";
 import styled from "styled-components";
-import ItemApprovalList from "../../../components/Desktop/ItemApprovalList";
+import Metrics from "../../components/Desktop/Metrics";
+import NavBar from "../../components/Desktop/navbar";
 
 const PageWrapper = styled.div`
   padding: 0vh 10vw;
 `;
 
-const ItemApproval = () => {
+const MetricsAdmin = () => {
   return (
     <>
       <PageWrapper>
-        <NavBar />
+       <NavBar />
       </PageWrapper>
-        <ItemApprovalList />
+      <Metrics />
       {/* <Footer /> */}
     </>
   );
 };
 
-export default ItemApproval;
+export default MetricsAdmin;

@@ -90,7 +90,7 @@ const Categories = () => {
         <NavBar />
       </PageWrapper>
       <ProductListing />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

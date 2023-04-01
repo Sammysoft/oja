@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from "react";
-import Footer from "../../../components/Desktop/Footer";
+// import Footer from "../../../components/Desktop/Footer";
 import NavBar from "../../../components/Desktop/navbar";
 import styled from "styled-components";
 import ItemManageList from "../../../components/Desktop/ItemManageList";
@@ -17,7 +17,7 @@ const ItemManage = () => {
         <NavBar />
       </PageWrapper>
        <ItemManageList />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

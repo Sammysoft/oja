@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import NavBar from "../../components/Desktop/navbar";
-import Footer from "../../components/Desktop/Footer";
+// import Footer from "../../components/Desktop/Footer";
 import Chats from "../../components/Desktop/chats";
 import left from "../../assets/svg/left_arrow.svg";
 import { useNavigate } from "react-router";
@@ -127,7 +127,7 @@ const ChatPage = () => {
         <Chats />
       </PageBody>
 
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

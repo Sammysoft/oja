@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { Colors } from "../../assets/styles";
-import Footer from "../../components/Desktop/Footer";
+// import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
 import left from "../../assets/svg/left_arrow.svg";
 import SignInForm from "../../components/Desktop/Signinform";
@@ -68,7 +68,7 @@ const LoginPage = () => {
           <SignInForm />
         </FormWrapper>
       </PageBody>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

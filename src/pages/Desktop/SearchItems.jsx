@@ -2,7 +2,7 @@ import React from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import FloatingActionButton from "../../components/Desktop/floating_action_button";
-import Footer from "../../components/Desktop/Footer";
+// import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
 import car from "../../assets/svg/truck.svg";
 import house from "../../assets/svg/house.svg";
@@ -94,7 +94,7 @@ const SearchItems = () => {
         <NavBar />
       </PageWrapper>
       <ProductListing item={item} />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

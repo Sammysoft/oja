@@ -3,7 +3,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import logo from "../../assets/logo.png";
-import profile from "../../assets/profile.png";
+// import profile from "../../assets/profile.png";
 import arrow from "../../assets/svg/arrow-down.svg";
 import { Colors } from "../../assets/styles";
 import { useNavigate } from "react-router-dom";
@@ -13,11 +13,16 @@ import Swal from "sweetalert2";
 const NavBar = () => {
   const [toggle, setToggle] = useState(false);
   const { getUser } = useContext(AuthContext);
+  const navigate = useNavigate()
 
   return (
     <>
       <SearchBarWrapper>
-        <NavBarIcon>
+        <NavBarIcon
+          onClick={() => {
+            navigate("");
+          }}
+        >
           <img src={logo} alt={"logo-img"} style={{ height: 50, width: 50 }} />
           <span
             style={{
@@ -166,11 +171,11 @@ const ProfileBar = ({ setToggle, toggle, getUser }) => {
 };
 
 const Toggler = ({ setToggle }) => {
-  const { _setUser } = useContext(AuthContext)
+  const { _setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const _logout = () => {
     localStorage.removeItem("oja-token");
-    _setUser({})
+    _setUser({});
     navigate("/");
     Swal.fire({
       title: "Logged Out",

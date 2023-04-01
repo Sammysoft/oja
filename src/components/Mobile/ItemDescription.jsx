@@ -55,10 +55,10 @@ const ItemDescription = () => {
         navigate("/dashboard");
         setLoading(false);
         setToggleLogin(false);
-        Swal.fire({
-          title: "Done 👍",
-          text: "Logged In!",
-        });
+        // Swal.fire({
+        //   title: "Done 👍",
+        //   text: "Logged In!",
+        // });
       })
       .catch((error) => {
         setLoading(false);
@@ -264,7 +264,9 @@ const ItemDescription = () => {
                 <>Sign in</>
               )}
             </Button>
-            <BottomText>Don't have an account? SIGN UP here</BottomText>
+            <BottomText onClick={()=>{
+              navigate("/onboard")
+            }}>Don't have an account? SIGN UP here</BottomText>
             <div
               style={{
                 fontFamily: "Montserrat",
