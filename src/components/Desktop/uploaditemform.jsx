@@ -197,56 +197,10 @@ const UploadItemForm = ({ setShowModal, setToggleAdd }) => {
 
   const uploadFile = (file) => {
     setImageLoad(true);
-    if (picture == null) {
-      return null;
-    } else {
-      setOpacity(true);
-      file.map((image) => {
-        const imageRef = ref(
-          getStorage(),
-          `images/oja-web-app-${Math.random + v4()}`
-        );
-        let promise = [];
-        const uploadTask = uploadBytesResumable(imageRef, image);
-        promise.push(uploadTask);
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setUploadStatus(`${Math.round(progress)}%`);
-            switch (snapshot.state) {
-              case "paused":
-                setUploadStatus("Paused");
-                break;
-              case "running":
-                break;
-            }
-          },
-          (error) => {
-            alert(
-              "Sorry, upload denied at the moment, Please try again later!"
-            );
-          },
-          async () => {
-            await getDownloadURL(uploadTask.snapshot.ref).then(
-              (downloadURL) => {
-                setItemPictures((prevImages) => prevImages.concat(downloadURL));
-                setOpacity(false);
-              }
-            );
-          }
-        );
-        Promise.all(promise).then(() => {
-          Swal.fire({
-            position: "bottom",
-            text: "All images uploaded, you can now proceed",
-            title: "Image uploaded 👍",
-            timer: 1500,
-          });
-          setImageLoad(false);
-        });
-      });
+    if(!getUser.profile_picture){
+      
+    }else{
+
     }
   };
 
