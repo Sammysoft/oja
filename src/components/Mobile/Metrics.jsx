@@ -51,21 +51,7 @@ const options = {
   }
 };
 
-const series = [
-  "AUTOMOBILE",
-  "LANDED PROPERTIES",
-  "PHONES, COMPUTERS AND ACCESSORIES",
-  "ELECTRONICS AND ACCESSORIES",
-  "MEDICALS / COSMETICS / BEAUTIES",
-  "SPORTS",
-  "FASHION",
-  "KIDDIES / BABIES",
-  "HOME DECORS",
-  "ANIMALS / LIVESTOCK / AGRICULTURE",
-  "GROCERIES / BREWERIES",
-  "SERVICES",
-  "FACTORY / INDUSTRIAL / CONSTRUCTIONS",
-];
+const series = [10, 8, 6, 3, 0, 0, 12, 0, 2, 1, 0, 2, 4];
 // import {
 //   Chart,
 //   LineController,

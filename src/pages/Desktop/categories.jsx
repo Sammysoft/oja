@@ -234,7 +234,7 @@ const ProductListing = ({ right }) => {
                 </>
               )}
             </ProductListingWrapper>
-            <div
+            {/* <div
               style={{
                 width: "50%",
                 color: Colors.PRIMARY_DEEP,
@@ -245,7 +245,7 @@ const ProductListing = ({ right }) => {
               }}
             >
               View More in {query} {">>>"}
-            </div>
+            </div> */}
           </FlexWrapper>
         </ProductSection>
       </ProductSectionWrapper>

@@ -176,12 +176,12 @@ const HomePage = () => {
         </div>
       </div>
       <ProductListing />
-      <LongAdvert />
+      {/* <LongAdvert />
       <div
         style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
       >
         <ProductListing right={true} />
-      </div>
+      </div> */}
       {/* <Footer /> */}
     </>
   );

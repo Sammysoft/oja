@@ -40,7 +40,7 @@ const ProductsCategory = ({ category }) => {
               </>
             )}
           </ProductListingWrapper>
-          <div
+          {/* <div
             style={{
               width: "50%",
               color: Colors.PRIMARY_DEEP,
@@ -51,7 +51,7 @@ const ProductsCategory = ({ category }) => {
             }}
           >
             View More in {category} {">>>"}
-          </div>
+          </div> */}
         </>
       )}
     </>
