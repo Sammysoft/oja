@@ -252,7 +252,7 @@ const ProductCapsules = ({ products, loading }) => {
                   <div
                     style={{
                       width: "100%",
-                      height: "50%",
+                      height: "60%",
                       borderTopLeftRadius: "5px",
                       borderTopRightRadius: "5px",
                       backgroundImage: `url('${product.item_pictures[0]}')`,
@@ -269,7 +269,7 @@ const ProductCapsules = ({ products, loading }) => {
                       textAlign: "center",
                       paddingTop: "10px",
                       color: Colors.PRIMARY_DEEP,
-                      fontSize: "16px",
+                      fontSize: "12px",
                     }}
                   >
                     {product.item_name}
@@ -281,7 +281,7 @@ const ProductCapsules = ({ products, loading }) => {
                       paddingTop: "10px",
                       color: Colors.PRIMARY_DEEP,
                       fontWeight: 900,
-                      fontSize: "1.3rem",
+                      fontSize: "1rem",
                     }}
                   >
                     N{" "}
@@ -394,7 +394,7 @@ const ProductCapsuleWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 35vh;
+  height: 40vh;
 `;
 
 const AdCapsuleWrapper = styled.div`

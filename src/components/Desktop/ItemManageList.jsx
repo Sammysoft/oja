@@ -48,6 +48,16 @@ const ItemManageList = () => {
       });
   }, [getUser, navigate]);
 
+  const deleteItem=()=>{
+    axios.post(`${api}/item/delete/${id}`).then((res)=>{
+
+    }).catch(error=>{
+      Swal.fire({
+        text:error.response.data.data,
+        title:"Error in deleting product"
+      })
+    })
+  }
 
 
   return (

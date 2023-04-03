@@ -888,7 +888,7 @@ const Items = ({ setToggleAdd }) => {
                     >
                       Edit
                     </Button>
-                    <Button background={"red"}>Delete</Button>
+                    <Button background={"red"} >Delete</Button>
                   </ActionButtonWrapper>
                 </>
               ) : (
