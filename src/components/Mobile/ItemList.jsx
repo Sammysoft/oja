@@ -121,7 +121,7 @@ const ItemList = () => {
           </span>
         </span>
       </Header>
-      <AddItem setToggleAdd={setToggleAdd}/>
+      <AddItem setToggleAdd={setToggleAdd} />
       <ListWrapper>
         <Items setToggleAdd={setToggleAdd} />
       </ListWrapper>
@@ -333,12 +333,12 @@ const AddItemModal = ({ setToggleAdd }) => {
           }
         );
         Promise.all(promise).then(() => {
-          Swal.fire({
-            position: "bottom",
-            text: "All images uploaded, you can now proceed",
-            title: "Image uploaded 👍",
-            timer: 1500,
-          });
+          // Swal.fire({
+          //   position: "bottom",
+          //   text: "All images uploaded, you can now proceed",
+          //   title: "Image uploaded 👍",
+          //   timer: 1500,
+          // });
           setImageLoad(false);
         });
       });
@@ -366,6 +366,7 @@ const AddItemModal = ({ setToggleAdd }) => {
   const [pickedState, setPickedState] = useState("");
   const [pickedLocal, setPickedLocal] = useState("");
   const [regions, setRegions] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     setStates(NaijaStates.states());
@@ -373,40 +374,50 @@ const AddItemModal = ({ setToggleAdd }) => {
 
   const _submitForm = () => {
     setLoading(true);
-    const payload = {
-      item_price,
-      item_category,
-      item_description,
-      item_name,
-      item_pictures,
-      item_subcategory,
-      user_id: getUser._id,
-      item_status,
-      item_state: pickedState,
-      item_local: pickedLocal,
-      item_phone: getUser.phone,
-      item_email: getUser.email,
-    };
-
-    axios
-      .post(`${api}/upload`, payload)
-      .then((res) => {
-        setLoading(false);
-        setToggleAdd(false);
-        Swal.fire({
-          title: `Uploaded ${res.data.data.item_name}`,
-          text: `${res.data.data.item_name} has been uploaded to ${res.data.data.item_category} category`,
-          position: "top",
-          timer: 1500,
-        });
-      })
-      .catch((error) => {
-        setLoading(false);
-        Swal.fire({
-          title: "Oops",
-          text: error.response.data.data,
-        });
+    if (!getUser.profile_picture) {
+      setLoading(false)
+      navigate("/profile")
+      Swal.fire({
+        icon: "info",
+        text: "add a picture of yourself for a proper identification before you can post an item",
+        title: "Add profile picture",
       });
+    } else {
+      const payload = {
+        item_price,
+        item_category,
+        item_description,
+        item_name,
+        item_pictures,
+        item_subcategory,
+        user_id: getUser._id,
+        item_status,
+        item_state: pickedState,
+        item_local: pickedLocal,
+        item_phone: getUser.phone,
+        item_email: getUser.email,
+      };
+
+      axios
+        .post(`${api}/upload`, payload)
+        .then((res) => {
+          setLoading(false);
+          setToggleAdd(false);
+          // Swal.fire({
+          //   title: `Uploaded ${res.data.data.item_name}`,
+          //   text: `${res.data.data.item_name} has been uploaded to ${res.data.data.item_category} category`,
+          //   position: "top",
+          //   timer: 1500,
+          // });
+        })
+        .catch((error) => {
+          setLoading(false);
+          Swal.fire({
+            title: "Oops",
+            text: error.response.data.data,
+          });
+        });
+    }
   };
 
   const _getRegions = (state) => {

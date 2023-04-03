@@ -197,10 +197,8 @@ const UploadItemForm = ({ setShowModal, setToggleAdd }) => {
 
   const uploadFile = (file) => {
     setImageLoad(true);
-    if(!getUser.profile_picture){
-
-    }else{
-
+    if (!getUser.profile_picture) {
+    } else {
     }
   };
 
@@ -225,6 +223,7 @@ const UploadItemForm = ({ setShowModal, setToggleAdd }) => {
   const [pickedState, setPickedState] = useState("");
   const [pickedLocal, setPickedLocal] = useState("");
   const [regions, setRegions] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     setStates(NaijaStates.states());
@@ -236,43 +235,51 @@ const UploadItemForm = ({ setShowModal, setToggleAdd }) => {
 
   const _submitForm = () => {
     setLoading(true);
-if(!getUser.profile_picture){
-  const payload = {
-    item_price,
-    item_category,
-    item_description,
-    item_name,
-    item_pictures,
-    item_subcategory,
-    user_id: getUser._id,
-    item_status,
-    item_state: pickedState,
-    item_local: pickedLocal,
-    item_phone: getUser.phone,
-    item_email: getUser.email,
-  };
+    if (!getUser.profile_picture) {
+      setLoading(false)
+      navigate("/profile")
+      Swal.fire({
+        icon: "info",
+        text: "add a picture of yourself for a proper identification before you can post an item",
+        title: "Add profile picture",
+      });
+    } else {
+      const payload = {
+        item_price,
+        item_category,
+        item_description,
+        item_name,
+        item_pictures,
+        item_subcategory,
+        user_id: getUser._id,
+        item_status,
+        item_state: pickedState,
+        item_local: pickedLocal,
+        item_phone: getUser.phone,
+        item_email: getUser.email,
+      };
 
-  axios
-    .post(`${api}/upload`, payload)
-    .then((res) => {
-      setLoading(false);
-      setToggleAdd(false);
-      setShowModal(false);
-      Swal.fire({
-        title: `Uploaded ${res.data.data.item_name}`,
-        text: `${res.data.data.item_name} has been uploaded to ${res.data.data.item_category} category`,
-        position: "top",
-        timer: 1500,
-      });
-    })
-    .catch((error) => {
-      setLoading(false);
-      Swal.fire({
-        title: "Oops",
-        text: error.response.data.data,
-      });
-    });
-}
+      axios
+        .post(`${api}/upload`, payload)
+        .then((res) => {
+          setLoading(false);
+          setToggleAdd(false);
+          setShowModal(false);
+          // Swal.fire({
+          //   title: `Uploaded ${res.data.data.item_name}`,
+          //   text: `${res.data.data.item_name} has been uploaded to ${res.data.data.item_category} category`,
+          //   position: "top",
+          //   timer: 1500,
+          // });
+        })
+        .catch((error) => {
+          setLoading(false);
+          Swal.fire({
+            title: "Oops",
+            text: error.response.data.data,
+          });
+        });
+    }
   };
 
   return (
@@ -646,17 +653,17 @@ if(!getUser.profile_picture){
               }}
             />
             <Button
-                onClick={() => {
-                  _submitForm();
-                }}
-              >
-                {loading === true ? (
-                  <>
-                    <Loader active inline="centered" />
-                  </>
-                ) : (
-                  <>Post Item</>
-                )}
+              onClick={() => {
+                _submitForm();
+              }}
+            >
+              {loading === true ? (
+                <>
+                  <Loader active inline="centered" />
+                </>
+              ) : (
+                <>Post Item</>
+              )}
             </Button>
           </div>
         </InputWrapper>

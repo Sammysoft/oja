@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
-import profile from "../../assets/profile.png"
+import profile from "../../assets/profile.png";
 
 const EditForm = () => {
   return (

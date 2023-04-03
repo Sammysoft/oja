@@ -2,13 +2,13 @@ import React from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
-import left from "../../assets/svg/left_arrow.svg"
+import left from "../../assets/svg/left_arrow.svg";
 import EditForm from "../../components/Desktop/Editform";
 // import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
 
 const ProfilePage = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
       <PageWrapper>
@@ -74,7 +74,7 @@ const ProfilePage = () => {
           </div>
         </AdCapsuleWrapper>
         <EditWrapper>
-              <EditForm />
+          <EditForm />
         </EditWrapper>
       </PageBody>
       {/* <Footer /> */}
@@ -123,12 +123,12 @@ const AdCapsuleWrapper = styled.div`
 `;
 
 const EditWrapper = styled.div`
-width: 63%;
-padding: 20px;
-border-top-left-radius: 15px;
-border-bottom-left-radius: 15px;
-background-color: rgba(0, 60, 13, 0.2);
-height: auto;
-`
+  width: 63%;
+  padding: 20px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  background-color: rgba(0, 60, 13, 0.2);
+  height: auto;
+`;
 
 export default ProfilePage;
