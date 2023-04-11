@@ -148,7 +148,7 @@ const ProductDescriptionPage = ({ right }) => {
                             <img src={datum.icon} alt="category" />
                             <span style={{ paddingLeft: "5px" }}>
                               <Link
-                                to={`/categories/?category=${datum.category}`}
+                                to={`/categories/?category="${datum.category}"`}
                                 style={{
                                   textDecoration: "none",
                                   textDecorationLine: "none",

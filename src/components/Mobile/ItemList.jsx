@@ -46,7 +46,7 @@ const ListWrapper = styled.div`
   gap: 4%;
   height: fit-content;
   overflow-y: scroll;
-  max-height: 90vh;
+  height: 70vh;
 `;
 
 const Header = styled.div`
@@ -366,7 +366,7 @@ const AddItemModal = ({ setToggleAdd }) => {
   const [pickedState, setPickedState] = useState("");
   const [pickedLocal, setPickedLocal] = useState("");
   const [regions, setRegions] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     setStates(NaijaStates.states());
@@ -375,8 +375,8 @@ const AddItemModal = ({ setToggleAdd }) => {
   const _submitForm = () => {
     setLoading(true);
     if (!getUser.profile_picture) {
-      setLoading(false)
-      navigate("/profile")
+      setLoading(false);
+      navigate("/profile");
       Swal.fire({
         icon: "info",
         text: "add a picture of yourself for a proper identification before you can post an item",
@@ -409,6 +409,7 @@ const AddItemModal = ({ setToggleAdd }) => {
           //   position: "top",
           //   timer: 1500,
           // });
+          window.location.reload();
         })
         .catch((error) => {
           setLoading(false);
@@ -839,6 +840,18 @@ const Items = ({ setToggleAdd }) => {
     });
   }, [getUser._id]);
 
+  const _deleteItem = (id) => {
+    axios
+      .post(`${api}/item/delete/${id}`)
+      .then((res) => {
+        window.location.reload()
+        setToggleAdd(false)
+      })
+      .catch((error) => {
+        console.log(error.response.data.data);
+      });
+  };
+
   return (
     <>
       {loading === true ? (
@@ -861,11 +874,6 @@ const Items = ({ setToggleAdd }) => {
         </>
       ) : (
         <>
-          {/* <Card
-            color={"white"}
-            background={"#3C0300"}
-            element={<AddItem setToggleAdd={setToggleAdd} />}
-          /> */}
           {items.map((item, id) => (
             <ItemWrapper key={id}>
               <ItemImage source={item.item_pictures[0]}></ItemImage>
@@ -888,7 +896,14 @@ const Items = ({ setToggleAdd }) => {
                     >
                       Edit
                     </Button>
-                    <Button background={"red"} >Delete</Button>
+                    <Button
+                      background={"red"}
+                      onClick={() => {
+                        _deleteItem(item._id);
+                      }}
+                    >
+                      Delete
+                    </Button>
                   </ActionButtonWrapper>
                 </>
               ) : (
@@ -945,13 +960,14 @@ const ItemWrapper = styled.div`
   align-items: center;
   box-shadow: 1px 3px 11px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
+  height: 35vh;
 `;
 
 const ItemImage = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   width: 100%;
-  height: 150px;
+  height: 60%;
   background: url("${(props) => props.source}");
   background-repeat: no-repeat;
   background-size: cover;
@@ -999,14 +1015,16 @@ const Button = styled.div`
 `;
 
 const AddItemElement = styled.div`
-  width: fit-content;
-  height: fit-content;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: ${Colors.CHOCOLATE};
+  margin: 30px;
+  margin-left: 45%;
 `;
 
 const CardWrapper = styled.div`

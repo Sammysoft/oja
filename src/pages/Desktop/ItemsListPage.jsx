@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import React from "react";
-import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
 import ItemsList from "../../components/Desktop/ItemsList";
 import styled from "styled-components";
@@ -66,7 +65,6 @@ const ItemListPage = () => {
       <ItemsList setShowModal={setShowModal} />
       <br />
       <br />
-      <Footer />
       {showModal === true ? (
         <>
           <ModalWrapper>

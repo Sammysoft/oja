@@ -7,6 +7,8 @@ import { api } from "../../strings";
 import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
 import { AuthContext } from "../../loginContext";
+import eye from "../../assets/svg/eye.svg";
+import eye_cancel from "../../assets/svg/eye-cancel.svg"
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -39,12 +41,22 @@ const Input = styled.input`
   border: 2px solid ${Colors.PRIMARY_DEEP};
   border-radius: 5px;
   padding: 2vh 0px 2vh 10%;
-  width: 100%;
+  width: ${(props) => (props.pass === true ? "80%" : "100%")};
   background-color: transparent;
   color: ${Colors.PRIMARY_DEEP};
   margin: 2px 0px 20px 0px;
   font-family: Montserrat;
   font-weight: 700;
+`;
+
+const PassView = styled.div`
+  background-color: ${Colors.PRIMARY_DEEP};
+  color: white;
+  font-family: Montserrat;
+  width: 20%;
+  text-align: center;
+  padding: 2vh;
+  margin-bottom: 20px;
 `;
 const Button = styled.div`
   width: 100%;
@@ -75,6 +87,7 @@ const SignInForm = () => {
 
   //State indicators
   const [loading, setLoading] = useState(Boolean);
+  const [showPassword, setShowPassword] = useState(Boolean);
 
   const _submitForm = () => {
     setLoading(true);
@@ -122,7 +135,7 @@ const SignInForm = () => {
               }
             })
             .catch((error) => {
-              console.log(error)
+              console.log(error);
               if (error.response.data === "Unauthorized") {
                 localStorage.removeItem("oja-token");
                 navigate("/");
@@ -152,14 +165,32 @@ const SignInForm = () => {
               setEmail(e.target.value);
             }}
           />
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "row",
             }}
-          />
+          >
+            <Input
+              type={showPassword === true ? "text":"password"}
+              placeholder="Password"
+              pass={true}
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+            <PassView
+              onClick={() => {
+                setShowPassword(!showPassword);
+              }}
+            >
+              {showPassword === true && <><img src={eye} alt={"eye"} /></>}
+              {showPassword === false && <><img src={eye_cancel} alt={"eye"} /></>}
+            </PassView>
+          </div>
           <Button
             onClick={() => {
               _submitForm();

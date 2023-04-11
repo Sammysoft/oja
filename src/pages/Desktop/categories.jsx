@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
 import { api } from "../../strings";
 import axios from "axios";
@@ -100,13 +100,13 @@ const ProductListing = ({ right }) => {
   const [loading, setLoading] = useState(Boolean);
   const [products, setProducts] = useState([]);
   let query = searchParams.get("category");
-  var result = query.substring(1, query.length - 1)
+  var result = query.substring(1, query.length - 1);
   const [item, setItem] = React.useState("");
 
   React.useEffect(() => {
     setLoading(true);
     setItem(result);
-    console.log(result)
+    console.log(result);
     axios.post(`${api}/product/category`, { query: result }).then((res) => {
       setProducts(res.data.data);
       setLoading(false);
@@ -193,9 +193,9 @@ const ProductListing = ({ right }) => {
                         width: "30%",
                         fontFamily: "Montserrat",
                         fontSize: "2rem",
-                        lineHeight:"2.5rem",
+                        lineHeight: "2.5rem",
                         padding: 10,
-                        height:"70%"
+                        height: "70%",
                       }}
                     >
                       Find the style that fits YOU!
@@ -254,6 +254,7 @@ const ProductListing = ({ right }) => {
 };
 
 const ProductCapsules = ({ products }) => {
+  const navigate = useNavigate();
   return (
     <>
       {products.map((product, id) => {
@@ -267,7 +268,7 @@ const ProductCapsules = ({ products }) => {
                   backgroundSize: "cover",
                   backgroundPosition: "25% center",
                   width: "100%",
-                  height: "45%",
+                  height: "60%",
                   borderTopLeftRadius: "5px",
                   borderTopRightRadius: "5px",
                 }}
@@ -275,12 +276,12 @@ const ProductCapsules = ({ products }) => {
               <div
                 style={{
                   fontFamily: "Montserrat",
-                  fontWeight: 600,
+                  fontWeight: 500,
                   width: "90%",
                   textAlign: "center",
-                  paddingTop: "10px",
+                  paddingTop: "5px",
                   color: Colors.PRIMARY_DEEP,
-                  fontSize: "1rem",
+                  fontSize: "12px",
                 }}
               >
                 {product.item_name}
@@ -289,10 +290,10 @@ const ProductCapsules = ({ products }) => {
                 style={{
                   fontFamily: "Montserrat",
                   textAlign: "center",
-                  paddingTop: "10px",
+                  paddingTop: "5px",
                   color: Colors.PRIMARY_DEEP,
-                  fontWeight: 900,
-                  fontSize: "1.2rem",
+                  fontWeight: 700,
+                  fontSize: "14px",
                 }}
               >
                 N{" "}
@@ -301,6 +302,9 @@ const ProductCapsules = ({ products }) => {
                 })}
               </div>
               <div
+                onClick={() => {
+                  navigate(`/product/${product._id}`);
+                }}
                 style={{
                   color: Colors.WHITE,
                   backgroundColor: Colors.PRIMARY_DEEP,
@@ -342,7 +346,6 @@ const FilterWrapper = styled.div`
   margin: 20px 0px;
   flex-direction: row;
 `;
-
 
 const PageWrapper = styled.div`
   margin-left: 10vw;

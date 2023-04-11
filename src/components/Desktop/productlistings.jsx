@@ -104,22 +104,94 @@ const ProductListing = ({ right }) => {
   const [regions, setRegions] = useState([]);
   const [loading, setLoading] = useState(Boolean);
   const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState("");
+  const [filterUrl, setFilterUrl] = useState("products/approved");
 
   const _getRegions = (state) => {
     setRegions(NaijaStates.lgas(state).lgas);
   };
+
   useEffect(() => {
     setLoading(true);
     setStates(NaijaStates.states());
 
-    axios.get(`${api}/products/approved`).then((res) => {
+    axios.get(`${api}/${filterUrl}`).then((res) => {
       setProducts(res.data.data);
       // console.log(res.data.data)
       setLoading(false);
     });
-  }, []);
+  }, [filterUrl]);
+
+
   return (
     <>
+      <div
+        style={{
+          marginTop: 100,
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
+        <div
+          style={{
+            fontFamily: "Montserrat",
+            fontWeight: 900,
+            paddingLeft: 150,
+            width: "40%",
+          }}
+        >
+          PRODUCT LISTING
+        </div>
+        <div style={{ width: "60%" }}>
+          <Select
+            value={category}
+            onChange={(e) => {
+              setCategory(e.target.value);
+              console.log(e.target.value);
+            }}
+          >
+            <Option value={"All"}>All Categories</Option>
+            {data.map((item, id) => (
+              <Option key={id} value={item.category}>
+                {item.category}
+              </Option>
+            ))}
+          </Select>
+          <Select
+            value={pickedState}
+            onChange={(e) => {
+              setPickedState(e.target.value);
+              _getRegions(e.target.value);
+              setFilterUrl(`products/filter/${category}/${e.target.value}`);
+            }}
+          >
+            <Option>States</Option>
+            {states.map((state, id) => {
+              return (
+                <Option key={id} value={state}>
+                  {state}
+                </Option>
+              );
+            })}
+          </Select>
+          <Select>
+            {regions.length > 0 ? (
+              <>
+                {regions.map((local, id) => {
+                  return <Option key={id}>{local}</Option>;
+                })}
+              </>
+            ) : (
+              <>
+                <Option>LGA</Option>
+              </>
+            )}
+          </Select>
+        </div>
+      </div>
       <ProductSectionWrapper right={right}>
         <ProductSection right={right}>
           <FlexWrapper>
@@ -160,7 +232,7 @@ const ProductListing = ({ right }) => {
                             <img src={datum.icon} alt="category" />
                             <span style={{ paddingLeft: "5px" }}>
                               <Link
-                                to={`/categories/?category=${datum.category}`}
+                                to={`/categories/?category="${datum.category}"`}
                                 style={{
                                   textDecoration: "none",
                                   textDecorationLine: "none",
@@ -228,9 +300,9 @@ const ProductListing = ({ right }) => {
 
             {/* <ProductsCategory category={"AUTOMOBILE"}/>
             <ProductsCategory category={"FASHION"}/> */}
-            {data.map((item, id) => (
-              <ProductsCategory category={item.category} key={id} />
-            ))}
+            {/* {data.map((item, id) => ( */}
+            <ProductsCategory products={products} />
+            {/* ))} */}
           </FlexWrapper>
         </ProductSection>
       </ProductSectionWrapper>
@@ -363,83 +435,83 @@ const AdvertImageWrapper = styled.img`
   margin-left: -20%;
 `;
 
-const ProductCapsules = ({ category }) => {
-  const navigate = useNavigate();
-  return (
-    <>
-      {category.map((ads, id) => {
-        console.log(ads);
-        return (
-          <>
-            <ProductCapsuleWrapper key={id}>
-              <div
-                onClick={() => {
-                  navigate(`/item/description/${ads._id}`);
-                }}
-                style={{
-                  backgroundImage: `url('${ads.item_pictures[0]}')`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  backgroundPosition: "25% center",
-                  borderTopRightRadius: "15px",
-                  borderTopLeftRadius: " 15px",
-                  height: " 50%",
-                  width: " 100%",
-                }}
-              ></div>
-              <div
-                style={{
-                  fontFamily: "Montserrat",
-                  fontWeight: 600,
-                  width: "90%",
-                  textAlign: "center",
-                  paddingTop: "10px",
-                  color: Colors.PRIMARY_DEEP,
-                  fontSize: "16px",
-                }}
-              >
-                {ads.item_name}
-              </div>
-              <div
-                style={{
-                  fontFamily: "Montserrat",
-                  textAlign: "center",
-                  paddingTop: "10px",
-                  color: Colors.PRIMARY_DEEP,
-                  fontWeight: 900,
-                  fontSize: "1rem",
-                }}
-              >
-                NGN{" "}
-                {Number(ads.item_price).toLocaleString("en-US", {
-                  minimumFractionDigits: 0,
-                })}
-              </div>
-              <div
-                onClick={() => {
-                  navigate(`/product/${ads._id}`);
-                }}
-                style={{
-                  color: Colors.WHITE,
-                  backgroundColor: Colors.PRIMARY_DEEP,
-                  padding: "5px 5px",
-                  borderRadius: "10px",
-                  width: "80%",
-                  textAlign: "center",
-                  marginTop: "5px",
-                  fontFamily: "Montserrat",
-                  marginBottom: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                View
-              </div>
-            </ProductCapsuleWrapper>
-          </>
-        );
-      })}
-    </>
-  );
-};
+// const ProductCapsules = ({ category }) => {
+//   const navigate = useNavigate();
+//   return (
+//     <>
+//       {category.map((ads, id) => {
+//         console.log(ads);
+//         return (
+//           <>
+//             <ProductCapsuleWrapper key={id}>
+//               <div
+//                 onClick={() => {
+//                   navigate(`/item/description/${ads._id}`);
+//                 }}
+//                 style={{
+//                   backgroundImage: `url('${ads.item_pictures[0]}')`,
+//                   backgroundRepeat: "no-repeat",
+//                   backgroundSize: "cover",
+//                   backgroundPosition: "25% center",
+//                   borderTopRightRadius: "15px",
+//                   borderTopLeftRadius: " 15px",
+//                   height: "60%",
+//                   width: " 100%",
+//                 }}
+//               ></div>
+//               <div
+//                 style={{
+//                   fontFamily: "Montserrat",
+//                   fontWeight: 600,
+//                   width: "90%",
+//                   textAlign: "center",
+//                   paddingTop: "5px",
+//                   color: Colors.PRIMARY_DEEP,
+//                   fontSize: "14px",
+//                 }}
+//               >
+//                 {ads.item_name}
+//               </div>
+//               <div
+//                 style={{
+//                   fontFamily: "Montserrat",
+//                   textAlign: "center",
+//                   paddingTop: "5px",
+//                   color: Colors.PRIMARY_DEEP,
+//                   fontWeight: 900,
+//                   fontSize: "10px",
+//                 }}
+//               >
+//                 NGN{" "}
+//                 {Number(ads.item_price).toLocaleString("en-US", {
+//                   minimumFractionDigits: 0,
+//                 })}
+//               </div>
+//               <div
+//                 onClick={() => {
+//                   navigate(`/product/${ads._id}`);
+//                 }}
+//                 style={{
+//                   color: Colors.WHITE,
+//                   backgroundColor: Colors.PRIMARY_DEEP,
+//                   padding: "5px 5px",
+//                   borderRadius: "10px",
+//                   width: "80%",
+//                   textAlign: "center",
+//                   marginTop: "5px",
+//                   fontFamily: "Montserrat",
+//                   marginBottom: "5px",
+//                   cursor: "pointer",
+//                 }}
+//               >
+//                 View
+//               </div>
+//             </ProductCapsuleWrapper>
+//           </>
+//         );
+//       })}
+//     </>
+//   );
+// };
 
 export default ProductListing;

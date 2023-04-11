@@ -20,7 +20,7 @@ const NavBar = () => {
       <SearchBarWrapper>
         <NavBarIcon
           onClick={() => {
-            navigate("");
+            navigate("/");
           }}
         >
           <img src={logo} alt={"logo-img"} style={{ height: 50, width: 50 }} />
@@ -149,7 +149,7 @@ const ProfileBar = ({ setToggle, toggle, getUser }) => {
             <img
               src={getUser.profile_picture}
               alt="profile"
-              style={{ width: 50, height: 50 }}
+              style={{ width: 50, height: 50, borderRadius: 50 }}
             />
             <span style={{ padding: "10px" }}>{getUser.fullname}</span>
             <img src={arrow} alt="arrow-down" />

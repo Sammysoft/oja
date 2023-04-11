@@ -7,8 +7,10 @@ import EditForm from "../../components/Desktop/Editform";
 // import Footer from "../../components/Desktop/Footer";
 import NavBar from "../../components/Desktop/navbar";
 
+
 const ProfilePage = () => {
   const navigate = useNavigate();
+
   return (
     <>
       <PageWrapper>
@@ -21,6 +23,7 @@ const ProfilePage = () => {
             alignItems: "center",
             display: "flex",
             cursor: "pointer",
+            margin: "2vh"
           }}
           onClick={() => {
             navigate(-1);
@@ -47,7 +50,7 @@ const ProfilePage = () => {
           <img
             src={require("../../assets/man_hair.png")}
             alt="ads"
-            style={{ height: 500, width: 300 }}
+            style={{ height: 480, width: 300 }}
           />
           <div
             style={{
@@ -55,16 +58,17 @@ const ProfilePage = () => {
               flexDirection: "column",
               alignItems: "flex-start",
               justifyContent: "space-between",
-              height: "80%",
+              height: "60%",
             }}
           >
             <div
               style={{
                 color: Colors.WHITE,
                 fontWeight: 900,
-                width: "30%",
+                width: "35%",
                 fontFamily: "Montserrat",
                 fontSize: "2rem",
+                lineHeight:"2.5rem",
                 padding: 10,
               }}
             >
@@ -99,7 +103,7 @@ const PageBody = styled.div`
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  height: fit-content;
+  height: 70vh;
   margin: 10px 0px 10vh 0px;
 `;
 const NavigateBack = styled.div`

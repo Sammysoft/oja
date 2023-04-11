@@ -6,6 +6,8 @@ import axios from "axios";
 import { api } from "../../strings";
 import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
+import eye from "../../assets/svg/eye.svg";
+import eye_cancel from "../../assets/svg/eye-cancel.svg"
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -44,6 +46,16 @@ const Input = styled.input`
   font-family: Montserrat;
   font-weight: 700;
 `;
+
+const PassView = styled.div`
+  background-color: ${Colors.PRIMARY_DEEP};
+  color: white;
+  font-family: Montserrat;
+  width: 20%;
+  text-align: center;
+  padding: 2vh;
+  margin-bottom: 20px;
+`;
 const Button = styled.div`
   width: 100%;
   border-radius: 5px;
@@ -77,6 +89,7 @@ const SignUpForm = () => {
 
   //indicators
   const [loading, setLoading] = useState(Boolean);
+  const [showPassword, setShowPassword] = useState(Boolean);
 
   const _submitForm = () => {
     setLoading(true);
@@ -163,22 +176,58 @@ const SignUpForm = () => {
               setPhone(e.target.value);
             }}
           />
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
+                   <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "row",
             }}
-          />
-          <Input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
+          >
+            <Input
+              type={showPassword === true ? "text":"password"}
+              placeholder="Password"
+              pass={true}
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+            <PassView
+              onClick={() => {
+                setShowPassword(!showPassword);
+              }}
+            >
+              {showPassword === true && <><img src={eye} alt={"eye"} /></>}
+              {showPassword === false && <><img src={eye_cancel} alt={"eye"} /></>}
+            </PassView>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "row",
             }}
-          />
+          >
+            <Input
+              type={showPassword === true ? "text":"password"}
+              placeholder="Password"
+              pass={true}
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+              }}
+            />
+            <PassView
+              onClick={() => {
+                setShowPassword(!showPassword);
+              }}
+            >
+              {showPassword === true && <><img src={eye} alt={"eye"} /></>}
+              {showPassword === false && <><img src={eye_cancel} alt={"eye"} /></>}
+            </PassView>
+          </div>
           <Input
             type="text"
             placeholder="State"

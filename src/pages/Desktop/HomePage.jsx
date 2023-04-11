@@ -117,64 +117,6 @@ const HomePage = () => {
           <AdvertBanner adverts={Adverts} />
         </AdvertBannerWrapper>
       </PageWrapper>
-      <div
-        style={{
-          marginTop: 100,
-          width: "100%",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-start",
-        }}
-      >
-        <div
-          style={{
-            fontFamily: "Montserrat",
-            fontWeight: 900,
-            paddingLeft: 150,
-            width: "40%",
-          }}
-        >
-          PRODUCT LISTING
-        </div>
-        <div style={{ width: "60%" }}>
-          <Select>
-            <Option>All Categories</Option>
-            {data.map((item, id) => (
-              <Option key={id}>{item.category}</Option>
-            ))}
-          </Select>
-          <Select
-            value={pickedState}
-            onChange={(e) => {
-              setPickedState(e.target.value);
-              _getRegions(e.target.value);
-            }}
-          >
-            <Option>States</Option>
-            {states.map((state, id) => {
-              return (
-                <Option key={id} value={state}>
-                  {state}
-                </Option>
-              );
-            })}
-          </Select>
-          <Select>
-            {regions.length > 0 ? (
-              <>
-                {regions.map((local, id) => {
-                  return <Option key={id}>{local}</Option>;
-                })}
-              </>
-            ) : (
-              <>
-                <Option>LGA</Option>
-              </>
-            )}
-          </Select>
-        </div>
-      </div>
       <ProductListing />
       {/* <LongAdvert />
       <div

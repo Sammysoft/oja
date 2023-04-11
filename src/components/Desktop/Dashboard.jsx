@@ -16,7 +16,17 @@ import { Link, useNavigate } from "react-router-dom";
 
 const DashboardComponent = () => {
   const { getUser } = useContext(AuthContext);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const _logout = () => {
+    localStorage.removeItem("oja-token");
+    _setUser({});
+    navigate("/");
+    Swal.fire({
+      title: "Logged Out",
+      text: "You have logged out successfully",
+    });
+  };
 
   switch (getUser.usertype) {
     case "Admin":
@@ -172,7 +182,12 @@ const DashboardComponent = () => {
               </div>
             </AdCapsuleWrapper>
             <Choices>
-              <ChoicesCard color={Colors.CHOCOLATE}>
+              <ChoicesCard
+                color={Colors.CHOCOLATE}
+                onClick={() => {
+                  navigate("/item-list");
+                }}
+              >
                 <img src={plus_circle} alt="plus" />
                 <Link
                   to="/item-list"
@@ -186,7 +201,10 @@ const DashboardComponent = () => {
                   Upload / Manage your items
                 </Link>
               </ChoicesCard>
-              <ChoicesCard color={Colors.PRIMARY_DEEP}>
+              <ChoicesCard
+                color={Colors.PRIMARY_DEEP}
+                onClick={() => navigate("/")}
+              >
                 <img src={chat_dot} alt="plus" />
                 <Link
                   style={{
@@ -196,12 +214,18 @@ const DashboardComponent = () => {
                     fontFamily: "Montserrat",
                   }}
                 >
-                  Chats (1 new)
+                  Chats
                 </Link>
               </ChoicesCard>
-              <ChoicesCard color={Colors.DEEP_GREEN}>
-                <img src={person} alt="chat" />
+              <ChoicesCard
+                color={Colors.DEEP_GREEN}
+                onClick={() => {
+                  navigate("/profile");
+                }}
+              >
+                <img src={person} alt="profile" />
                 <Link
+                  to="/profile"
                   style={{
                     textDecorationLine: "none",
                     color: "white",
@@ -212,9 +236,14 @@ const DashboardComponent = () => {
                   Manage Profile
                 </Link>
               </ChoicesCard>
-              <ChoicesCard color={Colors.DIRTY_GREEN}>
-                <img src={logout} alt="plus" />
-                <Link
+              <ChoicesCard
+                color={Colors.DIRTY_GREEN}
+                onClick={() => {
+                  _logout();
+                }}
+              >
+                <img src={logout} alt="plus" style={{width: 50, }}/>
+                <div
                   style={{
                     textDecorationLine: "none",
                     color: "white",
@@ -223,7 +252,7 @@ const DashboardComponent = () => {
                   }}
                 >
                   Logout
-                </Link>
+                </div>
               </ChoicesCard>
             </Choices>
           </PageBody>
@@ -287,6 +316,7 @@ const ChoicesCard = styled.div`
   background-color: ${(props) => props.color};
   border-radius: 15px;
   height: 100%;
+  cursor:pointer;
 `;
 
 export default DashboardComponent;

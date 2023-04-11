@@ -48,17 +48,17 @@ const ItemManageList = () => {
       });
   }, [getUser, navigate]);
 
-  const deleteItem=()=>{
-    axios.post(`${api}/item/delete/${id}`).then((res)=>{
-
-    }).catch(error=>{
-      Swal.fire({
-        text:error.response.data.data,
-        title:"Error in deleting product"
-      })
-    })
-  }
-
+  const deleteItem = () => {
+    axios
+      .post(`${api}/item/delete/${id}`)
+      .then((res) => {})
+      .catch((error) => {
+        Swal.fire({
+          text: error.response.data.data,
+          title: "Error in deleting product",
+        });
+      });
+  };
 
   return (
     <>
@@ -189,6 +189,7 @@ const StateButton = styled.div`
 `;
 
 const Items = ({ Items }) => {
+  const navigate = useNavigate()
   return (
     <>
       {Items.map((item, id) => (
@@ -220,8 +221,15 @@ const Items = ({ Items }) => {
             })}
           </span>
           <StateButtonWrapper>
-            <StateButton state={"edit"}>View</StateButton>
-            <StateButton state={"delete"}>Delete</StateButton>
+            <StateButton
+              state={"edit"}
+              onClick={() => {
+                navigate(`/admin/item_approval/${item._id}`);
+              }}
+            >
+              View
+            </StateButton>
+            <StateButton state={"delete"} >Delete</StateButton>
           </StateButtonWrapper>
         </ItemCapsule>
       ))}

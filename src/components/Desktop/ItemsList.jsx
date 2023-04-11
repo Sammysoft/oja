@@ -37,7 +37,7 @@ const ItemsList = ({ setShowModal }) => {
       setItems(res.data.data);
       setLoading(false);
     });
-  }, [getUser._id]);
+  }, []);
 
   return (
     <>

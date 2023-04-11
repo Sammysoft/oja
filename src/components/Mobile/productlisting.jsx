@@ -98,6 +98,8 @@ const ProductFilter = () => {
   const [regions, setRegions] = useState([]);
 
   const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState("");
+  const [filterUrl, setFilterUrl] = useState("products/approved");
 
   //Loading States
   const [loading, setLoading] = useState(Boolean);
@@ -109,19 +111,28 @@ const ProductFilter = () => {
     setLoading(true);
     setStates(NaijaStates.states());
 
-    axios.get(`${api}/products/approved`).then((res) => {
+    axios.get(`${api}/${filterUrl}`).then((res) => {
       setProducts(res.data.data);
+      // console.log(res.data.data)
       setLoading(false);
     });
-  }, []);
+  }, [filterUrl]);
 
   return (
     <>
       <ProductFilterWrapper>
-        <ProductChoiceSelect>
+        <ProductChoiceSelect
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            console.log(e.target.value);
+          }}
+        >
           <ProductOption>All Categories</ProductOption>
           {data.map((item, id) => (
-            <ProductOption key={id}>{item.category}</ProductOption>
+            <ProductOption key={id} value={item.category}>
+              {item.category}
+            </ProductOption>
           ))}
         </ProductChoiceSelect>
         <ProductChoiceSelect
@@ -129,6 +140,7 @@ const ProductFilter = () => {
           onChange={(e) => {
             setPickedState(e.target.value);
             _getRegions(e.target.value);
+            setFilterUrl(`products/filter/${category}/${e.target.value}`);
           }}
         >
           <ProductOption>States</ProductOption>

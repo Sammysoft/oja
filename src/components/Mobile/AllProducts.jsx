@@ -34,17 +34,17 @@ const AllProducts = () => {
     axios
       .post(`${api}/item/delete/${id}`)
       .then((res) => {
-        Swal.fire({
-          title: "Deleted Successfully",
-          text: res.data.data,
-        });
+        // Swal.fire({
+        //   title: "Deleted Successfully",
+        //   text: res.data.data,
+        // });
         setDeleteProduct(!deleteProduct);
       })
       .catch((error) => {
-        Swal.fire({
-          title: "Oops",
-          text: error.response.data,
-        });
+        // Swal.fire({
+        //   title: "Oops",
+        //   text: error.response.data,
+        // });
       });
   };
 
@@ -78,7 +78,7 @@ const AllProducts = () => {
           return (
             <>
               <ProductCard key={id}>
-                <ProductImage src={item.item_pictures[0]} alt="product-photo" />
+                <ProductImage src={item.item_pictures[0]} ></ProductImage>
                 <ProductName>{item.item_name}</ProductName>
                 <ProductPrice>
                   NGN{" "}
@@ -145,14 +145,18 @@ const ProductCard = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 5px;
-  height: 40vh;
+  height: 35vh;
 `;
 
-const ProductImage = styled.img`
+const ProductImage = styled.div`
   width: 100%;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  height: 45%;
+  height: 60%;
+  background-image: url('${(props)=> props.src}');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 25% center;
 `;
 
 const ProductName = styled.div`

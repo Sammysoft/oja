@@ -184,6 +184,7 @@ const StateButtonWrapper = styled.div`
 
 const StateButton = styled.div`
   font-family: Montserrat;
+  cursor: pointer;
   text-align: center;
   padding: 5px;
   border-radius: 5px;
@@ -194,7 +195,7 @@ const StateButton = styled.div`
 `;
 
 const Items = ({ Items }) => {
-  const navigate = useNavigate("")
+  const navigate = useNavigate()
   const _approveProduct = (user_id) => {
     axios
       .get(`${api}/product/approve/${user_id}`)

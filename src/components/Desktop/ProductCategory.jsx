@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -6,22 +8,8 @@ import axios from "axios";
 import { api } from "../../strings";
 import { Loader } from "semantic-ui-react";
 
-const ProductsCategory = ({ category }) => {
+const ProductsCategory = ({ products }) => {
   const [loading, setLoading] = useState(Boolean);
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    // const interval = setInterval(() => {
-      setLoading(true);
-      // setStates(NaijaStates.states());
-      axios.post(`${api}/product/category`, { query: category }).then((res) => {
-        setProducts(res.data.data);
-        // console.log(res.data.data);
-        setLoading(false);
-      // }, 1000);
-      // return () => clearInterval(interval);
-    });
-  }, [category]);
 
   return (
     <>
@@ -40,18 +28,6 @@ const ProductsCategory = ({ category }) => {
               </>
             )}
           </ProductListingWrapper>
-          {/* <div
-            style={{
-              width: "50%",
-              color: Colors.PRIMARY_DEEP,
-              paddingTop: 10,
-              paddingBottom: 10,
-              fontFamily: "Montserrat",
-              cursor: "pointer",
-            }}
-          >
-            View More in {category} {">>>"}
-          </div> */}
         </>
       )}
     </>
@@ -78,19 +54,19 @@ const ProductCapsules = ({ products }) => {
                   backgroundPosition: "25% center",
                   borderTopRightRadius: "15px",
                   borderTopLeftRadius: " 15px",
-                  height: " 50%",
+                  height: "60%",
                   width: " 100%",
                 }}
               ></div>
               <div
                 style={{
                   fontFamily: "Montserrat",
-                  fontWeight: 600,
+                  fontWeight: 500,
                   width: "90%",
                   textAlign: "center",
-                  paddingTop: "10px",
+                  paddingTop: "5px",
                   color: Colors.PRIMARY_DEEP,
-                  fontSize: "16px",
+                  fontSize: "12px",
                 }}
               >
                 {ads.item_name}
@@ -99,10 +75,10 @@ const ProductCapsules = ({ products }) => {
                 style={{
                   fontFamily: "Montserrat",
                   textAlign: "center",
-                  paddingTop: "10px",
+                  paddingTop: "5px",
                   color: Colors.PRIMARY_DEEP,
-                  fontWeight: 900,
-                  fontSize: "1rem",
+                  fontWeight: 700,
+                  fontSize: "14px",
                 }}
               >
                 NGN{" "}
@@ -139,13 +115,14 @@ const ProductCapsules = ({ products }) => {
 
 const ProductListingWrapper = styled.div`
   width: fit-content;
-  height: fit-content;
+  height: 150vh;
   display: grid;
   grid-template-columns: 23% 23% 23% 23%;
   gap: 10px;
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+  overflow-y: scroll;
 `;
 
 const ProductCapsuleWrapper = styled.div`

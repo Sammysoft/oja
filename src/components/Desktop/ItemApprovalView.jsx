@@ -48,23 +48,6 @@ const ItemApprovalView = () => {
       });
   }, [getUser, navigate]);
 
-  const _approveProduct = (user_id) => {
-    axios
-      .get(`${api}/product/approve/${user_id}`)
-      .then((res) => {
-        Swal.fire({
-          title: `Approved Product 👍`,
-          text: `Successfully approved ${res.data.data}'s product on OJA`,
-        });
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: "Oops",
-          text: error.response.data.data,
-        });
-      });
-  };
-
   return (
     <>
       <Header>
@@ -218,6 +201,24 @@ const Product = () => {
         navigate(-1);
       });
   }, []);
+
+  const _approveProduct = (user_id) => {
+    axios
+      .get(`${api}/product/approve/${user_id}`)
+      .then((res) => {
+        Swal.fire({
+          title: `Approved Product 👍`,
+          text: `Successfully approved ${res.data.data}'s product on OJA`,
+        });
+        navigate(-1)
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Oops",
+          text: error.response.data.data,
+        });
+      });
+  };
   return (
     <>
       {product.item_name && (
@@ -247,7 +248,12 @@ const Product = () => {
               </HeadDetails>
               <Description>{product.item_description}</Description>
               <ButtonWrapper>
-                <ActionButton background={Colors.DEEP_GREEN}>
+                <ActionButton
+                  background={Colors.DEEP_GREEN}
+                  onClick={() => {
+                    _approveProduct(product._id);
+                  }}
+                >
                   Approve
                 </ActionButton>
                 <ActionButton background={Colors.RED}>Decline</ActionButton>
@@ -373,6 +379,7 @@ const Description = styled.div`
   text-align: justify;
   height: 25%;
   padding: 10px;
+  font-family: Montserrat;
 `;
 
 const ButtonWrapper = styled.div`
@@ -382,6 +389,7 @@ const ButtonWrapper = styled.div`
   justify-content: space-between;
   height: 10%;
   width: 100%;
+  font-family: Montserrat;
 `;
 
 const ActionButton = styled.div`
@@ -392,15 +400,17 @@ const ActionButton = styled.div`
   padding: 15px;
   background-color: ${(props) => props.background};
   width: 40%;
+  cursor: pointer;
 `;
 const SellersWrapper = styled.div`
   width: 100%;
   height: 10%;
   padding: 10px;
+  font-family: Montserrat;
 `;
 
 const Items = ({ Items }) => {
-  const navigate = useNavigate("");
+  const navigate = useNavigate();
   const _approveProduct = (user_id) => {
     axios
       .get(`${api}/product/approve/${user_id}`)
