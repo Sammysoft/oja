@@ -23,6 +23,7 @@ const ViewItem = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [seller, setSeller] = useState({});
+  const [load, setLoad] = useState(Boolean)
 
   const [loading, setLoading] = useState(Boolean);
   const [picker, setPicker] = useState(0);
@@ -39,7 +40,7 @@ const ViewItem = () => {
       setItemPictures(res.data.data.item_pictures[0]);
       setLoading(false);
     });
-  }, [item_id]);
+  }, [item_id, load]);
 
   const _login = () => {
     setLoading(true);
@@ -73,10 +74,48 @@ const ViewItem = () => {
     axios
       .get(`${api}/product/approve/${user_id}`)
       .then((res) => {
+        // Swal.fire({
+        //   title: `Approved Product 👍`,
+        //   text: `Successfully approved ${res.data.data}'s product on OJA`,
+        // });
+        // window.location.reload();
+        setLoad(!load)
+      })
+      .catch((error) => {
         Swal.fire({
-          title: `Approved Product 👍`,
-          text: `Successfully approved ${res.data.data}'s product on OJA`,
+          title: "Oops",
+          text: error.response.data.data,
         });
+      });
+  };
+
+  const _disApproveProduct = (user_id) => {
+    axios
+      .get(`${api}/product/disapprove/${user_id}`)
+      .then((res) => {
+        // Swal.fire({
+        //   title: `Disapproved Product 👍`,
+        //   text: `Successfully disapproved ${res.data.data}'s product on OJA`,
+        // });
+          setLoad(!load)
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Oops",
+          text: error.response.data.data,
+        });
+      });
+  };
+
+  const  _declineProduct = (user_id) => {
+    axios
+      .get(`${api}/product/decline/${user_id}`)
+      .then((res) => {
+        // Swal.fire({
+        //   title: `Disapproved Product 👍`,
+        //   text: `Successfully disapproved ${res.data.data}'s product on OJA`,
+        // });
+        setLoad(!load)
       })
       .catch((error) => {
         Swal.fire({
@@ -189,16 +228,34 @@ const ViewItem = () => {
       </ProductPrice>
       <ProductDescription>{item.item_description}</ProductDescription>
       <ContactButtonWrapper>
+        {item.item_approval === true && (
+          <ActionButton
+            background={"blue"}
+            onClick={() => {
+              _disApproveProduct(item._id);
+            }}
+          >
+            <img src={call} alt="call seller" height={"25px"} width={"25px"} />
+            Disapprove
+          </ActionButton>
+        )}
+        {item.item_approval === false && (
+          <ActionButton
+            background={"green"}
+            onClick={() => {
+              _approveProduct(item._id);
+            }}
+          >
+            <img src={call} alt="call seller" height={"25px"} width={"25px"} />
+            Approve
+          </ActionButton>
+        )}
         <ActionButton
-          background={"green"}
+          background={"red"}
           onClick={() => {
-            _approveProduct(item._id);
+            _declineProduct(item._id);
           }}
         >
-          <img src={call} alt="call seller" height={"25px"} width={"25px"} />
-          Approve
-        </ActionButton>
-        <ActionButton background={"red"}>
           <img src={chat} alt="chat seller" height={"25px"} width={"25px"} />
           Decline
         </ActionButton>

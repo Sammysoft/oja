@@ -44,8 +44,8 @@ const ProductCapsules = ({ products }) => {
           <>
             <ProductCapsuleWrapper key={id}>
               <div
-                onClick={() => {
-                  navigate(`/item/description/${ads._id}`);
+                 onClick={() => {
+                  navigate(`/product/${ads._id}`);
                 }}
                 style={{
                   backgroundImage: `url('${ads.item_pictures[0]}')`,

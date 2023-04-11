@@ -9,8 +9,9 @@ import email from "../../assets/svg/email.svg";
 import mobile from "../../assets/svg/mobile.svg";
 import love from "../../assets/svg/heart_empty.svg";
 import no_love from "../../assets/svg/heart_filled.svg";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import Message from "./Message";
 
 const Favourites = () => {
   const { getUser } = useContext(AuthContext);
@@ -18,19 +19,31 @@ const Favourites = () => {
   const [favourites, setFavourites] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
+
   useEffect(() => {
     axios
       .get(`${api}/product/get/likes/${getUser._id}`)
       .then((res) => {
         setFavourites(res.data.data);
       })
-      .catch((error) =>
-        Swal.fire({ title: "Oops", text: error.response.data.data })
-      );
+      .catch((error) => {
+        setShow(true);
+        setMessage(`Oops, ${error.response.data.data}`);
+        setColor("red");
+      });
   });
 
   return (
     <>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
       <div
         style={{
           fontFamily: "Montserrat",
@@ -38,7 +51,7 @@ const Favourites = () => {
           fontSize: "1.5rem",
           width: "100%",
           textAlign: "center",
-          marginTop: "15vh"
+          marginTop: "15vh",
         }}
       >
         My Favourites

@@ -25,6 +25,7 @@ import { GROCERIES_BREWERIES } from "../../data";
 import { SERVICES } from "../../data";
 import { FACTORY_INDUSTRIAL_CONSTRUCTIONS } from "../../data";
 import NaijaStates from "naija-state-local-government";
+import Message from "./Message";
 
 import {
   ref,
@@ -62,16 +63,25 @@ const ItemList = () => {
   const [toggleAdd, setToggleAdd] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem("oja-token");
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
+  const [load, setLoad] = useState(false)
 
   useEffect(() => {
     if (!token) {
       navigate("/sign-in");
-      Swal.fire({
-        icon: "info",
-        title: "Oops 😟",
-        text: "You need to create an account or login to post items on OJA",
-        position: "top",
-      });
+      // Swal.fire({
+      //   icon: "info",
+      //   title: "Oops 😟",
+      //   text: "You need to create an account or login to post items on OJA",
+      //   position: "top",
+      // });
+      setShow(true);
+      setMessage(
+        `Oops 😟, You need to create an account or login to post items on OJA`
+      );
+      setColor("red");
     }
   }, [token]);
 
@@ -123,11 +133,17 @@ const ItemList = () => {
       </Header>
       <AddItem setToggleAdd={setToggleAdd} />
       <ListWrapper>
-        <Items setToggleAdd={setToggleAdd} />
+        <Items setToggleAdd={setToggleAdd} setLoad={setLoad} load={load}/>
       </ListWrapper>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
       {toggleAdd === true ? (
         <>
-          <AddItemModal setToggleAdd={setToggleAdd} />
+          <AddItemModal setToggleAdd={setToggleAdd} setLoad={setLoad}/>
         </>
       ) : (
         <></>
@@ -288,6 +304,10 @@ const AddItemModal = ({ setToggleAdd }) => {
   const [imageLoad, setImageLoad] = useState("");
   const [opacity, setOpacity] = useState(false);
 
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
+
   const pick = useRef("");
 
   const uploadFile = (file) => {
@@ -354,11 +374,16 @@ const AddItemModal = ({ setToggleAdd }) => {
       setPicture((prevImages) => prevImages.concat(fileArray));
       uploadFile(uploadableFile);
     } else {
-      Swal.fire({
-        title: "Upload the right amount!",
-        text: "Please ensure the images you upload is 5 or 6 images only",
-        position: "bottom",
-      });
+      // Swal.fire({
+      //   title: "Upload the right amount!",
+      //   text: "Please ensure the images you upload is 5 or 6 images only",
+      //   position: "bottom",
+      // });
+      setShow(true);
+      setMessage(
+        `Oops, Please ensure the images you upload is 5 or 6 images only`
+      );
+      setColor("red");
     }
   };
 
@@ -409,14 +434,20 @@ const AddItemModal = ({ setToggleAdd }) => {
           //   position: "top",
           //   timer: 1500,
           // });
-          window.location.reload();
+         setLoad(true)
+         setShow(true);
+         setMessage(`Uploaded ${res.data.data.item_name}`);
+         setColor("green");
         })
         .catch((error) => {
           setLoading(false);
-          Swal.fire({
-            title: "Oops",
-            text: error.response.data.data,
-          });
+          // Swal.fire({
+          //   title: "Oops",
+          //   text: error.response.data.data,
+          // });
+          setShow(true);
+          setMessage(`Oops, ${error.response.data.data}`);
+          setColor("red");
         });
     }
   };
@@ -798,6 +829,12 @@ const AddItemModal = ({ setToggleAdd }) => {
           </ItemModal>
         </ItemModalWrapper>
       </AddItemWrapper>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
     </>
   );
 };
@@ -828,7 +865,7 @@ const AddItem = ({ setToggleAdd }) => {
   );
 };
 
-const Items = ({ setToggleAdd }) => {
+const Items = ({ setToggleAdd, setLoad, load }) => {
   const [loading, setLoading] = useState(Boolean);
   const [items, setItems] = useState([]);
   const { getUser } = useContext(AuthContext);
@@ -838,14 +875,14 @@ const Items = ({ setToggleAdd }) => {
       setItems(res.data.data);
       setLoading(false);
     });
-  }, [getUser._id]);
+  }, [getUser._id, load]);
 
   const _deleteItem = (id) => {
     axios
       .post(`${api}/item/delete/${id}`)
       .then((res) => {
-        window.location.reload()
-        setToggleAdd(false)
+        setLoad(!load)
+        setToggleAdd(false);
       })
       .catch((error) => {
         console.log(error.response.data.data);

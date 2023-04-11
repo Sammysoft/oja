@@ -8,11 +8,11 @@ import plus from "../../assets/svg/bag_plus.svg";
 import chat from "../../assets/svg/chat_dot_white.svg";
 import profile from "../../assets/svg/person.svg";
 import logout from "../../assets/svg/logout.svg";
-import chart from "../../assets/svg/chart.svg"
+import chart from "../../assets/svg/chart.svg";
 import bag2 from "../../assets/svg/bag2.svg";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../loginContext";
-
+import Message from "./Message";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -40,11 +40,11 @@ const Admin = () => {
   const _logout = () => {
     localStorage.removeItem("oja-token");
     navigate("/sign-in");
-    Swal.fire({
-      icon: "success",
-      title: "Logged Out.",
-      text: "Bye for now, thanks for using OJA",
-    });
+    // Swal.fire({
+    //   icon: "success",
+    //   title: "Logged Out.",
+    //   text: "Bye for now, thanks for using OJA",
+    // });
   };
 
   return (
@@ -94,7 +94,7 @@ const Admin = () => {
           <DashMenu
             background={"#003C11"}
             onClick={() => {
-             navigate("/metrics")
+              navigate("/metrics");
             }}
           >
             <img src={chart} alt="logout" />
@@ -108,14 +108,20 @@ const Admin = () => {
 
 const User = () => {
   const navigate = useNavigate();
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
   const _logout = () => {
     localStorage.removeItem("oja-token");
     navigate("/sign-in");
-    Swal.fire({
-      icon: "success",
-      title: "Logged Out.",
-      text: "Bye for now, thanks for using OJA",
-    });
+    // Swal.fire({
+    //   icon: "success",
+    //   title: "Logged Out.",
+    //   text: "Bye for now, thanks for using OJA",
+    // });
+    setShow(true);
+    setMessage(`Logged Out. Bye for now, thanks for using OJA`);
+    setColor("green");
   };
 
   return (
@@ -173,6 +179,12 @@ const User = () => {
           </DashMenu>
         </DashMenuWrapper>
       </AdvertUpperText>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
     </>
   );
 };

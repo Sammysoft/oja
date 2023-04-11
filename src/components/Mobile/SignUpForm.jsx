@@ -4,10 +4,11 @@ import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import axios from "axios";
 import { api } from "../../strings";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
 import eye from "../../assets/svg/eye.svg";
-import eye_cancel from "../../assets/svg/eye-cancel.svg"
+import eye_cancel from "../../assets/svg/eye-cancel.svg";
+import Message from "./Message";
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -90,16 +91,22 @@ const SignUpForm = () => {
   //indicators
   const [loading, setLoading] = useState(Boolean);
   const [showPassword, setShowPassword] = useState(Boolean);
+  const [show, setShow ] = useState(true)
+  const [message, setMessage] = useState("")
+  const [color, setColor] = useState("")
 
   const _submitForm = () => {
     setLoading(true);
     if (password !== confirmPassword) {
       setLoading(false);
-      Swal.fire({
-        icon: "warning",
-        title: "Password mismatch",
-        text: "Ensure passwords are matching",
-      });
+      // Swal.fire({
+      //   icon: "warning",
+      //   title: "Password mismatch",
+      //   text: "Ensure passwords are matching",
+      // });
+      setShow(true)
+      setMessage("Password mismatch, ensure passwords are matching");
+      setColor("red")
     } else if (
       !password ||
       !confirmPassword ||
@@ -110,11 +117,14 @@ const SignUpForm = () => {
       !local_government
     ) {
       setLoading(false);
-      Swal.fire({
-        icon: "warning",
-        title: "Missing details",
-        text: "Please, fill in all required details",
-      });
+      // Swal.fire({
+      //   icon: "warning",
+      //   title: "Missing details",
+      //   text: "Please, fill in all required details",
+      // });
+      setShow(true)
+      setMessage("Missing details. Please, fill in all required details");
+      setColor("red")
     } else {
       const payload = {
         fullname,
@@ -130,19 +140,25 @@ const SignUpForm = () => {
           setLoading(false);
           console.log(res.data.data);
           navigate("/sign-in");
-          Swal.fire({
-            icon: "success",
-            title: "Account Registered",
-            text: `Welcome onboard 🎉🎉, ${res.data.data.fullname}. Login now to get started!`,
-          });
+          // Swal.fire({
+          //   icon: "success",
+          //   title: "Account Registered",
+          //   text: `Welcome onboard 🎉🎉, ${res.data.data.fullname}. Login now to get started!`,
+          // });
+          setShow(true)
+          setMessage(`Account Registered. Welcome onboard 🎉🎉, ${res.data.data.fullname}. Login now to get started!`);
+          setColor("green")
         })
         .catch((error) => {
           setLoading(false);
-          Swal.fire({
-            icon: "error",
-            title: "Oops!",
-            text: error.response.data.data,
-          });
+          // Swal.fire({
+          //   icon: "error",
+          //   title: "Oops!",
+          //   text: error.response.data.data,
+          // });
+          setShow(true)
+          setMessage(`${error.response.data.data}`);
+          setColor("red")
         });
     }
   };
@@ -269,6 +285,12 @@ const SignUpForm = () => {
           </LinkAway>
         </FormInputWrapper>
       </FormWrapper>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
     </>
   );
 };

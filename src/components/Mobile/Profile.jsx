@@ -19,6 +19,7 @@ import { api } from "../../strings";
 import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
+import Message from "./Message";
 
 const Profile = () => {
   const { getUser } = useContext(AuthContext);
@@ -43,6 +44,10 @@ const Profile = () => {
   const [picture, setPicture] = useState("");
   const [pickFile, setPickFile] = useState(null);
   const [loading, setLoading] = useState(Boolean);
+
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
 
   const uploadFile = () => {
     setImageLoad(true);
@@ -73,10 +78,15 @@ const Profile = () => {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log("File available at", downloadURL);
-            Swal.fire({
-              text: "Successfully uploaded profile picture. Press Update to complete profile update!",
-              title: "Image uploaded 👍",
-            });
+            // Swal.fire({
+            //   text: "Successfully uploaded profile picture. Press Update to complete profile update!",
+            //   title: "Image uploaded 👍",
+            // });
+            setShow(true);
+            setMessage(
+              `Image uploaded 👍. Press Update to complete profile update!`
+            );
+            setColor("green");
             setPicture(downloadURL);
             setProfilePicture(downloadURL);
             setImageLoad(false);
@@ -100,18 +110,24 @@ const Profile = () => {
     setLoading(true);
     if (password === "") {
       setLoading(false);
-      Swal.fire({
-        icon: "warning",
-        title: "Enter Password",
-        text: "Please enter your password!",
-      });
+      // Swal.fire({
+      //   icon: "warning",
+      //   title: "Enter Password",
+      //   text: "Please enter your password!",
+      // });
+      setShow(true);
+      setMessage(`Enter Password. Please enter your password!`);
+      setColor("red");
     } else if (password !== confirmPassword) {
       setLoading(false);
-      Swal.fire({
-        icon: "warning",
-        title: "Password Mismatch",
-        text: "Please ensure passwords are matching!!",
-      });
+      // Swal.fire({
+      //   icon: "warning",
+      //   title: "Password Mismatch",
+      //   text: "Please ensure passwords are matching!!",
+      // });
+      setShow(true);
+      setMessage(`Password Mismatch. Please ensure passwords are matching!!`);
+      setColor("red");
     } else {
       const payload = {
         email,
@@ -124,14 +140,19 @@ const Profile = () => {
         password,
       };
 
-      axios.post(`${api}/profile/update/${getUser._id}`, payload).then((res) => {
-        setLoading(false);
-        Swal.fire({
-          icon: "success",
-          title: "Updated Profile",
-          text: "Account has been updated successfully",
+      axios
+        .post(`${api}/profile/update/${getUser._id}`, payload)
+        .then((res) => {
+          setLoading(false);
+          // Swal.fire({
+          //   icon: "success",
+          //   title: "Updated Profile",
+          //   text: "Account has been updated successfully",
+          // });
+          setShow(true);
+          setMessage(`Updated Profile. Account has been updated successfully`);
+          setColor("green");
         });
-      });
     }
   };
 
@@ -309,6 +330,12 @@ const Profile = () => {
           )}
         </Button>
       </ProfilePageWrapper>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
     </>
   );
 };

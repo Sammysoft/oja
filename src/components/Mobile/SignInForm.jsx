@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { Colors } from "../../assets/styles";
 import axios from "axios";
 import { api } from "../../strings";
-import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
 import { AuthContext } from "../../loginContext";
 import eye from "../../assets/svg/eye.svg";
-import eye_cancel from "../../assets/svg/eye-cancel.svg"
+import eye_cancel from "../../assets/svg/eye-cancel.svg";
+import Message from "./Message";
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -88,16 +88,17 @@ const SignInForm = () => {
   //State indicators
   const [loading, setLoading] = useState(Boolean);
   const [showPassword, setShowPassword] = useState(Boolean);
+  const [show, setShow ] = useState(true)
+  const [message, setMessage] = useState("")
+  const [color, setColor] = useState("")
 
   const _submitForm = () => {
     setLoading(true);
     if (!email || !password) {
       setLoading(false);
-      Swal.fire({
-        icon: "error",
-        title: "Missing Details",
-        text: "Ensure you enter your email and password!",
-      });
+      setShow(true)
+      setMessage("Ensure you enter your email and password");
+      setColor("red")
     } else {
       const payload = {
         email,
@@ -127,11 +128,14 @@ const SignInForm = () => {
               }
               if (!res.data.data.profile_picture) {
                 navigate(`/profile?settings/${res.data.data._id}`);
-                Swal.fire({
-                  icon: "warning",
-                  text: "Help us know you better",
-                  title: "Add a profile picture",
-                });
+                // Swal.fire({
+                //   icon: "warning",
+                //   text: "Help us know you better",
+                //   title: "Add a profile picture",
+                // });
+                setShow(true)
+                setMessage("Add a profile picture, help us know you better");
+                setColor("red")
               }
             })
             .catch((error) => {
@@ -144,11 +148,14 @@ const SignInForm = () => {
         })
         .catch((error) => {
           setLoading(false);
-          Swal.fire({
-            icon: "error",
-            title: "Oops",
-            text: error.response.data.data,
-          });
+          // Swal.fire({
+          //   icon: "error",
+          //   title: "Oops",
+          //   text: error.response.data.data,
+          // });
+          setShow(true)
+          setMessage(`${error.response.data.data}`);
+          setColor("red")
         });
     }
   };
@@ -216,6 +223,12 @@ const SignInForm = () => {
           </LinkAway>
         </FormInputWrapper>
       </FormWrapper>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
     </>
   );
 };

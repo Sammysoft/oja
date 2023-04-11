@@ -6,19 +6,25 @@ import styled from "styled-components";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "../../strings";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import { AuthContext } from "../../loginContext";
 import love from "../../assets/svg/heart_empty.svg";
 import no_love from "../../assets/svg/heart_filled.svg";
 import whatsapp from "../../assets/svg/whatsapp.svg";
 import email from "../../assets/svg/email.svg";
 import mobile from "../../assets/svg/mobile.svg";
+import Message from "./Message"
+
 
 const SearchItems = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const { getUser } = useContext(AuthContext);
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
+
   useEffect(() => {
     axios
       .post(`${api}/product/category`, { query: searchParams.get("category") })
@@ -34,14 +40,19 @@ const SearchItems = () => {
     axios
       .post(`${api}/product/like`, { id: id, user_id: getUser._id })
       .then((res) => {
-        Swal.fire({
-          title: "Added to favourites",
-          text: `${res.data.data}`,
-        });
+        // Swal.fire({
+        //   title: "Added to favourites",
+        //   text: `${res.data.data}`,
+        // });
+        setShow(true);
+        setMessage(`Added to favourites, ${res.data.data}`);
+        setColor("green");
       })
-      .catch((error) =>
-        Swal.fire({ title: "Oops", text: error.response.data.data })
-      );
+      .catch((error) => {
+        setShow(true);
+        setMessage(`Oops, ${error.response.data.data}`);
+        setColor("red");
+      });
   };
 
   const handleCall = (phoneNumber) => {
@@ -52,106 +63,111 @@ const SearchItems = () => {
     <>
       <SearchItemWrapper>
         <Header>{searchParams.get("category")}</Header>
-          <ProductListingWrapper>
-            {products.length === 0 ? (
-              <>
-                <Info>No Product Yet!</Info>
-              </>
-            ) : (
-              <>
-                {products.map((ads, index) => (
-                  <ProductItem key={index}>
-                    <div
+        <ProductListingWrapper>
+          {products.length === 0 ? (
+            <>
+              <Info>No Product Yet!</Info>
+            </>
+          ) : (
+            <>
+              {products.map((ads, index) => (
+                <ProductItem key={index}>
+                  <div
+                    style={{
+                      backgroundImage: `url('${ads.item_pictures[0]}')`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundSize: "cover",
+                      backgroundPosition: "25% center",
+                      borderTopRightRadius: "15px",
+                      borderTopLeftRadius: " 15px",
+                      height: "60%",
+                      width: "100%",
+                      position: "relative",
+                    }}
+                  >
+                    <img
+                      src={
+                        selectedItem === index ||
+                        ads.item_likes.indexOf(getUser._id) !== -1
+                          ? no_love
+                          : love
+                      }
                       style={{
-                        backgroundImage: `url('${ads.item_pictures[0]}')`,
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "cover",
-                        backgroundPosition: "25% center",
-                        borderTopRightRadius: "15px",
-                        borderTopLeftRadius: " 15px",
-                        height: "60%",
+                        position: "absolute",
+                        top: "10px",
+                        left: "10px",
+                        width: "30px",
+                        height: "30px",
+                      }}
+                      alt={"love"}
+                      onClick={() => {
+                        setSelectedItem(index);
+                        setLiked(ads._id);
+                      }}
+                    />
+                    <div
+                      onClick={() => {
+                        navigate(`/item/description/${ads._id}`);
+                      }}
+                      style={{
+                        position: "absolute",
+                        height: "75%",
                         width: "100%",
-                        position: "relative",
+                        bottom: "0px",
+                      }}
+                    ></div>
+                  </div>
+                  <ProductItemName>{ads.item_name}</ProductItemName>
+                  <ProductPrice>
+                    NGN{" "}
+                    {Number(ads.item_price).toLocaleString("en-US", {
+                      minimumFractionDigits: 0,
+                    })}
+                  </ProductPrice>
+                  <ItemContact>
+                    <ItemContactIcon>
+                      <a
+                        href={`http://wa.me/${ads.item_phone}?text=I am messaging you about ${ads.item_name} on oja-online for NGN ${ads.item_price}, `}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <img src={whatsapp} alt="whatsapp" />
+                      </a>
+                    </ItemContactIcon>
+                    <ItemContactIcon>
+                      <a
+                        href={`mailto:${ads.item_email}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <img src={email} alt="email" />
+                      </a>
+                    </ItemContactIcon>
+                    <ItemContactIcon
+                      onClick={() => {
+                        handleCall(ads.item_phone);
                       }}
                     >
-                      <img
-                        src={
-                          selectedItem === index ||
-                          ads.item_likes.indexOf(getUser._id) !== -1
-                            ? no_love
-                            : love
-                        }
-                        style={{
-                          position: "absolute",
-                          top: "10px",
-                          left: "10px",
-                          width: "30px",
-                          height: "30px",
-                        }}
-                        alt={"love"}
-                        onClick={() => {
-                          setSelectedItem(index);
-                          setLiked(ads._id);
-                        }}
-                      />
-                      <div
-                        onClick={() => {
-                          navigate(`/item/description/${ads._id}`);
-                        }}
-                        style={{
-                          position: "absolute",
-                          height: "75%",
-                          width: "100%",
-                          bottom: "0px",
-                        }}
-                      ></div>
-                    </div>
-                    <ProductItemName>{ads.item_name}</ProductItemName>
-                    <ProductPrice>
-                      NGN{" "}
-                      {Number(ads.item_price).toLocaleString("en-US", {
-                        minimumFractionDigits: 0,
-                      })}
-                    </ProductPrice>
-                    <ItemContact>
-                      <ItemContactIcon>
-                        <a
-                          href={`http://wa.me/${ads.item_phone}?text=I am messaging you about ${ads.item_name} on oja-online for NGN ${ads.item_price}, `}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <img src={whatsapp} alt="whatsapp" />
-                        </a>
-                      </ItemContactIcon>
-                      <ItemContactIcon>
-                        <a
-                          href={`mailto:${ads.item_email}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <img src={email} alt="email" />
-                        </a>
-                      </ItemContactIcon>
-                      <ItemContactIcon
-                        onClick={() => {
-                          handleCall(ads.item_phone);
-                        }}
-                      >
-                        <img src={mobile} alt="mobile" />
-                      </ItemContactIcon>
-                    </ItemContact>
-                  </ProductItem>
-                ))}
-              </>
-            )}
-          </ProductListingWrapper>
+                      <img src={mobile} alt="mobile" />
+                    </ItemContactIcon>
+                  </ItemContact>
+                </ProductItem>
+              ))}
+            </>
+          )}
+        </ProductListingWrapper>
       </SearchItemWrapper>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
     </>
   );
 };
 
 export default SearchItems;
-
 
 const ItemContact = styled.div`
   width: 100%;

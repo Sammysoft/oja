@@ -8,8 +8,9 @@ import { AuthContext } from "../../loginContext";
 import axios from "axios";
 import { api } from "../../strings";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import { Loader } from "semantic-ui-react";
+import Message from "./Message"
 
 const ItemDescription = () => {
   const url = window.location.pathname;
@@ -26,6 +27,10 @@ const ItemDescription = () => {
 
   const [loading, setLoading] = useState(Boolean);
   const [picker, setPicker] = useState(0);
+
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -59,17 +64,29 @@ const ItemDescription = () => {
         //   title: "Done 👍",
         //   text: "Logged In!",
         // });
+        setShow(true);
+        setMessage(`Done 👍, Logged In!`);
+        setColor("green");
       })
       .catch((error) => {
         setLoading(false);
-        Swal.fire({
-          title: "Oops 😟",
-          text: error.response.data.data,
-        });
+        // Swal.fire({
+        //   title: "Oops 😟",
+        //   text: error.response.data.data,
+        // });
+        setShow(true);
+        setMessage(`Oops, ${error.response.data.data}`);
+        setColor("red");
       });
   };
   return (
     <>
+          <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
       <ItemDescriptionWrapper>
         <HeaderWrapper>
           <img

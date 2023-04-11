@@ -1,22 +1,25 @@
 /* eslint-disable */
 
-import React, {  useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import left from "../../assets/svg/left_arrow.svg";
 import axios from "axios";
 import { api } from "../../strings";
 import { Colors } from "../../assets/styles";
 import styled from "styled-components";
 import { AuthContext } from "../../loginContext";
+import Message from "./Message";
 
 const AllProducts = () => {
-  const { getUser } = useContext(AuthContext)
+  const { getUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [deleteProduct, setDeleteProduct] = useState(false);
 
-
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
 
   useEffect(() => {
     axios.get(`${api}/products`).then((res) => {
@@ -24,11 +27,11 @@ const AllProducts = () => {
     });
   }, [deleteProduct]);
 
-// useEffect(()=>{
-//   if(getUser.fullname === null){
-//     navigate("/")
-//   }
-// },[getUser])
+  // useEffect(()=>{
+  //   if(getUser.fullname === null){
+  //     navigate("/")
+  //   }
+  // },[getUser])
 
   const _deleteProduct = (id) => {
     axios
@@ -38,6 +41,9 @@ const AllProducts = () => {
         //   title: "Deleted Successfully",
         //   text: res.data.data,
         // });
+        setShow(true);
+        setMessage(`Deleted successfully,, ${res.data.data}`);
+        setColor("green");
         setDeleteProduct(!deleteProduct);
       })
       .catch((error) => {
@@ -45,11 +51,20 @@ const AllProducts = () => {
         //   title: "Oops",
         //   text: error.response.data,
         // });
+        setShow(true);
+        setMessage(`Oops, ${error.response.data.data}`);
+        setColor("red");
       });
   };
 
   return (
     <>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
       <Header>
         <span
           style={{
@@ -78,7 +93,7 @@ const AllProducts = () => {
           return (
             <>
               <ProductCard key={id}>
-                <ProductImage src={item.item_pictures[0]} ></ProductImage>
+                <ProductImage src={item.item_pictures[0]}></ProductImage>
                 <ProductName>{item.item_name}</ProductName>
                 <ProductPrice>
                   NGN{" "}
@@ -87,7 +102,14 @@ const AllProducts = () => {
                   })}
                 </ProductPrice>
                 <ButtonWrapper>
-                  <Button background={"#08003C"} onClick={()=>{navigate(`/product/view/${item._id}`)}}>View</Button>
+                  <Button
+                    background={"#08003C"}
+                    onClick={() => {
+                      navigate(`/product/view/${item._id}`);
+                    }}
+                  >
+                    View
+                  </Button>
                   <Button
                     background={"#DD1919"}
                     onClick={() => {
@@ -153,7 +175,7 @@ const ProductImage = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   height: 60%;
-  background-image: url('${(props)=> props.src}');
+  background-image: url("${(props) => props.src}");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 25% center;

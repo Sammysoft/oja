@@ -26,6 +26,7 @@ import dashboard from "../../assets/svg/dashboard.svg";
 import love from "../../assets/svg/heart_empty.svg";
 import { AuthContext } from "../../loginContext";
 import Swal from "sweetalert2";
+import Message from "./Message";
 
 const data = [
   {
@@ -89,6 +90,7 @@ const NavBar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [showComponent, setShowComponent] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(window.pageYOffset);
+  const [show, setShow] = useState(true);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -229,6 +231,9 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
               </CategoryMenu>
             </>
           ))}{" "}
+          <br />
+          <hr />
+          <br />
           <Logout
             onClick={() => {
               navigate("/about");
@@ -236,6 +241,9 @@ const ToggleBar = ({ profile_picture, username, setToggleMenu }) => {
           >
             About OJA
           </Logout>
+          <br />
+          <hr />
+          <br />
           {username !== "" && (
             <Logout
               onClick={() => {
@@ -264,14 +272,7 @@ const BottomNav = () => {
           <BottomNavIcon src={house} alt="home" width={20} height={20} />
           <BottomNavText>Home</BottomNavText>
         </BottomNavItem>
-        <BottomNavItem
-          onClick={() => {
-            navigate("/items");
-          }}
-        >
-          <BottomNavIcon src={sell} alt="sell" width={20} height={20} />
-          <BottomNavText>Sell</BottomNavText>
-        </BottomNavItem>
+
         <BottomNavItem
           onClick={() => {
             navigate("/favourites");
@@ -279,6 +280,14 @@ const BottomNav = () => {
         >
           <BottomNavIcon src={love} alt="love" width={20} height={20} />
           <BottomNavText>Favourites</BottomNavText>
+        </BottomNavItem>
+        <BottomNavItem
+          onClick={() => {
+            navigate("/items");
+          }}
+        >
+          <BottomNavIcon src={sell} alt="sell" width={20} height={20} />
+          <BottomNavText>Sell</BottomNavText>
         </BottomNavItem>
         <BottomNavItem
           onClick={() => {

@@ -1,18 +1,22 @@
 import axios from "axios";
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import { Colors } from "../../assets/styles";
 import { api } from "../../strings";
 import left from "../../assets/svg/left_arrow.svg";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../loginContext";
+import Message from "./Message"
 
 const ProductApprovals = () => {
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
-  const {getUser} = useContext(AuthContext)
+  const {getUser} = useContext(AuthContext);
+  const [show, setShow] = useState(true);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
 
   useEffect(() => {
     console.log(getUser)
@@ -25,10 +29,13 @@ const ProductApprovals = () => {
         setProducts(res.data.data);
       })
       .catch((error) => {
-        Swal.fire({
-          text: error.response.data,
-          title: "Oops",
-        });
+        // Swal.fire({
+        //   text: error.response.data,
+        //   title: "Oops",
+        // });
+        setShow(true);
+        setMessage(`Oops, ${error.response.data.data}`);
+        setColor("red");
       });
   },[getUser, navigate]);
 
@@ -36,16 +43,22 @@ const ProductApprovals = () => {
     axios
       .get(`${api}/product/approve/${user_id}`)
       .then((res) => {
-        Swal.fire({
-          title: `Approved Product 👍`,
-          text: `Successfully approved ${res.data.data}'s product on OJA`,
-        });
+        // Swal.fire({
+        //   title: `Approved Product 👍`,
+        //   text: `Successfully approved ${res.data.data}'s product on OJA`,
+        // });
+        setShow(true);
+        setMessage(`Approved Product 👍`);
+        setColor("green")
       })
       .catch((error) => {
-        Swal.fire({
-          title: "Oops",
-          text: error.response.data.data,
-        });
+        // Swal.fire({
+        //   title: "Oops",
+        //   text: error.response.data.data,
+        // });
+        setShow(true);
+        setMessage(`Oops, ${error.response.data.data}`);
+        setColor("red");
       });
   };
 
@@ -108,6 +121,12 @@ const ProductApprovals = () => {
           );
         })}
       </ProductWrapper>
+      <Message
+        background={color}
+        text={message}
+        show={show}
+        setShow={setShow}
+      />
     </>
   );
 };

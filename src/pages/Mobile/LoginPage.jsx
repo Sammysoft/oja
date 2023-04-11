@@ -16,6 +16,7 @@ const LoginPage = () => {
         <Welcome />
         <SignInForm />
       </PageWrapper>
+      <br/><br/><br/>
       <Advert
         background={Colors.DIRTY_GREEN}
         text={"Find the style that fits YOU!"}

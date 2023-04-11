@@ -14,6 +14,7 @@ const ItemDescriptionPage = () => {
         <NavBar />
       </PageWrapper>
       <ItemDescription />
+      <br/><br/><br/>
       <Advert
         background={Colors.DIRTY_GREEN}
         text={"Find the style that fits YOU!"}

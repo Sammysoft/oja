@@ -179,6 +179,9 @@ const Product = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [seller, setSeller] = useState({});
+  const [picker, setPicker] = useState(0);
+  const [itemPictures, setItemPictures] = useState([]);
+  const [load, setLoad] = useState(Boolean)
   const url = window.location.pathname;
   const id = url.slice(-24);
   useEffect(() => {
@@ -186,6 +189,7 @@ const Product = () => {
       .get(`${api}/product/${id}`)
       .then((res) => {
         setProduct(res.data.data);
+        setItemPictures(res.data.data.item_pictures[0]);
         axios
           .get(`${api}/user/${res.data.data.user_id}`)
           .then((res) => {
@@ -200,17 +204,35 @@ const Product = () => {
         Swal.fire({ title: "Oops", text: error.response.data.data });
         navigate(-1);
       });
-  }, []);
+  }, [load]);
 
   const _approveProduct = (user_id) => {
     axios
       .get(`${api}/product/approve/${user_id}`)
       .then((res) => {
+        // Swal.fire({
+        //   title: `Approved Product 👍`,
+        //   text: `Successfully approved ${res.data.data}'s product on OJA`,
+        // });
+        setLoad(!load)
+      })
+      .catch((error) => {
         Swal.fire({
-          title: `Approved Product 👍`,
-          text: `Successfully approved ${res.data.data}'s product on OJA`,
+          title: "Oops",
+          text: error.response.data.data,
         });
-        navigate(-1)
+      });
+  };
+
+  const _disApproveProduct = (user_id) => {
+    axios
+      .get(`${api}/product/disapprove/${user_id}`)
+      .then((res) => {
+        // Swal.fire({
+        //   title: `Disapproved Product 👍`,
+        //   text: `Successfully disapproved ${res.data.data}'s product on OJA`,
+        // });
+        setLoad(!load)
       })
       .catch((error) => {
         Swal.fire({
@@ -226,12 +248,25 @@ const Product = () => {
           {" "}
           <ProductWrapper>
             <RightSide>
-              <BigImage background={product.item_pictures[0]}></BigImage>
+            <div
+                style={{
+                  width: "100%",
+                  height: "80%",
+                  borderRadius: "10px",
+                  backgroundImage: `url("${itemPictures[picker]}")`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              ></div>
               <SmallImageWrapper>
                 <SmallImageScroller>
                   {product.item_pictures[0].map((pics, id) => (
                     <SmallImageCapsule
                       key={id}
+                      onClick={() => {
+                        setPicker(id);
+                      }}
                       background={pics}
                     ></SmallImageCapsule>
                   ))}
@@ -248,14 +283,26 @@ const Product = () => {
               </HeadDetails>
               <Description>{product.item_description}</Description>
               <ButtonWrapper>
-                <ActionButton
-                  background={Colors.DEEP_GREEN}
-                  onClick={() => {
-                    _approveProduct(product._id);
-                  }}
-                >
-                  Approve
-                </ActionButton>
+                {product.item_approval === true && (
+                  <ActionButton
+                    background={Colors.PRIMARY_DEEP}
+                    onClick={() => {
+                      _disApproveProduct(product._id);
+                    }}
+                  >
+                    Disapprove
+                  </ActionButton>
+                )}
+                {product.item_approval === false && (
+                  <ActionButton
+                    background={Colors.DEEP_GREEN}
+                    onClick={() => {
+                      _approveProduct(product._id);
+                    }}
+                  >
+                    Approve
+                  </ActionButton>
+                )}
                 <ActionButton background={Colors.RED}>Decline</ActionButton>
               </ButtonWrapper>
               <SellersWrapper>
