@@ -248,7 +248,7 @@ const ProductListing = ({ right }) => {
                     );
                   })}
                 </ProductCategory>
-                <AdCapsuleWrapper>
+                {/* <AdCapsuleWrapper>
                   <img
                     src={require("../../assets/man_hair.png")}
                     alt="ads"
@@ -277,7 +277,7 @@ const ProductListing = ({ right }) => {
                     </div>
                     <AdvertButtonWrapper> Go to Fashion</AdvertButtonWrapper>
                   </div>
-                </AdCapsuleWrapper>
+                </AdCapsuleWrapper> */}
               </>
             )}
           </FlexWrapper>

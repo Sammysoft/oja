@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Colors } from "../../assets/styles";
-import man_hair from "../../assets/man_hair2.png";
 import { Loader } from "semantic-ui-react";
-import Advert from "./advert";
 import car from "../../assets/svg/truck.svg";
 import house from "../../assets/svg/house.svg";
 import phone from "../../assets/svg/phone.svg";
@@ -190,13 +188,13 @@ const ProductFilter = () => {
           <br/>
         </>
       )}
-      <Advert
+      {/* <Advert
         background={Colors.DIRTY_GREEN}
         text={"Find the style that fits YOU!"}
         image={man_hair}
         button={"Go to fashion"}
         orientation={false}
-      />
+      /> */}
     </>
   );
 };

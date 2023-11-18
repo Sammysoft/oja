@@ -33,7 +33,7 @@ const DashboardComponent = () => {
       return (
         <>
           <PageBody>
-            <AdCapsuleWrapper>
+            {/* <AdCapsuleWrapper>
               <img
                 src={require("../../assets/man_hair.png")}
                 alt="ads"
@@ -63,7 +63,7 @@ const DashboardComponent = () => {
                 </div>
                 <AdvertButtonWrapper> Go to Fashion</AdvertButtonWrapper>
               </div>
-            </AdCapsuleWrapper>
+            </AdCapsuleWrapper> */}
             <Choices>
               <ChoicesCard
                 color={Colors.CHOCOLATE}
