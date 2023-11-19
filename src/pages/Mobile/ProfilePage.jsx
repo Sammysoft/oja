@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import NavBar from "../../components/Mobile/navbar";
-import Advert from "../../components/Mobile/advert";
-import Footer from "../../components/Mobile/footer";
-import man_hair from "../../assets/man_hair.png";
+// import Advert from "../../components/Mobile/advert";
+// import Footer from "../../components/Mobile/footer";
+// import man_hair from "../../assets/man_hair.png";
 import left from "../../assets/svg/left_arrow.svg";
-import { Colors } from "../../assets/styles";
+// import { Colors } from "../../assets/styles";
 import { useNavigate } from "react-router";
 import Profile from "../../components/Mobile/Profile";
 
@@ -41,14 +41,14 @@ const ProfilePage = () => {
         <Profile />
       </ProfilePageWrapper>
       <br/><br/><br/>
-      <Advert
+      {/* <Advert
         background={Colors.DIRTY_GREEN}
         text={"Find the style that fits YOU!"}
         image={man_hair}
         button={"Go to fashion"}
         orientation={false}
       />
-      <Footer />
+      <Footer /> */}
     </>
   );
 };

@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import Chat from "../../components/Mobile/Chat";
-import Footer from "../../components/Mobile/footer";
+// import Footer from "../../components/Mobile/footer";
 import NavBar from "../../components/Mobile/navbar";
 import left from "../../assets/svg/left_arrow.svg";
 import { useNavigate } from "react-router";
-import Advert from "../../components/Mobile/advert";
-import man_hair from "../../assets/man_hair.png";
-import { Colors } from "../../assets/styles";
+// import Advert from "../../components/Mobile/advert";
+// import man_hair from "../../assets/man_hair.png";
+// import { Colors } from "../../assets/styles";
 
 const ChatPage = () => {
   const navigate = useNavigate();
@@ -41,14 +41,14 @@ const ChatPage = () => {
         <Chat />
       </ChatPageWrapper>
       <br/><br/><br/>
-      <Advert
+      {/* <Advert
         background={Colors.DIRTY_GREEN}
         text={"Find the style that fits YOU!"}
         image={man_hair}
         button={"Go to fashion"}
         orientation={false}
       />
-      <Footer />
+      <Footer /> */}
     </>
   );
 };
