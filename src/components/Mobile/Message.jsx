@@ -5,10 +5,12 @@ import styled from "styled-components";
 
 const Message = ({ text, background, show, setShow }) => {
   useEffect(() => {
-    setInterval(() => {
+    const timer = setTimeout(() => {
       setShow(false);
     }, 3000);
-  });
+
+    return () => clearInterval(timer);
+  }, [show]);
 
   return (
     <>
