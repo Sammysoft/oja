@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import NavBar from "../../components/Mobile/navbar";
-import Footer from "../../components/Mobile/footer";
-import man_hair from "../../assets/man_hair.png";
-import Advert from "../../components/Mobile/advert";
-import { Colors } from "../../assets/styles";
+// import Footer from "../../components/Mobile/footer";
+// import man_hair from "../../assets/man_hair.png";
+// import Advert from "../../components/Mobile/advert";
+// import { Colors } from "../../assets/styles";
 import ItemDescription from "../../components/Mobile/ItemDescription";
 
 const ItemDescriptionPage = () => {
@@ -15,14 +15,14 @@ const ItemDescriptionPage = () => {
       </PageWrapper>
       <ItemDescription />
       <br/><br/><br/>
-      <Advert
+      {/* <Advert
         background={Colors.DIRTY_GREEN}
         text={"Find the style that fits YOU!"}
         image={man_hair}
         button={"Go to fashion"}
         orientation={false}
       />
-      <Footer />
+      <Footer /> */}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import AdvertBanner from "../../components/Mobile/Advertbanner";
-import Footer from "../../components/Mobile/footer";
+// import Footer from "../../components/Mobile/footer";
 import NavBar from "../../components/Mobile/navbar";
 import ProductListing from "../../components/Mobile/productlisting";
 
@@ -13,7 +13,7 @@ const HomePage = () => {
       </PageWrapper>
       <AdvertBanner />
       <ProductListing />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

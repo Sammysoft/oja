@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Favourites from "../../components/Mobile/Favourites";
-import Footer from "../../components/Mobile/footer";
+// import Footer from "../../components/Mobile/footer";
 import NavBar from "../../components/Mobile/navbar";
 
 const FavouritePage = () => {
@@ -11,7 +11,7 @@ const FavouritePage = () => {
         <NavBar />
       </PageWrapper>
       <Favourites />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

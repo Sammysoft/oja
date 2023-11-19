@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import About from "../../components/Mobile/About";
-import Footer from "../../components/Mobile/footer";
+// import Footer from "../../components/Mobile/footer";
 import NavBar from "../../components/Mobile/navbar";
 
 const AboutPage = () => {
@@ -11,7 +11,7 @@ const AboutPage = () => {
         <NavBar />
       </PageWrapper>
       <About />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

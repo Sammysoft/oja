@@ -5,7 +5,7 @@ import { Welcome } from "../../components/Mobile/WelcomeText";
 // import Advert from "../../components/Mobile/advert";
 // import { Colors } from "../../assets/styles";
 // import man_hair from "../../assets/man_hair.png";
-import Footer from "../../components/Mobile/footer";
+// import Footer from "../../components/Mobile/footer";
 import SignInForm from "../../components/Mobile/SignInForm";
 
 const LoginPage = () => {
@@ -24,7 +24,7 @@ const LoginPage = () => {
         button={"Go to fashion"}
         orientation={false}
       /> */}
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
